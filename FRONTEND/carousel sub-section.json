@@ -1,0 +1,231 @@
+{
+  "data": [
+    {
+      "id": 3,
+      "documentId": "nbebtrw6xn8g46cmw1xia6un",
+      "createdAt": "2025-05-20T20:42:54.422Z",
+      "updatedAt": "2025-05-20T20:42:54.422Z",
+      "publishedAt": "2025-05-20T20:42:54.455Z",
+      "images": [
+        {
+          "id": 22,
+          "documentId": "r6mn7xl18pr0s3nrhonu8yt5",
+          "name": "dji_fly_20220623_192600_307_1663047952119_photo_optimized.jpg",
+          "alternativeText": null,
+          "caption": null,
+          "width": 4000,
+          "height": 3000,
+          "formats": {
+            "thumbnail": {
+              "name": "thumbnail_dji_fly_20220623_192600_307_1663047952119_photo_optimized.jpg",
+              "hash": "thumbnail_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 208,
+              "height": 156,
+              "size": 11.43,
+              "sizeInBytes": 11426,
+              "url": "/uploads/thumbnail_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997.jpg"
+            },
+            "small": {
+              "name": "small_dji_fly_20220623_192600_307_1663047952119_photo_optimized.jpg",
+              "hash": "small_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 500,
+              "height": 375,
+              "size": 54.75,
+              "sizeInBytes": 54746,
+              "url": "/uploads/small_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997.jpg"
+            },
+            "medium": {
+              "name": "medium_dji_fly_20220623_192600_307_1663047952119_photo_optimized.jpg",
+              "hash": "medium_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 750,
+              "height": 563,
+              "size": 112.13,
+              "sizeInBytes": 112127,
+              "url": "/uploads/medium_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997.jpg"
+            },
+            "large": {
+              "name": "large_dji_fly_20220623_192600_307_1663047952119_photo_optimized.jpg",
+              "hash": "large_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 1000,
+              "height": 750,
+              "size": 191.96,
+              "sizeInBytes": 191960,
+              "url": "/uploads/large_dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997.jpg"
+            }
+          },
+          "hash": "dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997",
+          "ext": ".jpg",
+          "mime": "image/jpeg",
+          "size": 2616.51,
+          "url": "/uploads/dji_fly_20220623_192600_307_1663047952119_photo_optimized_40e575a997.jpg",
+          "previewUrl": null,
+          "provider": "local",
+          "provider_metadata": null,
+          "createdAt": "2025-05-20T20:36:38.984Z",
+          "updatedAt": "2025-05-20T20:36:38.984Z",
+          "publishedAt": "2025-05-20T20:36:38.985Z"
+        },
+        {
+          "id": 23,
+          "documentId": "tis8mrjt84byanvrgum19j3l",
+          "name": "IMG_20250520_141557.jpg",
+          "alternativeText": null,
+          "caption": null,
+          "width": 4000,
+          "height": 3000,
+          "formats": {
+            "thumbnail": {
+              "name": "thumbnail_IMG_20250520_141557.jpg",
+              "hash": "thumbnail_IMG_20250520_141557_8c1e44369f",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 208,
+              "height": 156,
+              "size": 8.33,
+              "sizeInBytes": 8327,
+              "url": "/uploads/thumbnail_IMG_20250520_141557_8c1e44369f.jpg"
+            },
+            "small": {
+              "name": "small_IMG_20250520_141557.jpg",
+              "hash": "small_IMG_20250520_141557_8c1e44369f",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 500,
+              "height": 375,
+              "size": 36.96,
+              "sizeInBytes": 36963,
+              "url": "/uploads/small_IMG_20250520_141557_8c1e44369f.jpg"
+            },
+            "large": {
+              "name": "large_IMG_20250520_141557.jpg",
+              "hash": "large_IMG_20250520_141557_8c1e44369f",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 1000,
+              "height": 750,
+              "size": 127.39,
+              "sizeInBytes": 127391,
+              "url": "/uploads/large_IMG_20250520_141557_8c1e44369f.jpg"
+            },
+            "medium": {
+              "name": "medium_IMG_20250520_141557.jpg",
+              "hash": "medium_IMG_20250520_141557_8c1e44369f",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 750,
+              "height": 563,
+              "size": 74.7,
+              "sizeInBytes": 74703,
+              "url": "/uploads/medium_IMG_20250520_141557_8c1e44369f.jpg"
+            }
+          },
+          "hash": "IMG_20250520_141557_8c1e44369f",
+          "ext": ".jpg",
+          "mime": "image/jpeg",
+          "size": 1519.65,
+          "url": "/uploads/IMG_20250520_141557_8c1e44369f.jpg",
+          "previewUrl": null,
+          "provider": "local",
+          "provider_metadata": null,
+          "createdAt": "2025-05-20T20:36:39.081Z",
+          "updatedAt": "2025-05-20T20:36:39.081Z",
+          "publishedAt": "2025-05-20T20:36:39.081Z"
+        },
+        {
+          "id": 26,
+          "documentId": "lb67vgjvr8pq82bwu86e705i",
+          "name": "IMG_20250520_141719.jpg",
+          "alternativeText": null,
+          "caption": null,
+          "width": 4000,
+          "height": 3000,
+          "formats": {
+            "thumbnail": {
+              "name": "thumbnail_IMG_20250520_141719.jpg",
+              "hash": "thumbnail_IMG_20250520_141719_1dfe9921ed",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 208,
+              "height": 156,
+              "size": 8.98,
+              "sizeInBytes": 8982,
+              "url": "/uploads/thumbnail_IMG_20250520_141719_1dfe9921ed.jpg"
+            },
+            "small": {
+              "name": "small_IMG_20250520_141719.jpg",
+              "hash": "small_IMG_20250520_141719_1dfe9921ed",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 500,
+              "height": 375,
+              "size": 44.38,
+              "sizeInBytes": 44380,
+              "url": "/uploads/small_IMG_20250520_141719_1dfe9921ed.jpg"
+            },
+            "medium": {
+              "name": "medium_IMG_20250520_141719.jpg",
+              "hash": "medium_IMG_20250520_141719_1dfe9921ed",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 750,
+              "height": 563,
+              "size": 92.88,
+              "sizeInBytes": 92882,
+              "url": "/uploads/medium_IMG_20250520_141719_1dfe9921ed.jpg"
+            },
+            "large": {
+              "name": "large_IMG_20250520_141719.jpg",
+              "hash": "large_IMG_20250520_141719_1dfe9921ed",
+              "ext": ".jpg",
+              "mime": "image/jpeg",
+              "path": null,
+              "width": 1000,
+              "height": 750,
+              "size": 161.37,
+              "sizeInBytes": 161366,
+              "url": "/uploads/large_IMG_20250520_141719_1dfe9921ed.jpg"
+            }
+          },
+          "hash": "IMG_20250520_141719_1dfe9921ed",
+          "ext": ".jpg",
+          "mime": "image/jpeg",
+          "size": 2282.02,
+          "url": "/uploads/IMG_20250520_141719_1dfe9921ed.jpg",
+          "previewUrl": null,
+          "provider": "local",
+          "provider_metadata": null,
+          "createdAt": "2025-05-20T20:36:45.802Z",
+          "updatedAt": "2025-05-20T20:36:45.802Z",
+          "publishedAt": "2025-05-20T20:36:45.802Z"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}

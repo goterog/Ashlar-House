@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "map_locations",
+  "info": {
+    "singularName": "map-location",
+    "pluralName": "map-locations",
+    "displayName": "Map location",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "descripcion": {
+      "type": "richtext"
+    },
+    "tipo": {
+      "type": "enumeration",
+      "enum": [
+        "Cabaña",
+        "Atractivos naturales",
+        "Dónde comer y comprar"
+      ]
+    },
+    "latitud": {
+      "type": "decimal"
+    },
+    "longitud": {
+      "type": "decimal"
+    },
+    "icono": {
+      "type": "string"
+    }
+  }
+}

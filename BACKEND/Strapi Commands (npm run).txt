@@ -1,0 +1,42 @@
+Usage: strapi [options] [command]
+
+Options:
+  -v, --version                                             Output the version number
+  -h, --help                                                Display help for command
+
+Commands:
+  admin:create-user|admin:create [options]                  Create a new admin
+  admin:reset-user-password|admin:reset-password [options]  Reset an admin user's password
+  components:list                                           List all the application components
+  configuration:dump|config:dump [options]                  Dump configurations of your application
+  configuration:restore|config:restore [options]            Restore configurations of your application
+  console                                                   Open the Strapi framework console
+  content-types:list                                        List all the application content-types
+  controllers:list                                          List all the application controllers
+  generate                                                  Launch the interactive API generator
+  hooks:list                                                List all the application hooks
+  middlewares:list                                          List all the application middlewares
+  policies:list                                             List all the application policies
+  report [options]                                          Get system stats for debugging and submitting issues
+  routes:list                                               List all the application routes
+  services:list                                             List all the application services
+  start                                                     Start your Strapi application
+  telemetry:disable                                         Disable anonymous telemetry and metadata sending to Strapi
+                                                            analytics
+  telemetry:enable                                          Enable anonymous telemetry and metadata sending to Strapi
+                                                            analytics
+  templates:generate <directory>                            (deprecated) Generate template from Strapi project
+  ts:generate-types [options]                               Generate TypeScript typings for your schemas
+  version                                                   Output the version of Strapi
+  build [options]                                           Build the strapi admin app
+  develop|dev [options]                                     Start your Strapi application in development mode
+  export [options]                                          Export data from Strapi to file
+  import [options]                                          Import data from file to Strapi
+  transfer [options]                                        Transfer data from one source to another
+  cloud:deploy|deploy [options]                             Deploy a Strapi Cloud project
+  cloud:link|link [options]                                 Link a local directory to a Strapi Cloud project
+  cloud:login|login [options]                               Strapi Cloud Login
+  cloud:logout|logout [options]                             Strapi Cloud Logout
+  cloud                                                     Manage Strapi Cloud projects
+  cloud:projects|projects [options]                         List Strapi Cloud projects
+  help [command]                                            Display help for command

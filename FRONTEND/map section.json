@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": 2,
+      "documentId": "oeajqupeoduyuig77sxlcz6h",
+      "descripcion": "¡Te esperamos pronto! ",
+      "tipo": "Cabaña",
+      "nombre": "Casa Hanuman",
+      "latitud": 25.37835370734412,
+      "longitud": -100.2367968265345,
+      "icono": "fa-home",
+      "createdAt": "2025-05-21T01:14:32.219Z",
+      "updatedAt": "2025-05-21T01:14:32.219Z",
+      "publishedAt": "2025-05-21T01:14:32.256Z"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 1
+    }
+  }
+}
