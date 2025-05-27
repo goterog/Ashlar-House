@@ -1,0 +1,2 @@
+Lo que sigue:
+- Conectar colección de Strapi "booking" con FullCalendar en landing page para que se bloqueen las fechas no disponibles (reservado y bloqueado) GET y POST para enviar nueva publicación de reservación 
