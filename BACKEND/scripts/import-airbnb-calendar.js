@@ -1,59 +1,88 @@
-const ical = require('node-ical');
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+// import-airbnb-calendar.js
+const fs = require('fs');
+const axios = require('axios');
+const path = require('path');
 
-// URL de tu .ics de Airbnb (puedes actualizarlo aquí)
+const STRAPI_URL = 'http://localhost:1337/api/bookings';
 const AIRBNB_ICS_URL = 'https://www.airbnb.mx/calendar/ical/807381707673543946.ics?s=9789cc909449839e93a1202f822e9c8d';
 
-// Endpoint de tu API Strapi
-const STRAPI_API = 'http://localhost:1337/api/calendars';
-
-// Limpia y normaliza fechas a formato YYYY-MM-DD
-function formatDate(date) {
-  return date.toISOString().split('T')[0];
+// Convierte YYYYMMDD a YYYY-MM-DD (ISO)
+function formatDateISO(yyyymmdd) {
+  const year = yyyymmdd.substring(0, 4);
+  const month = yyyymmdd.substring(4, 6);
+  const day = yyyymmdd.substring(6, 8);
+  return `${year}-${month}-${day}`;
 }
 
-async function importAirbnbCalendar() {
-  // 1. Descarga el .ics de Airbnb
-  const res = await fetch(AIRBNB_ICS_URL);
-  const icsData = await res.text();
+function mapEstado(summary) {
+  if (!summary) return 'Reservado';
+  if (summary.toLowerCase().includes('reserved')) return 'Reservado';
+  if (summary.toLowerCase().includes('not available')) return 'Bloqueado';
+  return 'Disponible';
+}
 
-  // 2. Parsea el .ics
-  const events = ical.parseICS(icsData);
+async function bookingExists(uid) {
+  try {
+    const res = await axios.get(`${STRAPI_URL}?filters[UID][$eq]=${encodeURIComponent(uid)}`);
+    return res.data && res.data.data && res.data.data.length > 0;
+  } catch (err) {
+    console.error('Error buscando UID:', uid, err.message);
+    return false;
+  }
+}
 
-  for (const k in events) {
-    const ev = events[k];
-    if (ev.type === 'VEVENT') {
-      // 3. Crea el evento en Strapi
-      const body = {
-        data: {
-          title: ev.summary || 'Reservado',
-          start: formatDate(ev.start),
-          end: formatDate(ev.end),
-          estado: 'Reservado',
-          source: 'Airbnb',
-          guests: null,
-          name: '',
-          email: '',
-          phone: null,
-          message: ev.description || ''
-        }
-      };
-      // Puedes agregar más campos si lo deseas
+async function importICS() {
+  // Descarga el .ics directamente de Airbnb
+  const response = await axios.get(AIRBNB_ICS_URL);
+  const ics = response.data;
+  const events = ics.split('BEGIN:VEVENT').slice(1);
 
-      // 4. (Opcional) Elimina duplicados antes de crear (por UID)
-      // Aquí podrías hacer un fetch a Strapi para buscar por UID y evitar duplicados
+  for (const eventRaw of events) {
+    const lines = eventRaw.split('\n').map(l => l.trim());
+    let start, end, summary, description, uid;
 
-      // 5. Crea el evento
-      const response = await fetch(STRAPI_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      const result = await response.json();
-      console.log('POST result:', result);
+    for (const line of lines) {
+      if (line.startsWith('DTSTART')) start = line.split(':')[1];
+      if (line.startsWith('DTEND')) end = line.split(':')[1];
+      if (line.startsWith('SUMMARY')) summary = line.split(':')[1];
+      if (line.startsWith('DESCRIPTION')) description = line.split(':')[1];
+      if (line.startsWith('UID')) uid = line.split(':')[1];
+    }
+
+    if (!start || !end || !summary || !uid) continue;
+
+    // Checa si ya existe el booking con ese UID
+    const exists = await bookingExists(uid);
+    if (exists) {
+      console.log(`Booking con UID ${uid} ya existe, omitido.`);
+      continue;
+    }
+
+    // Formatea fechas a ISO
+    const startDate = formatDateISO(start);
+    const endDate = formatDateISO(end);
+
+    const booking = {
+      title: summary,
+      start: startDate,
+      end: endDate,
+      estado: mapEstado(summary),
+      source: 'Airbnb',
+      guest: '',
+      name: '',
+      email: '',
+      phone: '',
+      message: description || '',
+      UID: uid,
+    };
+
+    try {
+      const res = await axios.post(STRAPI_URL, { data: booking });
+      console.log('Importado:', booking.title, booking.start, '-', booking.end);
+    } catch (err) {
+      console.error('Error importando:', booking, err.response?.data || err.message);
     }
   }
-  console.log('Importación completada');
 }
 
-importAirbnbCalendar();
+importICS();
