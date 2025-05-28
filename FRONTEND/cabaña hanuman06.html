@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cabañas Ciénega de González - Refugio entre pinos y montañas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- FullCalendar CSS y JS -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />
     <style>
         :root {
             --primary-color: #3A7D44;
@@ -316,10 +316,9 @@
     <!-- Disponibilidad Section (Calendar) -->
     <section id="disponibilidad" class="py-16 bg-gray-50 dark:bg-gray-800">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Disponibilidad</h2>
-            <div class="calendar-container bg-white dark:bg-gray-700 rounded-xl shadow-xl p-6 max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Disponibilidad</h2>            <div class="calendar-container bg-white dark:bg-gray-700 rounded-xl shadow-xl p-4 sm:p-6 max-w-4xl mx-auto">
                 <!-- Calendario interactivo -->
-                <div id="calendar" class="w-full h-96"></div>
+                <div id="calendar" class="w-full"></div>
             </div>
             <div class="text-center mt-8">
                 <button id="open-reserve-modal" class="inline-flex items-center bg-green-600 hover:bg-green-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-medium transition">
@@ -931,34 +930,223 @@
         if (document.getElementById('calendar')) {
             document.addEventListener('DOMContentLoaded', function() {
                 var calendarEl = document.getElementById('calendar');
-                var calendar = new FullCalendar.Calendar(calendarEl, {
+                let busyRanges = [];                var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
                     locale: 'es',
-                    height: 400,
-                    events: async function(fetchInfo, successCallback, failureCallback) {
+                    height: 'auto',
+                    firstDay: 1, // 1 = Lunes (0 sería Domingo)
+                    headerToolbar: {
+                        start: 'title',
+                        center: '',
+                        end: 'prev,next'
+                    },
+                    eventOverlap: false,
+                    displayEventTime: false,
+                    displayEventEnd: true,
+                    nextDayThreshold: '00:00:00',
+                    eventDisplay: 'background',
+                    eventColor: '#3A7D44',
+                    eventBackgroundColor: '#3A7D44',
+                    eventTextColor: '#ffffff',events: async function(fetchInfo, successCallback, failureCallback) {
                         try {
-                            const res = await fetch('http://localhost:1337/api/calendars');
+                            console.log('Fetching bookings...');
+                            const res = await fetch('http://localhost:1337/api/bookings');
                             const data = await res.json();
-                            const events = data.data.map(ev => ({
-                                title: ev.attributes.title,
-                                start: ev.attributes.start,
-                                end: ev.attributes.end,
-                                color: ev.attributes.status === 'reservado' ? '#E07A5F' : '#3A7D44',
-                                display: 'background'
-                            }));
+                            console.log('API Response:', data);
+                            
+                            if (!data || !data.data) {
+                                console.warn('No booking data received from API');
+                                successCallback([]);
+                                return;
+                            }                            // Procesar cada reserva, verificando la estructura
+                            const busy = data.data.filter(booking => {
+                                // Log each booking for debugging
+                                console.log('Processing booking:', booking);
+                                
+                                // Check for required data
+                                if (!booking) {
+                                    console.warn('Empty booking entry');
+                                    return false;
+                                }
+                                
+                                // In Strapi v4, data might be in attributes or direct
+                                const bookingData = booking.attributes || booking;
+                                
+                                // Log the processed booking data
+                                console.log('Booking data:', bookingData);
+                                console.log('Estado:', bookingData.estado);
+                                console.log('Title:', bookingData.title);
+                                
+                                // Define states that indicate a busy period
+                                const busyStates = [
+                                    'Reservado', 
+                                    'Bloqueado', 
+                                    'Reserved', 
+                                    'Blocked',
+                                    'Not available',
+                                    'Airbnb (Not available)'
+                                ];
+                                
+                                // Check estado and title for busy states with detailed logging
+                                const isStateBusy = bookingData.estado && busyStates.some(state => bookingData.estado.includes(state));
+                                const isTitleBusy = bookingData.title && busyStates.some(state => bookingData.title.includes(state));
+                                
+                                console.log('Is state busy:', isStateBusy);
+                                console.log('Is title busy:', isTitleBusy);
+                                
+                                return isStateBusy || isTitleBusy;
+                            });
+                            console.log('Filtered busy dates:', busy);                            // Guardar rangos ocupados para validación posterior
+                            busyRanges = busy.map(booking => {
+                                const bookingData = booking.attributes || booking;
+                                const range = {
+                                    start: bookingData.start,
+                                    end: addDays(new Date(bookingData.end), 1).toISOString().split('T')[0] // Add 1 day to make end exclusive
+                                };
+                                console.log('Added range:', range);
+                                return range;
+                            });
+
+                            // Format events for FullCalendar
+                            const events = busy.map(booking => {
+                                const bookingData = booking.attributes || booking;
+                                console.log('Creating event from booking:', bookingData);
+                                const event = {
+                                    title: bookingData.estado === 'Bloqueado' ? 'Bloqueado' : 'Reservado',
+                                    start: bookingData.start,
+                                    end: addDays(new Date(bookingData.end), 1).toISOString().split('T')[0],
+                                    color: bookingData.estado === 'Bloqueado' ? '#E07A5F' : '#3A7D44',
+                                    display: 'background',
+                                    allDay: true,
+                                    backgroundColor: bookingData.estado === 'Bloqueado' ? '#E07A5F' : '#3A7D44',
+                                    overlap: false,
+                                    rendering: 'background'
+                                };
+                                console.log('Created event:', event);
+                                return event;
+                            });
                             successCallback(events);
                         } catch (e) {
+                            console.error('Error fetching bookings:', e);
                             failureCallback(e);
                         }
                     },
                     selectable: true,
+                    selectConstraint: {
+                        start: new Date().toISOString().split('T')[0] // Only allow selection from today
+                    },
+                    selectOverlap: false,
                     select: function(info) {
+                        const startDate = info.start;
+                        const endDate = info.end;
+                        
+                        // Make sure endDate is exclusive (FullCalendar's requirement)
+                        const displayEndDate = addDays(endDate, -1);
+                        
+                        // Validate against busy ranges
+                        if (isRangeBusy(startDate, displayEndDate)) {
+                            alert('Las fechas seleccionadas no están disponibles. Por favor elija otras fechas.');
+                            return;
+                        }
+                        
+                        // Open reserve modal with selected dates
                         reserveModal.classList.remove('hidden');
-                        document.getElementById('reserve-check-in').value = info.startStr;
-                        document.getElementById('reserve-check-out').value = info.endStr;
+                        document.getElementById('reserve-check-in').value = formatDate(startDate);
+                        document.getElementById('reserve-check-out').value = formatDate(displayEndDate);
                     }
-                });
-                calendar.render();
+                });                calendar.render();
+                console.log('%c FullCalendar Rendered ', 'background: #3A7D44; color: white; padding: 2px 5px; border-radius: 3px;');
+
+                // Helper functions
+                function addDays(date, days) {
+                    const result = new Date(date);
+                    result.setDate(result.getDate() + days);
+                    return result;
+                }
+
+                function formatDate(date) {
+                    return date.toISOString().split('T')[0];
+                }
+
+                function isRangeBusy(start, end) {
+                    return busyRanges.some(range => {
+                        const rangeStart = new Date(range.start);
+                        const rangeEnd = new Date(range.end);
+                        const checkStart = new Date(start);
+                        const checkEnd = new Date(end);
+                        
+                        // Check if there's any overlap
+                        return !(checkEnd < rangeStart || checkStart >= rangeEnd);
+                    });
+                }
+
+                // Update reserve form validation
+                const reserveForm = document.getElementById('reserve-form');
+                if (reserveForm) {
+                    reserveForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        
+                        const checkin = new Date(document.getElementById('reserve-check-in').value);
+                        const checkout = new Date(document.getElementById('reserve-check-out').value);
+                        
+                        // Basic date validation
+                        if (checkin >= checkout) {
+                            alert('La fecha de salida debe ser posterior a la fecha de llegada.');
+                            return;
+                        }
+                        
+                        // Check if dates are in the past
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        if (checkin < today) {
+                            alert('No se pueden hacer reservas con fechas pasadas.');
+                            return;
+                        }
+                        
+                        // Validate against busy ranges
+                        if (isRangeBusy(checkin, checkout)) {
+                            alert('Las fechas seleccionadas no están disponibles. Por favor elija otras fechas.');
+                            return;
+                        }                        // If validation passes, collect form data
+                        const formData = {
+                            data: {
+                                title: "Reservado desde sitio web",
+                                start: formatDate(checkin),
+                                end: formatDate(checkout),
+                                estado: "Reservado",
+                                source: "Landing page",
+                                name: document.getElementById('reserve-name').value,
+                                email: document.getElementById('reserve-email').value,
+                                phone: document.getElementById('reserve-phone').value,
+                                message: document.getElementById('reserve-message').value
+                            }
+                        };
+
+                        try {
+                            // Send booking to Strapi
+                            const response = await fetch('http://localhost:1337/api/bookings', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(formData)
+                            });
+
+                            if (!response.ok) {
+                                throw new Error('Error al procesar la reserva');
+                            }
+
+                            // Success!
+                            alert('¡Reserva realizada con éxito! Te contactaremos pronto.');
+                            reserveModal.classList.add('hidden');
+                            reserveForm.reset();
+                            calendar.refetchEvents(); // Refresh calendar events
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('Hubo un error al procesar tu reserva. Por favor intenta de nuevo.');
+                        }
+                    });
+                }
             });
         }
     </script>
