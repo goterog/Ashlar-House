@@ -16,6 +16,7 @@
             --secondary-color: #E07A5F;
             --dark-color: #1E1E1E;
             --light-color: #F8F8F8;
+            --header-height: 4rem;
         }
         
         body {
@@ -107,6 +108,11 @@
         header {
             z-index: 50 !important;
         }
+
+        html {
+            scroll-padding-top: var(--header-height);
+        }
+
     </style>
 </head>
 
@@ -309,10 +315,9 @@
     <section id="ubicacion" class="py-16 bg-gray-50 dark:bg-gray-800">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Ubicación</h2>
-            
+
             <div class="mb-8 max-w-3xl mx-auto text-center">
                 <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">Nuestra cabaña se encuentra en la planta alta del Café Hanuman, en el corazón de Ciénega de González, Santiago, Nuevo León.</p>
-                <p class="text-gray-600 dark:text-gray-300">A solo minutos de la Cascada El Salto y áreas de escalada.</p>
             </div>
             
             <div class="map-container bg-gray-200 dark:bg-gray-700 rounded-xl shadow-xl overflow-hidden h-96 mb-8">
@@ -612,19 +617,65 @@
         } else {
             html.classList.remove('dark');
         }
-        
-        themeToggle.addEventListener('click', () => {
+          themeToggle.addEventListener('click', () => {
             html.classList.toggle('dark');
             localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-        
-        // Mobile menu toggle
+        });
+          // Mobile menu toggle con mejoras de interacción
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evitar que el clic se propague
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Scrolling suave mejorado para enlaces de navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
         
+        // Si no es un ancla interna o es un endpoint, no hacer nada
+        if (!targetId || targetId === '#' || targetId.startsWith('http')) {
+            return; 
+        }
+        
+        e.preventDefault();
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+            let offset = headerHeight - 70; // Valor base para el offset
+            
+            // Ajuste adicional para secciones específicas
+            if (targetId === '#disponibilidad' || targetId === '#ubicacion') {
+                offset += - 70;
+            }
+            
+            window.scrollTo({
+                top: targetPosition - offset,
+                behavior: 'smooth'
+            });
+
+            // Cerrar el menú móvil si está abierto
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+            }
+        }
+        });
+        });
+
         // Carousel functionality
         const carouselTrack = document.querySelector('.carousel-track');
         const carouselSlides = document.querySelectorAll('.carousel-slide');
@@ -702,63 +753,65 @@
             contactForm.reset();
         });
         
-        // Smooth scrolling for anchor links        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    const headerHeight = document.querySelector('header').offsetHeight;
-                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                    
-                    // Ajustar el offset dependiendo de la sección
-                    let offset = headerHeight + 80; // Valor base aumentado para todas las secciones
-                    
-                    // Si es la sección de disponibilidad o ubicación, aumentar aún más el offset
-                    if (targetId === '#disponibilidad' || targetId === '#ubicacion') {
-                        offset += 40; // Ajuste adicional para estas secciones específicas
-                    }
-                    
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                }
-            });
+        // Event listeners para la navegación
+        document.addEventListener('DOMContentLoaded', () => {
+        const links = document.querySelectorAll('a[href^="#"]');
+    
+        links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);    
         });
+    });
+});
 
-        // --- HERO VIDEO FROM STRAPI ---
-        (async function() {
-            try {
-                const res = await fetch('http://localhost:1337/api/heros?populate=*');
-                const data = await res.json();
-                // Busca el primer video disponible
-                const hero = data.data && data.data[0];
-                const videoUrl = hero && hero.video && hero.video.url
-                    ? hero.video.url
-                    : null;
-                if (videoUrl) {
-                    const heroVideo = document.getElementById('hero-video');
-                    // Elimina los sources existentes
-                    while (heroVideo.firstChild) heroVideo.removeChild(heroVideo.firstChild);
-                    // Crea un nuevo source
-                    const source = document.createElement('source');
-                    source.src = videoUrl.startsWith('http') ? videoUrl : 'http://localhost:1337' + videoUrl;
-                    source.type = 'video/mp4';
-                    heroVideo.appendChild(source);
-                    heroVideo.load();
-                }
-            } catch (e) {
-                // Si falla, se mantiene el video de ejemplo
-                console.warn('No se pudo cargar el video desde Strapi', e);
+// --- HERO VIDEO FROM STRAPI ---
+(async function loadHeroVideo() {
+    try {
+        const res = await fetch('http://localhost:1337/api/heros?populate[0]=video');
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        console.log('Hero API Response:', data);
+
+        if (!data.data || !data.data.length) {
+            console.warn('No hero data found');
+            return;
+        }        const hero = data.data[0];
+        console.log('Hero data:', hero);
+
+        if (!hero || !hero.video) {
+            console.warn('No video found in hero data');
+            return;
+        }
+
+        const videoUrl = hero.video.url;
+        console.log('Video URL:', videoUrl);
+
+        if (videoUrl) {
+            const heroVideo = document.getElementById('hero-video');
+            if (!heroVideo) {
+                console.error('Hero video element not found');
+                return;
             }
-        })();
+
+            // Elimina los sources existentes
+            while (heroVideo.firstChild) heroVideo.removeChild(heroVideo.firstChild);
+
+            // Crea un nuevo source
+            const source = document.createElement('source');
+            source.src = videoUrl.startsWith('http') ? videoUrl : 'http://localhost:1337' + videoUrl;
+            source.type = 'video/mp4';
+            heroVideo.appendChild(source);
+            heroVideo.load();
+        }
+    } catch (e) {
+        // Si falla, se mantiene el video de ejemplo
+        console.warn('No se pudo cargar el video desde Strapi', e);
+    }
+})();
 
         // --- CAROUSEL IMAGES FROM STRAPI ---
         (async function() {
