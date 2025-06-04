@@ -2,8 +2,7 @@
   "name": "cabana-hanuman",
   "version": "0.1.0",
   "private": true,
-  "description": "A Strapi application",
-  "scripts": {
+  "description": "A Strapi application",  "scripts": {
     "build": "strapi build",
     "console": "strapi console",
     "deploy": "strapi deploy",
@@ -13,7 +12,13 @@
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry"
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",    
+    "health-check": "node scripts/health-check.js",
+    "pre-deploy": "node scripts/pre-deploy-check.js",
+    "dev-tools": "node scripts/dev-tools.js",
+    "test:whatsapp": "node scripts/demo-whatsapp.js",
+    "check:strapi": "node scripts/check-strapi.js",
+    "setup:env": "node scripts/env-setup.js"
   },
   "dependencies": {
     "@strapi/plugin-cloud": "5.13.0",
@@ -22,7 +27,10 @@
     "@strapi/strapi": "5.13.0",
     "better-sqlite3": "11.3.0",
     "fs-extra": "^10.0.0",
+    "ics": "^3.8.1",
     "mime-types": "^2.1.27",
+    "node-fetch": "^3.3.2",
+    "node-ical": "^0.20.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",

@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bookings",
+  "info": {
+    "singularName": "booking",
+    "pluralName": "bookings",
+    "displayName": "Booking",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "start": {
+      "type": "date",
+      "unique": false
+    },
+    "end": {
+      "type": "date"
+    },
+    "estado": {
+      "type": "enumeration",
+      "enum": [
+        "Reservado",
+        "Disponible",
+        "Bloqueado"
+      ]
+    },
+    "source": {
+      "type": "enumeration",
+      "enum": [
+        "Airbnb",
+        "Landing page",
+        "Otra"
+      ]
+    },
+    "guest": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    },
+    "UID": {
+      "type": "string"
+    }
+  }
+}
