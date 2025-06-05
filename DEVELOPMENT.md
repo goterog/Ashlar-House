@@ -107,6 +107,9 @@ export default {
 
 #### Scripts Útiles Activos
 ```bash
+# Script maestro con menú
+npm run dev-tools         
+
 # Verificación completa del sistema
 node scripts/health-check.js
 
@@ -116,7 +119,7 @@ node scripts/check-strapi.js
 # Test completo del sistema WhatsApp
 node scripts/final-simple-test.js
 
-# Test directo de conectividad
+# Test directo de conectividad WhatsApp
 node scripts/simple-whatsapp-test.js
 
 # Diagnóstico completo
@@ -149,7 +152,7 @@ interface Booking {
   start: string;      // ISO Date
   end: string;        // ISO Date
   estado: 'Reservado' | 'Bloqueado' | 'Disponible';
-  source: string;     // 'Landing page', 'Airbnb', etc.
+  source: 'Airbnb' | 'Landing page' | 'Otro';
   name?: string;      // Solo para reservas
   guest?: string;     // Número de huéspedes
   phone?: string;     // Teléfono del cliente
@@ -189,7 +192,8 @@ netstat -ano | findstr :1337
 
 #### Documentación Oficial
 - [Strapi v5 Documentation](https://docs.strapi.io/dev-docs/intro)
-- [Strapi Lifecycle Hooks](https://docs.strapi.io/dev-docs/backend-customization/database-lifecycle)
+- [Strapi Lifecycle Hooks](https://docs.strapi.io/cms/backend-customization/models#lifecycle-hooks)
+- [Strapi v4 and Strapi v5 Diference in Lifecycle Hooks](https://docs.strapi.io/cms/migration/v4-to-v5/breaking-changes/lifecycle-hooks-document-service#notes)
 - [CallMeBot API Documentation](https://www.callmebot.com/blog/free-api-whatsapp-messages/)
 
 #### TypeScript en Strapi

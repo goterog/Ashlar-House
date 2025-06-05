@@ -7,24 +7,24 @@
 ### Script Maestro
 - **`dev-tools.js`** - Herramienta unificada para todas las tareas de desarrollo
   ```bash
-  node scripts/dev-tools.js help           # Ver comandos disponibles
+  node scripts/dev-tools.js help          # Ver comandos disponibles
   node scripts/dev-tools.js health-check  # Verificación completa
   node scripts/dev-tools.js test-whatsapp # Test WhatsApp
   ```
 
 ### Verificaciones del Sistema
-- **`health-check.js`** - Verificación completa del sistema (Strapi + WhatsApp + Env)
-- **`pre-deploy-check.js`** - Verificación pre-despliegue para producción
-- **`check-strapi.js`** - Verificar solo conectividad con Strapi
+- **`health-check.js`**       - Verificación completa del sistema (Strapi + WhatsApp + Env)
+- **`pre-deploy-check.js`**   - Verificación pre-despliegue para producción
+- **`check-strapi.js`**       - Verificar solo conectividad con Strapi
 
 ### Testing WhatsApp
-- **`demo-whatsapp.js`** - Test directo de WhatsApp API
+- **`demo-whatsapp.js`**      - Test directo de WhatsApp API
 - **`simulate-lifecycle.js`** - Simular lifecycle hooks sin Strapi
 
 ### Utilidades de Desarrollo
-- **`diagnostico-completo.js`** - Diagnóstico detallado del sistema
+- **`diagnostico-completo.js`**   - Diagnóstico detallado del sistema
 - **`import-airbnb-calendar.js`** - Importar calendario de Airbnb
-- **`seed.js`** - Poblar base de datos con datos de prueba
+- **`seed.js`**                   - Poblar base de datos con datos de prueba
 
 ## 🚀 Cómo Usar
 

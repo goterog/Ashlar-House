@@ -11,7 +11,7 @@ Ashlar House es una landing page para la presentación y gestión de reservas de
 - ✅ Modo claro/oscuro
 - ✅ Modal para reservación
 - ✅ Calendario de disponibilidad interactivo
-- ✅ **Sistema de notificaciones WhatsApp automáticas**
+- ✅ Sistema de notificaciones WhatsApp automáticas
 - ✅ Sección de testimonios de visitantes anteriores
 - ✅ Información sobre experiencias locales y actividades cercanas
 - ✅ Formulario de contacto con integración a WhatsApp
@@ -32,15 +32,15 @@ Ashlar House es una landing page para la presentación y gestión de reservas de
 ├── FRONTEND/              # Interfaz de usuario (Landing Page)
 │   ├── assets/            # Imágenes, videos y recursos estáticos
 │   ├── js/               # Scripts de JavaScript
-│   └── cabaña hanuman08.html  # Archivo HTML principal
+│   └── Ashlar House.html  # Archivo HTML principal
 ├── BACKEND/               # Servidor Strapi v5 + TypeScript
 │   ├── src/               # Código fuente de Strapi
-│   │   ├── index.ts       # Bootstrap y lifecycle hooks WhatsApp ✅
+│   │   ├── index.ts       # Bootstrap y lifecycle hooks WhatsApp 
 │   │   └── api/          # APIs y content types
 │   ├── config/           # Configuración de Strapi
 │   ├── scripts/          # Utilidades y herramientas de desarrollo
 │   └── archive-test-files/ # Archivos de test archivados (desarrollo)
-├── DEVELOPMENT.md         # Guía completa de desarrollo ✅
+├── DEVELOPMENT.md         # Guía completa de desarrollo 
 └── README.md              # Este archivo
 ```
 
@@ -86,8 +86,12 @@ npm run build      # Build para producción
 npm run start      # Modo producción
 
 # Herramientas de desarrollo
+npm run dev-tools                      # Script maestro con menú
+node scripts/health-check.js           # Verificación rápida del sistema completo
 node scripts/check-strapi.js           # Verificar conectividad
 node scripts/simple-whatsapp-test.js   # Test WhatsApp directo
+node scripts/final-simple-test.js      # Test completo del sistema WhatsApp
+node scripts/diagnostico-completo.js   # Diagnóstico detallado
 ```
 
 ## Metodología de Desarrollo
@@ -112,7 +116,7 @@ Este proyecto sigue un enfoque iterativo con las siguientes prácticas:
 - [x] ~~Configurar dual API keys para múltiples números~~ ✅ **Completado**
 - [x] ~~Crear documentación de desarrollo completa~~ ✅ **Completado**
 - [ ] Optimizar carga de imágenes con lazy loading
-- [ ] Migrar base de datos para producción
+- [ ] Migrar base de datos para producción a PostgreSQL
 - [ ] Implementar sistema de respaldos automáticos
 - [ ] Añadir tests unitarios e integración automatizados
 - [ ] Implementar retry logic robusto para notificaciones

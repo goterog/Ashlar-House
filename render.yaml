@@ -12,7 +12,7 @@ services:
     name: cabana-hanuman-backend
     runtime: node
     env: node
-    repo: https://github.com/tu-usuario/cabana-hanuman.git # Reemplazar con tu repo
+    repo: https://github.com/goterog/Ashlar-House.git # Reemplazar con tu repo
     region: ohio
     buildCommand: cd BACKEND && npm ci && npm run build
     startCommand: cd BACKEND && npm start
@@ -68,14 +68,14 @@ services:
   - type: static
     name: cabana-hanuman-frontend
     runtime: static
-    repo: https://github.com/tu-usuario/cabana-hanuman.git # Reemplazar con tu repo
+    repo: https://github.com/goterog/Ashlar-House.git # Reemplazar con tu repo
     region: ohio
     buildCommand: echo "No build needed for static HTML"
     staticPublishPath: ./FRONTEND
     routes:
       - type: rewrite
         source: /*
-        destination: /cabaña hanuman08.html
+        destination: /Ashlar House.html
     headers:
       - path: /*
         name: Cache-Control
