@@ -3,7 +3,7 @@
 ## Descripción del Proyecto
 Ashlar House es una landing page para la presentación y gestión de reservas de una propiedad turística ubicada en Ciénega de González, Santiago N.L. El proyecto está siendo desarrollado como una oportunidad de aprendizaje, experimentando con tecnologías web modernas y mejores prácticas de desarrollo.
 
-![Ashlar House Logo](FRONTEND/assets/images/logo.png)
+![FRONTEND/assets/images/logo.png](FRONTEND/assets/images/logo.png)
 
 ## Características Principales
 - ✅ Diseño responsivo para móvil y escritorio
