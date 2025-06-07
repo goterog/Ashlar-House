@@ -6,12 +6,11 @@ databases:
     user: casa_hanuman
     region: ohio
 
-services:  # Backend - Strapi CMS
-  - type: web
+services:  # Backend - Strapi CMS  - type: web
     name: casa-hanuman-backend
     runtime: node
     env: node
-    repo: https://github.com/goterog/Ashlar-House.git
+    repo: https://github.com/goterog/ashlar-house.git
     branch: main  # Solo deploys desde main branch
     autoDeploy: true  # Deploy automático cuando haces push a main
     region: ohio
@@ -65,12 +64,11 @@ services:  # Backend - Strapi CMS
       - key: CALLMEBOT_API_KEY_1
         value: 4639929
       - key: CALLMEBOT_API_KEY_2
-        value: 1855584
-  # Frontend - Sitio estático
-  - type: static
+        value: 1855584  # Frontend - Sitio estático
+    type: static
     name: casa-hanuman-frontend
     runtime: static
-    repo: https://github.com/goterog/Ashlar-House.git
+    repo: https://github.com/goterog/ashlar-house.git
     branch: main  # Deploy desde main
     autoDeploy: true  # Deploy automático del frontend
     region: ohio
