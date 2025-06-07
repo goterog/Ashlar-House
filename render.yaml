@@ -1,18 +1,19 @@
 # render.yaml - Configuración para despliegue en Render.com
 
 databases:
-  - name: cabana-hanuman-db
-    databaseName: cabana_hanuman
-    user: cabana_hanuman
+  - name: casa-hanuman-db
+    databaseName: casa_hanuman
+    user: casa_hanuman
     region: ohio
 
-services:
-  # Backend - Strapi CMS
+services:  # Backend - Strapi CMS
   - type: web
-    name: cabana-hanuman-backend
+    name: casa-hanuman-backend
     runtime: node
     env: node
-    repo: https://github.com/goterog/Ashlar-House.git # Reemplazar con tu repo
+    repo: https://github.com/goterog/Ashlar-House.git
+    branch: main  # Solo deploys desde main branch
+    autoDeploy: true  # Deploy automático cuando haces push a main
     region: ohio
     buildCommand: cd BACKEND && npm ci && npm run build
     startCommand: cd BACKEND && npm start
@@ -29,23 +30,23 @@ services:
         value: postgres
       - key: DATABASE_HOST
         fromDatabase:
-          name: cabana-hanuman-db
+          name: casa-hanuman-db
           property: host
       - key: DATABASE_PORT
         fromDatabase:
-          name: cabana-hanuman-db
+          name: casa-hanuman-db
           property: port
       - key: DATABASE_NAME
         fromDatabase:
-          name: cabana-hanuman-db
+          name: casa-hanuman-db
           property: database
       - key: DATABASE_USERNAME
         fromDatabase:
-          name: cabana-hanuman-db
+          name: casa-hanuman-db
           property: user
       - key: DATABASE_PASSWORD
         fromDatabase:
-          name: cabana-hanuman-db
+          name: casa-hanuman-db
           property: password
       - key: DATABASE_SSL
         value: true
@@ -61,14 +62,17 @@ services:
         generateValue: true
       - key: ENCRYPTION_KEY
         generateValue: true
-      - key: CALLMEBOT_API_KEY
-        sync: false # Configurar manualmente en el dashboard
-
+      - key: CALLMEBOT_API_KEY_1
+        value: 4639929
+      - key: CALLMEBOT_API_KEY_2
+        value: 1855584
   # Frontend - Sitio estático
   - type: static
-    name: cabana-hanuman-frontend
+    name: casa-hanuman-frontend
     runtime: static
-    repo: https://github.com/goterog/Ashlar-House.git # Reemplazar con tu repo
+    repo: https://github.com/goterog/Ashlar-House.git
+    branch: main  # Deploy desde main
+    autoDeploy: true  # Deploy automático del frontend
     region: ohio
     buildCommand: echo "No build needed for static HTML"
     staticPublishPath: ./FRONTEND
@@ -82,4 +86,4 @@ services:
         value: public, max-age=86400
     envVars:
       - key: STRAPI_API_URL
-        value: https://cabana-hanuman-backend.onrender.com
+        value: https://casa-hanuman-backend.onrender.com

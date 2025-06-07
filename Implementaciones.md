@@ -22,11 +22,12 @@ WhatsApp enviado a +5218111755533 ✅
 📋 Resumen de Mejoras Implementadas
 
 1. Automatización con Cron Jobs
+```bash
 // Cron job: 10 minutos después de cada 3 horas
 cron.schedule('10 */3 * * *', async () => {
   await importAirbnbCalendar(strapi);
 });
-
+```
 ¿Cómo funciona?
 
 ⏰ Se ejecuta cada 3 horas automáticamente (sincronizado con Airbnb)
@@ -42,7 +43,7 @@ cron.schedule('10 */3 * * *', async () => {
 📊 Evita duplicados verificando UID existentes
 
 2. Parsing Mejorado de iCal
-
+```bash
 // Manejo correcto de líneas continuadas (folding)
 for (const line of rawLines) {
   if ((line.startsWith(' ') || line.startsWith('\t')) && currentLine) {
@@ -52,9 +53,10 @@ for (const line of rawLines) {
     currentLine = line.trim();
   }
 }
-
+```
 
 3. Extracción Mejorada de URLs
+```bash
 // Regex que maneja correctamente el formato de Airbnb
 const urlMatch = cleanDescription.match(/Reservation URL:\s*(https?:\/\/[^\s\n\r\\]+)/i);
 
@@ -65,7 +67,7 @@ const patterns = [
   /(https?:\/\/[^\s\n\r]*airbnb[^\s\n\r]*)/i,
   /(https?:\/\/[^\s\n\r]+)/i
 ];
-
+```
 Resultado: URLs extraídas correctamente y mapeadas al campo message de bookings.
 
 🛠️ Comandos Disponibles

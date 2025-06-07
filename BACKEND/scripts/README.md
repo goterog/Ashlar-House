@@ -1,7 +1,5 @@
 # Scripts de Desarrollo - Ashlar House
 
-# Scripts de Desarrollo - Ashlar House
-
 ## 🎯 Scripts Principales
 
 ### Script Maestro
@@ -18,11 +16,10 @@
 - **`check-strapi.js`**       - Verificar solo conectividad con Strapi
 
 ### Testing WhatsApp
-- **`demo-whatsapp.js`**      - Test directo de WhatsApp API
-- **`simulate-lifecycle.js`** - Simular lifecycle hooks sin Strapi
+- **`Whatsapp vía callmebot/health-check.js`**          - Verificación rápida del sistema WhatsApp
+- **`Whatsapp vía callmebot/whatsapp-test-complete.js`** - Script unificado con 4 modos (demo, test, diagnostic, simulate)
 
 ### Utilidades de Desarrollo
-- **`diagnostico-completo.js`**   - Diagnóstico detallado del sistema
 - **`import-airbnb-calendar.js`** - Importar calendario de Airbnb
 - **`seed.js`**                   - Poblar base de datos con datos de prueba
 
@@ -34,8 +31,11 @@
 npm run health-check    # Verificación completa del sistema
 npm run pre-deploy      # Check antes de desplegar
 npm run dev-tools       # Script maestro con menú
-npm run test:whatsapp   # Test directo WhatsApp
 npm run check:strapi    # Solo verificar Strapi
+
+# WhatsApp scripts específicos
+node "scripts/Whatsapp vía callmebot/health-check.js"
+node "scripts/Whatsapp vía callmebot/whatsapp-test-complete.js" demo
 ```
 
 ### Via Node Directo
@@ -44,8 +44,10 @@ npm run check:strapi    # Solo verificar Strapi
 node scripts/health-check.js
 node scripts/pre-deploy-check.js
 node scripts/dev-tools.js help
-node scripts/demo-whatsapp.js
-node scripts/diagnostico-completo.js
+
+# Scripts WhatsApp unificados
+node "scripts/Whatsapp vía callmebot/health-check.js"
+node "scripts/Whatsapp vía callmebot/whatsapp-test-complete.js" help
 ```
 
 ### Workflow Recomendado
@@ -56,11 +58,14 @@ npm run health-check
 # 2. Antes de hacer commit
 npm run pre-deploy
 
-# 3. Test específico de WhatsApp
-npm run test:whatsapp
+# 3. Verificación específica de WhatsApp
+node "scripts/Whatsapp vía callmebot/health-check.js"
 
-# 4. Troubleshooting completo
-node scripts/diagnostico-completo.js
+# 4. Test completo de WhatsApp (demo/test/diagnostic/simulate)
+node "scripts/Whatsapp vía callmebot/whatsapp-test-complete.js" demo
+
+# 5. Troubleshooting completo
+node "scripts/Whatsapp vía callmebot/whatsapp-test-complete.js" diagnostic
 ```
 
 ## 📝 Notas de Desarrollo
@@ -72,3 +77,12 @@ node scripts/diagnostico-completo.js
 ## 🗂️ Archivos Archivados
 
 Los archivos de test y desarrollo experimental están en `../archive-test-files/` para referencia histórica pero no son necesarios para el funcionamiento del sistema.
+
+### Scripts WhatsApp Archivados
+Los siguientes scripts fueron unificados en el sistema `Whatsapp vía callmebot/`:
+- `demo-whatsapp.js` → `whatsapp-test-complete.js demo`
+- `diagnostico-completo.js` → `whatsapp-test-complete.js diagnostic`  
+- `simulate-lifecycle.js` → `whatsapp-test-complete.js simulate`
+- `verificacion-final.js` → `health-check.js`
+
+Ver `scripts/Whatsapp vía callmebot/README.md` para documentación completa del sistema unificado.

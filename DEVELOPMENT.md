@@ -116,14 +116,6 @@ node scripts/health-check.js
 # Verificar conectividad con Strapi
 node scripts/check-strapi.js
 
-# Test completo del sistema WhatsApp
-node scripts/final-simple-test.js
-
-# Test directo de conectividad WhatsApp
-node scripts/simple-whatsapp-test.js
-
-# Diagnóstico completo
-node scripts/diagnostico-completo.js
 ```
 
 #### Archivos de Test Archivados

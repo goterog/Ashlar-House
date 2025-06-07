@@ -156,11 +156,11 @@ async function runTests() {
     start: '2025-06-04',
     end: '2025-06-04',
     source: 'Airbnb',
-    name: 'Juan Pérez',
+    name: 'Juan Ejemplo',
     guest: '2',
     phone: '+52-81-1234-5678',
-    email: 'juan@email.com',
-    message: 'Queremos una estancia relajante'
+    email: 'ejemplo@email.com',
+    message: 'Esto es una prueba de reserva de un solo día'
   };
   
   await simulateBookingCreation(singleDayBooking);
@@ -177,7 +177,7 @@ async function runTests() {
     estado: 'Bloqueado',
     start: '2025-06-10',
     end: '2025-06-15',
-    source: 'Booking.com'
+    source: 'Ejemplo.com'
   };
   
   await simulateBookingCreation(multiDayBlocking);
