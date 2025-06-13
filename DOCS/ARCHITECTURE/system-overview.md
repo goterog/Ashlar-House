@@ -51,9 +51,12 @@ BACKEND/
 ├── src/
 │   ├── index.ts            # 🎯 Bootstrap principal + Lifecycle Hooks
 │   ├── api/
-│   │   ├── newsletter-subscriber/  # Content-type suscriptores
-│   │   ├── contact-message/       # Content-type mensajes
-│   │   └── booking/               # Content-type reservas
+│   │   ├── contact-message/       # Content-type mensajes y suscripciones
+│   │   ├── booking/               # Content-type reservas
+│   │   ├── carousel/              # Content-type carousel
+│   │   ├── global/                # Content-type configuración global
+│   │   ├── hero/                  # Content-type hero section
+│   │   └── map-location/          # Content-type ubicación
 │   └── extensions/         # Extensiones Strapi customizadas
 ├── config/                 # Configuración Strapi
 ├── types/                  # Definiciones TypeScript
@@ -62,22 +65,7 @@ BACKEND/
 
 ## 📊 Content Types (Esquemas de Datos)
 
-### 1. Newsletter Subscriber
-```typescript
-interface NewsletterSubscriber {
-  id: number;
-  name: string;
-  email: string;              // Único, requerido
-  phone?: string;             // WhatsApp opcional
-  subscribe_email: boolean;   // Quiere newsletter por email
-  subscribe_whatsapp: boolean; // Quiere newsletter por WhatsApp
-  source: 'footer' | 'contact-form' | 'campaign';
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
-### 2. Contact Message
+### 1. Contact Message (Unificado: Contacto + Newsletter)
 ```typescript
 interface ContactMessage {
   id: number;
@@ -93,7 +81,7 @@ interface ContactMessage {
 }
 ```
 
-### 3. Booking
+### 2. Booking
 ```typescript
 interface Booking {
   id: number;
@@ -112,20 +100,20 @@ interface Booking {
 
 ## 🔄 Flujos de Trabajo
 
-### 1. Flujo Newsletter Subscription
+### 1. Flujo Newsletter Subscription (a través de Contact Message)
 ```
 Usuario en Frontend → Llena formulario → 
-Validación JavaScript → POST /api/newsletter-subscribers → 
-Strapi crea registro → EmailJS envía confirmación → 
-Usuario recibe email confirmación
+Validación JavaScript → POST /api/contact-messages → 
+Strapi crea registro → Si newsletter_email=true → 
+EmailJS envía confirmación → Usuario recibe email confirmación
 ```
 
-### 2. Flujo Contact Message
+### 2. Flujo Contact Message con Suscripción Automática
 ```
 Usuario en Frontend → Llena formulario contacto → 
 Validación JavaScript → POST /api/contact-messages → 
-Strapi crea registro → 
-Si newsletter_email=true → Crea newsletter-subscriber → 
+Strapi crea registro contact-message → 
+Si newsletter_email/whatsapp=true → Datos guardados para newsletter →
 EmailJS envía email → Admin recibe notificación
 ```
 
