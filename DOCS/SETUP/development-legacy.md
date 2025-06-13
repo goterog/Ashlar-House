@@ -99,9 +99,81 @@ export default {
 
 #### Configuración CallMeBot
 - **Números registrados**: +5218119936655, +5218111755533
-- **API Keys configuradas** en variables de entorno
-- **Rate limits**: Respeta los límites de CallMeBot
-- **Retry logic**: Implementado para manejo de errores
+
+### 📧 **Sistema de Newsletter y Contacto**
+
+#### Arquitectura Completa
+```javascript
+// Frontend: js/newsletter.js - Sistema completo
+// Backend: Strapi v5 APIs + EmailJS integration
+
+FRONTEND (newsletter.js)
+├── EmailJS Integration    # Envío automático de emails
+├── Strapi API Calls      # newsletter-subscriber, contact-message
+├── Form Validation       # Validación completa con feedback
+├── WhatsApp Integration  # CallMeBot para newsletter WhatsApp
+└── Error Handling        # Manejo robusto de errores
+
+BACKEND (Strapi v5 + TypeScript)
+├── Content Types
+│   ├── newsletter-subscriber  # Suscriptores con email + WhatsApp
+│   └── contact-message       # Mensajes de contacto
+├── APIs REST Automáticas
+│   ├── POST /api/newsletter-subscribers
+│   ├── GET  /api/newsletter-subscribers  
+│   ├── POST /api/contact-messages
+│   └── GET  /api/contact-messages
+└── Permissions Configuradas  # Public role para creación
+```
+
+#### Flujo Newsletter Dual
+1. **Usuario se suscribe** → Formulario frontend con email + WhatsApp
+2. **Validación frontend** → Verificación de datos requeridos
+3. **Envío a Strapi** → POST a `/api/newsletter-subscribers`
+4. **Confirmación EmailJS** → Email automático al usuario
+5. **Notificación WhatsApp** → CallMeBot API (opcional)
+6. **Feedback visual** → Mensaje de éxito/error al usuario
+
+#### Flujo Mensajes de Contacto  
+1. **Usuario envía mensaje** → Formulario de contacto
+2. **Guardado en Strapi** → POST a `/api/contact-messages`
+3. **Email automático** → EmailJS envía copia del mensaje
+4. **Suscripción opcional** → Newsletter si usuario lo selecciona
+5. **Confirmación completa** → Feedback al usuario
+
+#### Configuración EmailJS
+```javascript
+// FRONTEND/js/newsletter-config.js
+window.NEWSLETTER_CONFIG = {
+    EMAILJS_PUBLIC_KEY: 'fjE9Qo5zVa2mfHE4m',
+    EMAILJS_SERVICE_ID: 'service_dk8fe1s', 
+    EMAILJS_TEMPLATE_ID: 'template_8xeecee',
+    STRAPI_URL: 'http://localhost:1337'
+};
+```
+
+#### Content Types (TypeScript)
+```typescript
+// newsletter-subscriber content type
+{
+  name: string,           // Nombre del suscriptor
+  email: string,          // Email (requerido)
+  phone?: string,         // WhatsApp (opcional)
+  subscribe_email: boolean,    // Suscripción email
+  subscribe_whatsapp: boolean, // Suscripción WhatsApp
+  source: string         // Origen de la suscripción
+}
+
+// contact-message content type  
+{
+  name: string,          // Nombre del contacto
+  email: string,         // Email del contacto
+  subject?: string,      // Asunto del mensaje
+  message: string,       // Mensaje completo
+  newsletter_email: boolean,    // Quiere suscribirse por email
+  newsletter_whatsapp: boolean  // Quiere suscribirse por WhatsApp
+}
+```
 
 ### 🔍 **Testing y Debugging**
 
@@ -230,6 +302,26 @@ import winston from 'winston';
 2. **Lifecycle hooks** en `src/index.ts` > middlewares HTTP
 3. **Bootstrap hooks** son más confiables que archivos separados
 4. **CallMeBot API** es estable pero requiere manejo de errores
+5. **EmailJS integration** funciona perfectamente con Strapi v5
+6. **Newsletter dual** (Email + WhatsApp) aporta gran valor al usuario
+7. **Content-types TypeScript** proporcionan mejor type safety
+8. **Sistema de testing** dedicado acelera el desarrollo
+
+### Arquitectura Final Exitosa
+```
+📧 NEWSLETTER SYSTEM
+├── Frontend (JavaScript)
+│   ├── newsletter.js           # Sistema completo
+│   ├── newsletter-config.js    # Configuración EmailJS  
+│   └── test-newsletter.html    # Testing page
+├── Backend (Strapi v5 + TypeScript)
+│   ├── newsletter-subscriber/  # API suscriptores
+│   ├── contact-message/       # API mensajes contacto
+│   └── EmailJS Integration    # Servicio email automático
+└── Services Externos
+    ├── EmailJS               # Emails automáticos
+    └── CallMeBot            # WhatsApp notifications
+```
 
 ### Convenciones del Proyecto
 - **Commits semánticos**: `feat:`, `fix:`, `docs:`, `refactor:`

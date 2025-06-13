@@ -6,10 +6,11 @@
     <title>Ashlar House - Reserva en el corazón de Ciénega de González</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <!-- FullCalendar CSS y JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <!-- FullCalendar CSS y JS -->
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />
+    <!-- EmailJS para envío de confirmaciones -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         :root {
             --primary-color: #3A7D44;
@@ -156,9 +157,9 @@
             <div class="flex flex-col space-y-3">
                 <a href="#inicio" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Inicio</a>
                 <a href="#cabana" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">La Cabaña</a>
-                <a href="#experiencias" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Experiencias</a>
-                <a href="#ubicacion" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Ubicación</a>
                 <a href="#disponibilidad" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Disponibilidad</a>
+                <a href="#ubicacion" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Ubicación</a>
+                <a href="#experiencias" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Actividades</a>
                 <a href="#contacto" class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-orange-400 transition">Contacto</a>
                 <a href="#disponibilidad" class="bg-green-600 hover:bg-green-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium text-center transition">Reservar</a>
             </div>
@@ -416,46 +417,46 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="experience-card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-                    <img src="https://scontent-mty2-1.xx.fbcdn.net/v/t51.75761-15/482192286_18053596397172875_823566382081358371_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=7H5MSY8U69YQ7kNvwHUomur&_nc_oc=AdmH4HxqpoaGFZnWhLcS_SCC_vwPUDtXD8VVk0REuGIqWB6Zlqr6eW7GHWRD6WShaw4&_nc_zt=23&_nc_ht=scontent-mty2-1.xx&_nc_gid=BFchjZnHp0_LHD3Zm6RQ3A&oh=00_AfLmreKjUa8JiyLv2b2W_mADkAkt2fa4zCIAdjOiuqp0sg&oe=683DA62E" alt="Café Hanuman" class="w-full h-48 object-cover" loading="lazy">
+                    <img src="https://a0.muscache.com/im/pictures/miso/Hosting-807381707673543946/original/60d1c9b4-417f-467c-b249-79e327693eaf.jpeg?im_w=1200" alt="Café Hanuman" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <div class="text-green-600 dark:text-orange-500 text-2xl mb-2">
                             <i class="fas fa-coffee"></i>
                         </div>
-                        <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">Café Hanuman</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Desayuno orgánico con vista al bosque en el café justo debajo de tu cabaña.</p>
+                        <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">Hanuman Café</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Desayuna o come en un ambiente único en el Hanuman Café, ¡justo debajo de tu estancia!</p>
                     </div>
                 </div>
                 
                 <div class="experience-card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-                    <img src="https://www.elportalinmobiliario.com.mx/cnt-articulos/2020/01/66058.jpg" alt="Cascada El Salto" class="w-full h-48 object-cover" loading="lazy">
+                    <img src="https://s0.wklcdn.com/image_155/4675508/178887822/115303116Master.jpg" alt="Cascada El Salto" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <div class="text-green-600 dark:text-orange-500 text-2xl mb-2">
                             <i class="fas fa-water"></i>
                         </div>
-                        <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">Cascada El Salto</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Salto de agua de 25m ideal para fotos y refrescarte en días calurosos.</p>
+                        <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">El Salto</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Un espectáculo natural, puente de piedra esculpido por el paso del agua, ideal para tomar fotos.</p>
                     </div>
                 </div>
                 
                 <div class="experience-card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-                    <img src="https://s2.wklcdn.com/image_155/4675508/140878543/89269325Master.jpg" alt="Senderismo" class="w-full h-48 object-cover" loading="lazy">
+                    <img src="https://s0.wklcdn.com/image_224/6747266/178213886/110948682Master.jpg" alt="Senderismo" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <div class="text-green-600 dark:text-orange-500 text-2xl mb-2">
                             <i class="fas fa-hiking"></i>
                         </div>
                         <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">Senderismo</h3>
-                        <p class="text-gray-600 dark:text-gray-300">Rutas para todos los niveles, desde paseos familiares hasta retos para expertos.</p>
+                        <p class="text-gray-600 dark:text-gray-300">Rutas para todos los niveles, desde paseos familiares hasta retos para expertos. Pide información.</p>
                     </div>
                 </div>
                 
                 <div class="experience-card bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
-                    <img src="https://s0.wklcdn.com/image_80/2429240/23715034/15124572Master.jpg" alt="Escalada" class="w-full h-48 object-cover" loading="lazy">
+                    <img src="https://image.thecrag.com/960x1440/6d/b9/6db9c6d2c587a93d86fc3d839d0e2eda42810069" alt="Escalada" class="w-full h-48 object-cover" loading="lazy">
                     <div class="p-6">
                         <div class="text-green-600 dark:text-orange-500 text-2xl mb-2">
                             <i class="fas fa-mountain"></i>
                         </div>
-                        <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">Área de escalada</h3>
-                        <p class="text-gray-600 dark:text-gray-300">La Boca ofrece rutas de escalada para diferentes niveles de experiencia.</p>
+                        <h3 class="font-semibold text-xl mb-2 text-gray-800 dark:text-white">Áreas de escalada</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Llega caminando a La Boca y El Salto, con diversos sectores de escalada para todos los niveles de experiencia.</p>
                     </div>
                 </div>
             </div>
@@ -524,23 +525,27 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Formulario de Contacto -->
+    </section>    <!-- Formulario de Contacto -->
     <section id="contacto" class="py-16 bg-white dark:bg-gray-900">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Contacto</h2>
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Contacto & Suscripción</h2>
             
             <div class="max-w-2xl mx-auto bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-md">
+                <div class="mb-6 text-center">
+                    <p class="text-gray-600 dark:text-gray-300">Déjanos tus comentarios, dudas u opiniones. También puedes suscribirte para recibir ofertas exclusivas.</p>
+                </div>
+                
                 <form id="contact-form" class="space-y-6">
-                    <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre completo</label>
-                        <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
-                    </div>
-                    
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo electrónico</label>
-                        <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="contact-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre completo *</label>
+                            <input type="text" id="contact-name" name="name" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                        </div>
+                        
+                        <div>
+                            <label for="contact-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo electrónico *</label>
+                            <input type="email" id="contact-email" name="email" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                        </div>
                     </div>
                     
                     <div>
@@ -549,19 +554,76 @@
                     </div>
                     
                     <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mensaje</label>
-                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
-                    </div>
-                    
-                    <div class="flex items-center">
-                        <input type="checkbox" id="newsletter" name="newsletter" class="h-4 w-4 text-green-600 dark:text-orange-500 focus:ring-green-500 dark:focus:ring-orange-500 border-gray-300 dark:border-gray-600 rounded">
-                        <label for="newsletter" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Acepto recibir promociones vía WhatsApp</label>
+                        <label for="contact-subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Asunto</label>                        
+                        <select id="contact-subject" name="subject" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            <option value="">Selecciona un asunto</option>
+                            <option value="informacion_general">Información general</option>
+                            <option value="disponibilidad_fechas">Disponibilidad y fechas</option>
+                            <option value="precios_tarifas">Precios y tarifas</option>
+                            <option value="servicios_amenidades">Servicios y amenidades</option>
+                            <option value="reserva_directa">Reserva directa</option>
+                            <option value="cancelacion_modificacion">Cancelación o modificación</option>
+                            <option value="otro">Otro</option>
+                        </select>
                     </div>
                     
                     <div>
-                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white py-3 rounded-md font-medium transition">Enviar mensaje</button>
+                        <label for="contact-message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mensaje</label>
+                        <textarea id="contact-message" name="message" rows="4" placeholder="Escribe tu mensaje aquí..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-orange-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+                    </div>
+                    
+                    <!-- Suscripciones -->
+                    <div class="border-t border-gray-300 dark:border-gray-600 pt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Suscripciones (opcional)</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <input type="checkbox" id="newsletter-email" name="newsletter_email" class="h-4 w-4 mt-1 text-green-600 dark:text-orange-500 focus:ring-green-500 dark:focus:ring-orange-500 border-gray-300 dark:border-gray-600 rounded">
+                                <label for="newsletter-email" class="ml-3 block text-sm text-gray-700 dark:text-gray-300">
+                                    <span class="font-medium">Newsletter por Email</span><br>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Recibe ofertas especiales, promociones y noticias en tu correo electrónico</span>
+                                </label>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <input type="checkbox" id="newsletter-whatsapp" name="newsletter_whatsapp" class="h-4 w-4 mt-1 text-green-600 dark:text-orange-500 focus:ring-green-500 dark:focus:ring-orange-500 border-gray-300 dark:border-gray-600 rounded">
+                                <label for="newsletter-whatsapp" class="ml-3 block text-sm text-gray-700 dark:text-gray-300">
+                                    <span class="font-medium">Notificaciones por WhatsApp</span><br>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">Recibe promociones exclusivas y disponibilidad de último momento por WhatsApp</span>
+                                </label>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                            * Puedes cancelar tu suscripción en cualquier momento. No compartimos tu información con terceros.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 dark:bg-orange-500 dark:hover:bg-orange-600 text-white py-3 rounded-md font-medium transition text-lg shadow-lg">
+                            <i class="fas fa-paper-plane mr-2"></i>Enviar mensaje
+                        </button>
                     </div>
                 </form>
+                
+                <!-- Mensaje de confirmación -->
+                <div id="contact-success" class="hidden mt-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 dark:text-green-400 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="text-green-800 dark:text-green-200 font-medium">¡Mensaje enviado con éxito!</h4>
+                            <p class="text-green-700 dark:text-green-300 text-sm">Te responderemos pronto. Si te suscribiste al newsletter, recibirás nuestras mejores ofertas.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="contact-error" class="hidden mt-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-xl mr-3"></i>
+                        <div>
+                            <h4 class="text-red-800 dark:text-red-200 font-medium">Error al enviar</h4>
+                            <p class="text-red-700 dark:text-red-300 text-sm">Hubo un problema. Por favor, intenta de nuevo o contáctanos por WhatsApp.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -575,24 +637,23 @@
                         <i class='fas fa-tree' style='font-size:24px;color:rgb(255, 255, 255)'></i>
                         <span class="text-xl font-semibold">Ashlar House</span>
                     </div>
-                    <p class="text-gray-400">Reserva en el corazón de Ciénega de González</p>
-                </div>
+                    <p class="text-gray-400">Reserva en el corazón de Ciénega de González</p>                </div>
                 
                 <div>
-                    <h3 class="font-semibold text-lg mb-4">Enlaces</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Términos y condiciones</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Política de privacidad</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">Preguntas frecuentes</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="font-semibold text-lg mb-4">Newsletter</h3>
-                    <p class="text-gray-400 mb-4">Suscríbete para recibir ofertas especiales</p>
-                    <div class="flex">
-                        <input type="email" placeholder="Tu correo electrónico" class="px-4 py-2 rounded-l-md focus:outline-none text-gray-900 w-full">
-                        <button class="bg-green-600 hover:bg-green-700 dark:bg-orange-500 dark:hover:bg-orange-600 px-4 py-2 rounded-r-md transition">Suscribirse</button>
+                    <h3 class="font-semibold text-lg mb-4">Contacto</h3>
+                    <div class="space-y-2">
+                        <p class="text-gray-400 flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <a href="mailto:contacto@ashlarhouse.com" class="hover:text-white transition">contacto@ashlarhouse.com</a>
+                        </p>
+                        <p class="text-gray-400 flex items-center">
+                            <i class="fas fa-phone mr-2"></i>
+                            <a href="tel:+5218119936655" class="hover:text-white transition">+52 811 993 6655</a>
+                        </p>
+                        <p class="text-gray-400 flex items-center">
+                            <i class="fab fa-whatsapp mr-2"></i>
+                            <a href="https://wa.me/528119936655" class="hover:text-white transition" target="_blank">WhatsApp</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -601,11 +662,114 @@
                 <p>&copy; 2025 Ashlar House. Todos los derechos reservados.</p>
             </div>
         </div>
-    </footer>
-    
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    </footer>      <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <!-- Campaign Manager - Sistema unificado usando contact-message -->
+    <script src="js/campaign-manager.js"></script>
+    <!-- WhatsApp Lists Manager para administradores (actualizado para contact-message) -->
+    <script src="js/whatsapp-lists-manager.js"></script>
+    
+    <script>        // EmailJS Configuration - Sistema Híbrido
+        // Backend guarda datos, Frontend envía confirmaciones
+        const EMAILJS_CONFIG = {
+            PUBLIC_KEY: 'fjE9Qo5zVa2mfHE4m',
+            SERVICE_ID: 'service_dk8fe1s',
+            CONTACT_TEMPLATE_ID: 'template_8xeecee',  // Template que funciona en las pruebas
+            NEWSLETTER_TEMPLATE_ID: 'template_8xeecee' // Mismo template para ambos
+        };
+        
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+        
+        // Function to send contact confirmation email
+        async function sendContactConfirmationEmail(contactData) {
+            try {
+                console.log('📧 Enviando email de confirmación de contacto...');
+                
+                // Mapear el subject a texto legible
+                const subjectMap = {
+                    'informacion_general': 'Información General',
+                    'disponibilidad_fechas': 'Disponibilidad y Fechas',
+                    'precios_tarifas': 'Precios y Tarifas',
+                    'servicios_amenidades': 'Servicios y Amenidades',
+                    'reserva_directa': 'Reserva Directa',
+                    'cancelacion_modificacion': 'Cancelación o Modificación',
+                    'otro': 'Otro'
+                };
+                
+                const readableSubject = subjectMap[contactData.subject] || contactData.subject;
+                  const templateParams = {
+                    to_email: contactData.email,
+                    to_name: contactData.name,
+                    from_name: contactData.name,        // Mapeo para {{from_name}}
+                    from_email: contactData.email,      // Mapeo para {{from_email}}
+                    subject: readableSubject,
+                    message: contactData.message,
+                    phone: contactData.phone || 'No proporcionado',
+                    date: new Date().toLocaleDateString('es-MX', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric'
+                    }),
+                    time: new Date().toLocaleTimeString('es-MX', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                };
+                
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('✅ Email de contacto enviado exitosamente:', response.text);
+                return true;
+            } catch (error) {
+                console.error('❌ Error enviando email de contacto:', error);
+                return false;
+            }
+        }
+        
+        // Function to send newsletter confirmation email
+        async function sendNewsletterConfirmationEmail(subscriberData) {
+            try {
+                console.log('📧 Enviando email de confirmación de newsletter...');
+                
+                // Determinar el tipo de suscripción
+                const subscriptionTypes = [];
+                if (subscriberData.newsletter_email) subscriptionTypes.push('Email');
+                if (subscriberData.newsletter_whatsapp) subscriptionTypes.push('WhatsApp');
+                  const templateParams = {
+                    to_email: subscriberData.email,
+                    to_name: subscriberData.name || subscriberData.email.split('@')[0],
+                    from_name: subscriberData.name || subscriberData.email.split('@')[0],  // Mapeo para {{from_name}}
+                    from_email: subscriberData.email,                                      // Mapeo para {{from_email}}
+                    subscription_types: subscriptionTypes.join(' y '),
+                    source: 'Formulario de contacto',
+                    date: new Date().toLocaleDateString('es-MX', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric'
+                    })
+                };
+                
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.SERVICE_ID,
+                    EMAILJS_CONFIG.NEWSLETTER_TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('✅ Email de newsletter enviado exitosamente:', response.text);
+                return true;
+            } catch (error) {
+                console.error('❌ Error enviando email de newsletter:', error);
+                return false;
+            }
+        }
+    </script>
+    
     <script>
         // Theme toggle
         const themeToggle = document.getElementById('theme-toggle');
@@ -740,19 +904,89 @@
         fadeElements.forEach(element => {
             observer.observe(element);
         });
-        
-        // Form submission (placeholder for Strapi integration)
+          // Form submission with backend integration
         const contactForm = document.getElementById('contact-form');
-        
-        contactForm.addEventListener('submit', (e) => {
+        const contactSuccess = document.getElementById('contact-success');
+        const contactError = document.getElementById('contact-error');
+          contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Here you would typically send the form data to Strapi
-            // For now, we'll just show a success message
-            alert('Gracias por tu mensaje. Nos pondremos en contacto contigo pronto.');
-            contactForm.reset();
-        });
-        
+            // Show loading state
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Enviando...';
+            submitButton.disabled = true;
+            
+            // Hide previous messages
+            contactSuccess.classList.add('hidden');
+            contactError.classList.add('hidden');
+            
+            // Collect form data
+            const formData = new FormData(contactForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone') || '',
+                subject: formData.get('subject'),
+                message: formData.get('message'),
+                newsletter_email: formData.get('newsletter_email') === 'on',
+                newsletter_whatsapp: formData.get('newsletter_whatsapp') === 'on'
+            };
+            
+            try {
+                console.log('🔄 SISTEMA HÍBRIDO: Guardando datos en backend...');
+                
+                // PASO 1: Send to backend (Strapi)
+                const response = await fetch('http://localhost:1337/api/contact-messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Error al guardar en backend');
+                }
+                
+                console.log('✅ Datos guardados en backend exitosamente');
+                
+                // PASO 2: Send confirmation emails via EmailJS (Frontend)
+                console.log('📧 Enviando confirmaciones por email...');
+                
+                // Send contact confirmation email
+                const contactEmailSent = await sendContactConfirmationEmail(data);
+                
+                // Send newsletter confirmation if subscribed
+                let newsletterEmailSent = true;
+                if (data.newsletter_email || data.newsletter_whatsapp) {
+                    newsletterEmailSent = await sendNewsletterConfirmationEmail(data);
+                }
+                
+                // Show success message regardless of email status
+                // Backend save is the critical part
+                if (contactEmailSent && newsletterEmailSent) {
+                    console.log('✅ SISTEMA HÍBRIDO: Todo completado exitosamente');
+                } else {
+                    console.log('⚠️ SISTEMA HÍBRIDO: Datos guardados, algunos emails fallaron');
+                }
+                
+                contactSuccess.classList.remove('hidden');
+                contactForm.reset();
+                
+                // Scroll to success message
+                contactSuccess.scrollIntoView({ behavior: 'smooth' });
+                
+            } catch (error) {
+                console.error('❌ Error en sistema híbrido:', error);
+                contactError.classList.remove('hidden');
+                contactError.scrollIntoView({ behavior: 'smooth' });
+            } finally {
+                // Restore button state
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        });        
         // Event listeners para la navegación
         document.addEventListener('DOMContentLoaded', () => {
         const links = document.querySelectorAll('a[href^="#"]');

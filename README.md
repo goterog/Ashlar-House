@@ -1,27 +1,58 @@
-# Ashlar House - Landing Page
+# 🏠 Ashlar House - Sistema de Gestión Turística
 
-## Descripción del Proyecto
-Ashlar House es una landing page para la presentación y gestión de reservas de una propiedad turística ubicada en Ciénega de González, Santiago N.L. El proyecto está siendo desarrollado como una oportunidad de aprendizaje, experimentando con tecnologías web modernas y mejores prácticas de desarrollo.
+*Última actualización: 13 de Junio, 2025*
+
+## 🎯 Resumen del Proyecto
+
+**Ashlar House** es un sistema completo de gestión para propiedades turísticas que combina:
+- **Landing Page** moderna y responsive con formularios inteligentes
+- **Sistema de Reservas** con calendario en tiempo real sincronizado
+- **CMS Backend** (Strapi v5 + TypeScript) con APIs REST automáticas
+- **Notificaciones WhatsApp** automáticas duales para nuevas reservas
+- **Sistema de Newsletter** dual (Email + WhatsApp) con auto-suscripción
+- **Sincronización Airbnb** automática cada 3 horas
+- **Campaign Management** para gestión de suscriptores y listas
+- **Testing Suite** completo para verificación del sistema
 
 ![FRONTEND/assets/images/logo.png](FRONTEND/assets/images/logo.png)
 
-## Características Principales
-- ✅ Diseño responsivo para móvil y escritorio
-- ✅ Presentación visual con galería de fotos y video hero
-- ✅ Modo claro/oscuro
-- ✅ Modal para reservación
-- ✅ Calendario de disponibilidad interactivo
-- ✅ Sistema de notificaciones WhatsApp automáticas
-- ✅ Sección de testimonios de visitantes anteriores
-- ✅ Información sobre experiencias locales y actividades cercanas
-- ✅ Formulario de contacto con integración a WhatsApp
-- ✅ SEO optimizado para búsquedas locales
+## ✨ Funcionalidades Completadas
+
+### 🏠 Sistema Principal
+- ✅ **Landing Page Responsive** - Diseño moderno con Tailwind CSS
+- ✅ **Galería Visual** - Fotos y video hero interactivos
+- ✅ **Modo Claro/Oscuro** - Tema adaptable
+- ✅ **Calendario Interactivo** - FullCalendar con disponibilidad en tiempo real
+- ✅ **SEO Optimizado** - Meta tags y estructura semántica
+
+### 📱 Sistema de Notificaciones WhatsApp
+- ✅ **Dual Phone Delivery** - Envío automático a dos números
+- ✅ **CallMeBot Integration** - API configurada y funcionando
+- ✅ **Lifecycle Hooks** - Automatización completa en Strapi
+- ✅ **Formateo Inteligente** - Mensajes personalizados por tipo de evento
+- ✅ **Error Handling** - Manejo robusto con logging detallado
+
+### 📧 Sistema de Newsletter y Contacto
+- ✅ **Newsletter Dual** - Suscripción simultánea Email + WhatsApp
+- ✅ **EmailJS Integration** - Configurado con credenciales de producción
+- ✅ **Auto-Suscripción** - Desde formulario de contacto
+- ✅ **Validación Avanzada** - Frontend y backend con TypeScript
+- ✅ **Campaign Manager** - Gestión de listas y exportación de datos
+- ✅ **Formularios Inteligentes** - Estados de carga y feedback visual
+
+### 🔄 Automatización
+- ✅ **Sincronización Airbnb** - iCal automático cada 3 horas
+- ✅ **Cron Jobs** - Programación automática de tareas
+- ✅ **Lifecycle Automation** - Hooks para eventos del sistema
+- ✅ **Health Checks** - Monitoreo automático del sistema
 
 ## Stack Tecnológico
 - **Frontend**: HTML, CSS (Tailwind CSS), JavaScript vanilla
 - **Backend**: Strapi v5 + TypeScript como CMS headless
 - **Base de datos**: SQLite (desarrollo) / PostgreSQL (producción)
 - **Notificaciones**: CallMeBot WhatsApp API con lifecycle hooks
+- **Email Service**: EmailJS para newsletter y notificaciones automáticas
+- **APIs**: RESTful APIs generadas por Strapi + EmailJS integration
 - **Runtime**: Node.js 18+ con fetch nativo (recomendado: 22+)
 - **Control de versiones**: Git/GitHub
 - **Despliegue**: Render.com (configurado)
@@ -32,11 +63,17 @@ Ashlar House es una landing page para la presentación y gestión de reservas de
 ├── FRONTEND/              # Interfaz de usuario (Landing Page)
 │   ├── assets/            # Imágenes, videos y recursos estáticos
 │   ├── js/               # Scripts de JavaScript
+│   │   ├── newsletter.js  # Sistema completo de newsletter dual
+│   │   └── newsletter-config.js # Configuración EmailJS
+│   ├── test-newsletter.html # Página de pruebas del sistema
+│   ├── EMAILJS-SETUP.md   # Guía de configuración EmailJS
 │   └── Ashlar House.html  # Archivo HTML principal
 ├── BACKEND/               # Servidor Strapi v5 + TypeScript
 │   ├── src/               # Código fuente de Strapi
 │   │   ├── index.ts       # Bootstrap y lifecycle hooks WhatsApp 
 │   │   └── api/          # APIs y content types
+│   │       ├── newsletter-subscriber/ # API para suscriptores newsletter
+│   │       └── contact-message/       # API para mensajes de contacto
 │   ├── config/           # Configuración de Strapi
 │   ├── scripts/          # Utilidades y herramientas de desarrollo
 │   └── archive-test-files/ # Archivos de test archivados (desarrollo)
@@ -76,7 +113,17 @@ cp .env.example .env
 npm run develop
 ```
 
-5. Abrir el archivo HTML en un navegador o usar una extensión como Live Server en VS Code para el frontend.
+5. Configurar EmailJS (opcional, para newsletter):
+   - Seguir la guía en `FRONTEND/EMAILJS-SETUP.md`
+   - Configurar credenciales en `FRONTEND/js/newsletter-config.js`
+
+6. Iniciar el servidor frontend:
+```bash
+cd FRONTEND
+python -m http.server 8000    # Servidor local en puerto 8000
+# Acceder a http://localhost:8000 para la landing page
+# Acceder a http://localhost:8000/test-newsletter.html para pruebas
+```
 
 ### ⚡ Scripts Útiles
 ```bash
@@ -115,6 +162,9 @@ Este proyecto sigue un enfoque iterativo con las siguientes prácticas:
 - [x] ~~Implementar lifecycle hooks para automatización~~ ✅ **Completado**
 - [x] ~~Configurar dual API keys para múltiples números~~ ✅ **Completado**
 - [x] ~~Crear documentación de desarrollo completa~~ ✅ **Completado**
+- [x] ~~Sistema de Newsletter Dual (Email + WhatsApp)~~ ✅ **Completado**
+- [x] ~~Integración EmailJS para notificaciones automáticas~~ ✅ **Completado**
+- [x] ~~APIs para contact-message y newsletter-subscriber~~ ✅ **Completado**
 - [ ] Optimizar carga de imágenes con lazy loading
 - [ ] Migrar base de datos para producción a PostgreSQL
 - [ ] Implementar sistema de respaldos automáticos

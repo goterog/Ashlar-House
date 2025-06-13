@@ -1,6 +1,6 @@
 // import type { Core } from '@strapi/strapi';
 import * as cron from 'node-cron';
-import axios from 'axios';
+const axios = require('axios');
 
 export default {
   /**
@@ -44,7 +44,7 @@ export default {
       console.error('❌ Error en importación inicial:', error);
     }
     
-    // Escuchar eventos del entity service
+    // Escuchar eventos del entity service para bookings
     strapi.db.lifecycles.subscribe({
       models: ['api::booking.booking'],
       async afterCreate(event) {
@@ -65,6 +65,27 @@ export default {
           
         } catch (error) {
           console.error('❌ Error en lifecycle hook:', error);
+        }
+      }
+    });    // Newsletter lifecycle hook REMOVIDO - Sistema unificado usa solo contact-message
+
+    // Lifecycle hook para contact messages
+    strapi.db.lifecycles.subscribe({
+      models: ['api::contact-message.contact-message'],
+      async afterCreate(event) {
+        console.log('📩 CONTACT HOOK - Nuevo mensaje de contacto creado!');
+        console.log('📝 Contact Message ID:', event.result.id);
+        
+        try {
+          // Obtener los detalles completos del mensaje
+          const contactMessage = await strapi.entityService.findOne('api::contact-message.contact-message', event.result.id, {
+            populate: '*'
+          });
+            console.log('📋 Contact Message obtenido:', contactMessage.email, contactMessage.subject);
+          console.log('ℹ️ Email de confirmación será enviado desde el frontend con EmailJS');
+          
+        } catch (error) {
+          console.error('❌ Error en contact lifecycle hook:', error);
         }
       }
     });
@@ -351,3 +372,7 @@ async function importAirbnbCalendar(strapi: any): Promise<void> {
     throw error;
   }
 }
+
+// ==================== FUNCIONES DE EMAIL REMOVIDAS ====================
+// EmailJS se ha movido al frontend debido a limitaciones de la API en backend
+// Los emails de confirmación ahora se envían desde el frontend después de guardar los datos

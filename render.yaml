@@ -64,7 +64,14 @@ services:  # Backend - Strapi CMS  - type: web
       - key: CALLMEBOT_API_KEY_1
         value: 4639929
       - key: CALLMEBOT_API_KEY_2
-        value: 1855584  # Frontend - Sitio estático
+        value: 1855584
+      # EmailJS Configuration (for newsletter system)
+      - key: EMAILJS_PUBLIC_KEY
+        value: fjE9Qo5zVa2mfHE4m
+      - key: EMAILJS_SERVICE_ID
+        value: service_dk8fe1s
+      - key: EMAILJS_TEMPLATE_ID
+        value: template_8xeecee# Frontend - Sitio estático
     type: static
     name: casa-hanuman-frontend
     runtime: static

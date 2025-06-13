@@ -13,7 +13,7 @@
     "start": "strapi start",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",
-    "upgrade:dry": "npx @strapi/upgrade latest --dry",    
+    "upgrade:dry": "npx @strapi/upgrade latest --dry",
     "health-check": "node scripts/health-check.js",
     "pre-deploy": "node scripts/pre-deploy-check.js",
     "dev-tools": "node scripts/dev-tools.js",
@@ -23,13 +23,14 @@
     "import:airbnb": "node scripts/import-airbnb-calendar.js",
     "test:airbnb-sync": "node scripts/test-airbnb-sync.js",
     "test:manual-sync": "node scripts/manual-sync-test.js"
-  },
+  },  
   "dependencies": {
     "@strapi/plugin-cloud": "5.13.0",
     "@strapi/plugin-documentation": "^5.13.0",
     "@strapi/plugin-users-permissions": "5.13.0",
     "@strapi/strapi": "5.13.0",
     "@types/node-cron": "^3.0.11",
+    "axios": "^1.9.0",
     "better-sqlite3": "11.3.0",
     "fs-extra": "^10.0.0",
     "ics": "^3.8.1",
@@ -44,6 +45,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/node-fetch": "^2.6.12",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
