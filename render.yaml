@@ -15,9 +15,11 @@ services:
     env: node
     repo: https://github.com/goterog/ashlar-house.git
     branch: main  # Solo deploys desde main branch
-    autoDeploy: true  # Deploy automático cuando haces push a main    region: ohio
+    autoDeploy: true  # Deploy automático cuando haces push a main
+    region: ohio
     buildCommand: cd BACKEND && npm ci && npm run build
-    startCommand: cd BACKEND && npm run startplan: starter
+    startCommand: cd BACKEND && npm run start
+    plan: starter
     healthCheckPath: /_health
     envVars:
       # Strapi Core Configuration
@@ -51,13 +53,13 @@ services:
         generateValue: true
       - key: ENCRYPTION_KEY
         generateValue: true
-      
-      # WhatsApp Notifications (CallMeBot API)
+        # WhatsApp Notifications (CallMeBot API)
       - key: CALLMEBOT_API_KEY_1
         value: "4639929"    # Para +5218119936655
       - key: CALLMEBOT_API_KEY_2
         value: "1855584"    # Para +5218111755533
-        # EmailJS Configuration (Newsletter System)
+      
+      # EmailJS Configuration (Newsletter System)
       - key: EMAILJS_PUBLIC_KEY
         value: "fjE9Qo5zVa2mfHE4m"
       - key: EMAILJS_SERVICE_ID
