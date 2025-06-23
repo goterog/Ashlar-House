@@ -446,6 +446,64 @@ export interface ApiCarouselCarousel extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContactMessageContactMessage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'contact_messages';
+  info: {
+    description: 'Mensajes de contacto y consultas de usuarios';
+    displayName: 'Contact Message';
+    pluralName: 'contact-messages';
+    singularName: 'contact-message';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::contact-message.contact-message'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.Text & Schema.Attribute.Required;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    newsletter_email: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    newsletter_whatsapp: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    phone: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    responded_at: Schema.Attribute.DateTime;
+    responded_by: Schema.Attribute.String;
+    response: Schema.Attribute.Text;
+    source: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'landing_page'>;
+    status: Schema.Attribute.Enumeration<
+      ['nuevo', 'en_proceso', 'respondido', 'cerrado']
+    > &
+      Schema.Attribute.DefaultTo<'nuevo'>;
+    subject: Schema.Attribute.Enumeration<
+      [
+        'informacion_general',
+        'disponibilidad_fechas',
+        'precios_tarifas',
+        'servicios_amenidades',
+        'reserva_directa',
+        'cancelacion_modificacion',
+        'otro',
+      ]
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -1050,6 +1108,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::booking.booking': ApiBookingBooking;
       'api::carousel.carousel': ApiCarouselCarousel;
+      'api::contact-message.contact-message': ApiContactMessageContactMessage;
       'api::global.global': ApiGlobalGlobal;
       'api::hero.hero': ApiHeroHero;
       'api::map-location.map-location': ApiMapLocationMapLocation;

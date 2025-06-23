@@ -1,4 +1,6 @@
 // import type { Core } from '@strapi/strapi';
+import * as cron from 'node-cron';
+const axios = require('axios');
 
 export default {
   /**
@@ -19,7 +21,30 @@ export default {
   async bootstrap({ strapi }) {
     console.log('🚀 WhatsApp Bootstrap - Configurando lifecycle hooks...');
     
-    // Escuchar eventos del entity service
+    // Configurar importación automática de Airbnb cada 3 horas + 10 minutos
+    // Airbnb actualiza a las 12:00, 3:00, 6:00, 9:00, 12:00, 15:00, 18:00, 21:00
+    // Nosotros sincronizamos a las 12:10, 3:10, 6:10, 9:10, 12:10, 15:10, 18:10, 21:10
+    console.log('📅 Configurando sincronización automática con Airbnb cada 3 horas (10 min después)...');
+    cron.schedule('10 */3 * * *', async () => {
+      console.log('🔄 Iniciando sincronización programada con Airbnb...');
+      try {
+        await importAirbnbCalendar(strapi);
+        console.log('✅ Sincronización programada completada exitosamente');
+      } catch (error) {
+        console.error('❌ Error en sincronización programada:', error);
+      }
+    });
+
+    // Ejecutar importación inicial al arrancar (opcional)
+    console.log('🔄 Ejecutando importación inicial de Airbnb...');
+    try {
+      await importAirbnbCalendar(strapi);
+      console.log('✅ Importación inicial completada');
+    } catch (error) {
+      console.error('❌ Error en importación inicial:', error);
+    }
+    
+    // Escuchar eventos del entity service para bookings
     strapi.db.lifecycles.subscribe({
       models: ['api::booking.booking'],
       async afterCreate(event) {
@@ -40,6 +65,27 @@ export default {
           
         } catch (error) {
           console.error('❌ Error en lifecycle hook:', error);
+        }
+      }
+    });    // Newsletter lifecycle hook REMOVIDO - Sistema unificado usa solo contact-message
+
+    // Lifecycle hook para contact messages
+    strapi.db.lifecycles.subscribe({
+      models: ['api::contact-message.contact-message'],
+      async afterCreate(event) {
+        console.log('📩 CONTACT HOOK - Nuevo mensaje de contacto creado!');
+        console.log('📝 Contact Message ID:', event.result.id);
+        
+        try {
+          // Obtener los detalles completos del mensaje
+          const contactMessage = await strapi.entityService.findOne('api::contact-message.contact-message', event.result.id, {
+            populate: '*'
+          });
+            console.log('📋 Contact Message obtenido:', contactMessage.email, contactMessage.subject);
+          console.log('ℹ️ Email de confirmación será enviado desde el frontend con EmailJS');
+          
+        } catch (error) {
+          console.error('❌ Error en contact lifecycle hook:', error);
         }
       }
     });
@@ -157,3 +203,176 @@ async function sendWhatsAppMessage(phoneNumber: string, message: string, strapi:
     throw error;
   }
 }
+
+// ==================== FUNCIONES DE IMPORTACIÓN AIRBNB ====================
+
+const AIRBNB_ICS_URL = 'https://www.airbnb.mx/calendar/ical/807381707673543946.ics?s=9789cc909449839e93a1202f822e9c8d';
+
+// Convierte YYYYMMDD a YYYY-MM-DD (ISO)
+function formatDateISO(yyyymmdd: string): string {
+  const year = yyyymmdd.substring(0, 4);
+  const month = yyyymmdd.substring(4, 6);
+  const day = yyyymmdd.substring(6, 8);
+  return `${year}-${month}-${day}`;
+}
+
+function mapEstado(summary: string): string {
+  if (!summary) return 'Reservado';
+  if (summary.toLowerCase().includes('reserved')) return 'Reservado';
+  if (summary.toLowerCase().includes('not available')) return 'Bloqueado';
+  return 'Disponible';
+}
+
+// Función mejorada para extraer URL de reservación
+function extractReservationURL(description: string): string {
+  if (!description) return '';
+  
+  // Limpiar caracteres de escape comunes primero
+  let cleanDescription = description.replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+  
+  // Buscar el patrón "Reservation URL:" seguido de la URL
+  const urlMatch = cleanDescription.match(/Reservation URL:\s*(https?:\/\/[^\s\n\r\\]+)/i);
+  if (urlMatch) {
+    let url = urlMatch[1];
+    
+    // Limpiar caracteres no válidos al final de la URL
+    url = url.replace(/[.,;!?\s\r\n\\]+$/, ''); // Remover puntuación, espacios y escapes al final
+    
+    // Cambiar .com por .mx si es necesario para que sea consistente
+    url = url.replace('airbnb.com', 'airbnb.mx');
+    
+    return url;
+  }
+  
+  // Buscar cualquier URL que contenga airbnb como fallback
+  const airbnbMatch = cleanDescription.match(/(https?:\/\/[^\s\n\r\\]*airbnb[^\s\n\r\\]*)/i);
+  if (airbnbMatch) {
+    let url = airbnbMatch[1];
+    url = url.replace(/[.,;!?\s\r\n\\]+$/, '');
+    url = url.replace('airbnb.com', 'airbnb.mx');
+    return url;
+  }
+  
+  // Buscar cualquier URL como último recurso
+  const genericUrlMatch = cleanDescription.match(/(https?:\/\/[^\s\n\r\\]+)/i);
+  if (genericUrlMatch) {
+    let url = genericUrlMatch[1];
+    url = url.replace(/[.,;!?\s\r\n\\]+$/, '');
+    return url;
+  }
+  
+  // Si no se encuentra URL, devolver la descripción completa limpia sin caracteres de escape
+  return cleanDescription.replace(/\\n.*$/, '').trim();
+}
+
+async function bookingExists(uid: string, strapi: any): Promise<boolean> {
+  try {
+    const existingBookings = await strapi.entityService.findMany('api::booking.booking', {
+      filters: { UID: { $eq: uid } },
+      pagination: { limit: 1 }
+    });
+    return existingBookings && existingBookings.length > 0;
+  } catch (err) {
+    console.error('Error buscando UID:', uid, err.message);
+    return false;
+  }
+}
+
+async function importAirbnbCalendar(strapi: any): Promise<void> {
+  try {
+    console.log('📥 Descargando calendario de Airbnb...');
+    
+    // Descarga el .ics directamente de Airbnb
+    const response = await axios.get(AIRBNB_ICS_URL);
+    const ics = response.data;
+    const events = ics.split('BEGIN:VEVENT').slice(1);
+
+    console.log(`📊 Encontrados ${events.length} eventos en el calendario`);
+
+    let imported = 0;
+    let skipped = 0;
+
+    for (const eventRaw of events) {
+      // Mejorar el parsing para manejar líneas continuadas del formato iCal
+      const rawLines = eventRaw.split('\n');
+      let start, end, summary, description, uid;
+
+      // Reconstituir líneas que pueden estar divididas (formato iCal folding)
+      const reconstructedLines = [];
+      let currentLine = '';
+      
+      for (const line of rawLines) {
+        // En iCal, las líneas continuadas empiezan con espacio o tab
+        if ((line.startsWith(' ') || line.startsWith('\t')) && currentLine) {
+          // Línea continuada (iCal fold) - remover el espacio/tab inicial
+          currentLine += line.substring(1);
+        } else {
+          if (currentLine) reconstructedLines.push(currentLine.trim());
+          currentLine = line.trim();
+        }
+      }
+      if (currentLine) reconstructedLines.push(currentLine.trim());
+
+      // Parsear las líneas reconstruidas
+      for (const line of reconstructedLines) {
+        if (line.startsWith('DTSTART')) start = line.split(':')[1];
+        if (line.startsWith('DTEND')) end = line.split(':')[1];
+        if (line.startsWith('SUMMARY')) summary = line.split(':')[1];
+        if (line.startsWith('DESCRIPTION')) {
+          description = line.substring(line.indexOf(':') + 1);
+        }
+        if (line.startsWith('UID')) uid = line.split(':')[1];
+      }
+
+      if (!start || !end || !summary || !uid) continue;
+
+      // Checa si ya existe el booking con ese UID
+      const exists = await bookingExists(uid, strapi);
+      if (exists) {
+        console.log(`⏭️ Booking con UID ${uid} ya existe, omitido.`);
+        skipped++;
+        continue;
+      }
+
+      // Formatea fechas a ISO
+      const startDate = formatDateISO(start);
+      const endDate = formatDateISO(end);
+
+      // Extrae la URL de reservación mejorada
+      const reservationURL = extractReservationURL(description || '');
+
+      const booking = {
+        title: summary,
+        start: startDate,
+        end: endDate,
+        estado: mapEstado(summary),
+        source: 'Airbnb',
+        guest: '',
+        name: '',
+        email: '',
+        phone: '',
+        message: reservationURL, // Aquí va la URL extraída
+        UID: uid,
+      };
+
+      try {
+        const result = await strapi.entityService.create('api::booking.booking', {
+          data: booking
+        });
+        console.log(`✅ Importado: ${booking.title} (${booking.start} - ${booking.end})`);
+        imported++;
+      } catch (err) {
+        console.error('❌ Error importando:', booking, err.response?.data || err.message);
+      }
+    }
+
+    console.log(`🎉 Importación completada: ${imported} nuevos, ${skipped} omitidos`);
+  } catch (error) {
+    console.error('❌ Error en importación de Airbnb:', error);
+    throw error;
+  }
+}
+
+// ==================== FUNCIONES DE EMAIL REMOVIDAS ====================
+// EmailJS se ha movido al frontend debido a limitaciones de la API en backend
+// Los emails de confirmación ahora se envían desde el frontend después de guardar los datos

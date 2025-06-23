@@ -1,5 +1,5 @@
 # 🎉 Estado del Proyecto - Ashlar House
-*Actualizado: Junio 4, 2025*
+*Actualizado: Junio 7, 2025*
 
 ## ✅ Funcionalidades Completadas
 
@@ -17,6 +17,15 @@
 - **Formateo Inteligente**: Mensajes diferentes para Reservado vs Bloqueado
 - **Error Handling**: Manejo robusto de errores con logging detallado
 
+### 📧 Sistema de Newsletter y Contacto
+- **✅ COMPLETAMENTE FUNCIONAL**
+- **Newsletter Dual**: Email + WhatsApp subscription simultánea
+- **EmailJS Integration**: Configurado y funcionando con credenciales reales
+- **APIs REST**: `newsletter-subscriber` y `contact-message` endpoints
+- **Formularios Avanzados**: Validación completa con feedback visual
+- **Strapi v5 Backend**: TypeScript content-types y controllers
+- **Sistema de Pruebas**: Página de testing completa implementada
+
 ### 🛠️ Herramientas de Desarrollo
 - **Scripts Organizados**: Suite completa de herramientas en `/scripts`
 - **Health Checks**: Verificación automática del sistema
@@ -28,9 +37,17 @@
 
 ```
 ASHLAR HOUSE/
-├── FRONTEND/                    # Landing page estática
+├── FRONTEND/                    # Landing page estática + Newsletter System
+│   ├── js/
+│   │   ├── newsletter.js        # 🎯 Sistema completo newsletter dual
+│   │   └── newsletter-config.js # ⚙️ Configuración EmailJS
+│   ├── test-newsletter.html     # 🧪 Página de pruebas sistema
+│   └── EMAILJS-SETUP.md         # 📋 Guía configuración EmailJS
 ├── BACKEND/                     # Strapi v5 + TypeScript
 │   ├── src/index.ts            # 🎯 CORE: Bootstrap + WhatsApp hooks
+│   ├── src/api/                # 🔌 APIs REST
+│   │   ├── newsletter-subscriber/ # Newsletter subscriptions API
+│   │   └── contact-message/      # Contact messages API
 │   ├── scripts/                # 🛠️ Herramientas de desarrollo
 │   │   ├── health-check.js     # Verificación completa
 │   │   ├── pre-deploy-check.js # Check antes de producción  
@@ -46,9 +63,15 @@ ASHLAR HOUSE/
 
 ### Desarrollo Diario
 ```bash
+# Backend
 npm run develop           # Iniciar Strapi en modo desarrollo
 npm run health-check      # Verificar que todo funcione
 npm run test:whatsapp     # Test rápido de WhatsApp
+
+# Frontend  
+cd FRONTEND
+python -m http.server 8000 # Servidor local puerto 8000
+# Acceder a: http://localhost:8000/test-newsletter.html
 ```
 
 ### Pre-Producción  
@@ -73,6 +96,14 @@ node scripts/diagnostico-completo.js  # Diagnóstico detallado
 - ✅ **Dual phone numbers** (+5218119936655, +5218111755533)
 - ✅ **Formato inteligente** según estado de reserva
 - ✅ **Error handling robusto** con logs detallados
+
+### Newsletter y Sistema de Contacto
+- ✅ **EmailJS configurado** con credenciales reales funcionando
+- ✅ **Newsletter dual** (Email + WhatsApp) simultaneo
+- ✅ **Strapi APIs** (`newsletter-subscriber`, `contact-message`) operativas
+- ✅ **Formularios validados** con feedback visual completo
+- ✅ **Sistema de pruebas** (`test-newsletter.html`) implementado
+- ✅ **TypeScript backend** completamente funcional
 
 ### Development Workflow
 - ✅ **Scripts organizados** y documentados

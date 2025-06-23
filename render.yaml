@@ -1,54 +1,62 @@
 # render.yaml - Configuración para despliegue en Render.com
+# Actualizado: 13 de Junio, 2025 - Ashlar House Tourism Management System
 
 databases:
-  - name: cabana-hanuman-db
-    databaseName: cabana_hanuman
-    user: cabana_hanuman
+  - name: ashlar-house-db
+    databaseName: ashlar_house
+    user: ashlar_house
     region: ohio
 
 services:
-  # Backend - Strapi CMS
+  # Backend - Strapi v5 + TypeScript CMS
   - type: web
-    name: cabana-hanuman-backend
+    name: ashlar-house-backend
     runtime: node
     env: node
-    repo: https://github.com/tu-usuario/cabana-hanuman.git # Reemplazar con tu repo
+    repo: https://github.com/goterog/ashlar-house.git
+    branch: main  # Solo deploys desde main branch
+    autoDeploy: true  # Deploy automático cuando haces push a main
     region: ohio
-    buildCommand: cd BACKEND && npm ci && npm run build
-    startCommand: cd BACKEND && npm start
-    plan: starter
+    rootDir: BACKEND  # Directorio raíz es BACKEND
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start    plan: starter
     healthCheckPath: /_health
     envVars:
+      # Strapi Core Configuration
       - key: NODE_ENV
         value: production
       - key: HOST
         value: 0.0.0.0
       - key: PORT
         value: 10000
+      
+      # Database Configuration (PostgreSQL)
       - key: DATABASE_CLIENT
         value: postgres
       - key: DATABASE_HOST
         fromDatabase:
-          name: cabana-hanuman-db
+          name: ashlar-house-db
           property: host
       - key: DATABASE_PORT
         fromDatabase:
-          name: cabana-hanuman-db
+          name: ashlar-house-db
           property: port
       - key: DATABASE_NAME
         fromDatabase:
-          name: cabana-hanuman-db
+          name: ashlar-house-db
           property: database
       - key: DATABASE_USERNAME
         fromDatabase:
-          name: cabana-hanuman-db
+          name: ashlar-house-db
           property: user
       - key: DATABASE_PASSWORD
         fromDatabase:
-          name: cabana-hanuman-db
+          name: ashlar-house-db
           property: password
       - key: DATABASE_SSL
         value: true
+      
+      # Strapi Security Keys (Auto-generated)
       - key: APP_KEYS
         generateValue: true
       - key: API_TOKEN_SALT
@@ -61,25 +69,52 @@ services:
         generateValue: true
       - key: ENCRYPTION_KEY
         generateValue: true
-      - key: CALLMEBOT_API_KEY
-        sync: false # Configurar manualmente en el dashboard
+      
+      # WhatsApp Notifications (CallMeBot API)
+      - key: CALLMEBOT_API_KEY_1
+        value: "4639929"    # Para +5218119936655
+      - key: CALLMEBOT_API_KEY_2
+        value: "1855584"    # Para +5218111755533
+      
+      # EmailJS Configuration (Newsletter System)
+      - key: EMAILJS_PUBLIC_KEY
+        value: "fjE9Qo5zVa2mfHE4m"
+      - key: EMAILJS_SERVICE_ID
+        value: "service_dk8fe1s"
+      - key: EMAILJS_TEMPLATE_ID
+        value: "template_8xeecee"
+      
+      # Admin Configuration
+      - key: ADMIN_EMAIL
+        value: "admin@ashlarhouse.com"
+        # CORS Configuration for Frontend
+      - key: FRONTEND_URL
+        value: "https://ashlar-house-frontend.onrender.com"
 
-  # Frontend - Sitio estático
+  # Frontend - Landing Page Estática
   - type: static
-    name: cabana-hanuman-frontend
+    name: ashlar-house-frontend
     runtime: static
-    repo: https://github.com/tu-usuario/cabana-hanuman.git # Reemplazar con tu repo
+    repo: https://github.com/goterog/ashlar-house.git
+    branch: main  # Deploy desde main
+    autoDeploy: true  # Deploy automático del frontend
     region: ohio
     buildCommand: echo "No build needed for static HTML"
     staticPublishPath: ./FRONTEND
     routes:
       - type: rewrite
         source: /*
-        destination: /cabaña hanuman08.html
+        destination: /Ashlar%20House.html
     headers:
       - path: /*
         name: Cache-Control
         value: public, max-age=86400
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=604800  # 7 días para JS
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=2592000  # 30 días para assets
     envVars:
       - key: STRAPI_API_URL
-        value: https://cabana-hanuman-backend.onrender.com
+        value: https://ashlar-house-backend.onrender.com

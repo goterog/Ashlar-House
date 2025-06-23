@@ -18,18 +18,18 @@ const COMMANDS = {
     'health-check': {
         description: 'Verificación completa del sistema',
         file: './health-check.js'
-    },
-    'test-whatsapp': {
+    },    'test-whatsapp': {
         description: 'Test rápido de WhatsApp API',
-        file: './demo-whatsapp.js'
+        file: './Whatsapp vía callmebot/whatsapp-test-complete.js',
+        args: ['demo']
     },
     'check-strapi': {
         description: 'Verificar conectividad Strapi',
         file: './check-strapi.js'
-    },
-    'simulate': {
+    },    'simulate': {
         description: 'Simular lifecycle hooks',
-        file: './simulate-lifecycle.js'
+        file: './Whatsapp vía callmebot/whatsapp-test-complete.js',
+        args: ['simulate']
     }
 };
 
@@ -58,7 +58,30 @@ async function runCommand(command) {
 
     try {
         console.log(`🚀 Ejecutando: ${cmd.description}\n`);
+          // Para scripts con argumentos específicos
+        if (cmd.args) {
+            const { spawn } = require('child_process');
+            const path = require('path');
+            const scriptPath = path.join(__dirname, cmd.file);
+            const child = spawn('node', [scriptPath, ...cmd.args], { stdio: 'inherit' });
+            
+            return new Promise((resolve, reject) => {
+                child.on('close', (code) => {
+                    if (code !== 0) {
+                        console.log(`\n❌ El comando terminó con código: ${code}`);
+                        reject(new Error(`Command failed with code ${code}`));
+                    } else {
+                        resolve();
+                    }
+                });
+                
+                child.on('error', (error) => {
+                    reject(error);
+                });
+            });
+        }
         
+        // Para scripts regulares
         // Importar y ejecutar el script
         const scriptModule = require(cmd.file);
         

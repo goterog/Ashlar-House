@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Campañas - Ashlar House</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .campaign-manager {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .stat-card {
+            transition: transform 0.2s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+    <div class="container mx-auto p-6">
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                🏔️ Ashlar House - Gestor de Campañas
+            </h1>
+            <p class="text-gray-600 dark:text-gray-300">
+                Sistema unificado de gestión de suscriptores desde contact-message
+            </p>
+        </div>
+
+        <!-- Campaign Manager Container -->
+        <div id="campaign-container"></div>
+
+        <!-- Instrucciones de uso -->
+        <div class="mt-8 bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6">
+            <h3 class="text-xl font-semibold text-blue-800 dark:text-blue-200 mb-4">
+                📚 Instrucciones de Uso
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">✅ Funciones Disponibles:</h4>
+                    <ul class="text-sm text-blue-600 dark:text-blue-300 space-y-1">
+                        <li>• Ver estadísticas de suscriptores en tiempo real</li>
+                        <li>• Filtrar por canal (Email / WhatsApp / Ambos)</li>
+                        <li>• Buscar suscriptores por nombre, email o teléfono</li>
+                        <li>• Exportar listas a CSV para campañas de email</li>
+                        <li>• Exportar números para WhatsApp Business</li>
+                        <li>• Actualización en tiempo real de datos</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-blue-700 dark:text-blue-300 mb-2">🚀 Próximas Características:</h4>
+                    <ul class="text-sm text-blue-600 dark:text-blue-300 space-y-1">
+                        <li>• Envío de campañas masivas por email</li>
+                        <li>• Envío de promociones por WhatsApp</li>
+                        <li>• Plantillas de mensajes personalizables</li>
+                        <li>• Programación de envíos automáticos</li>
+                        <li>• Análisis de apertura y clicks</li>
+                        <li>• Segmentación avanzada de audiencias</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información técnica -->
+        <div class="mt-6 bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-3">
+                🔧 Información Técnica
+            </h3>
+            <div class="text-sm text-gray-600 dark:text-gray-300 space-y-2">
+                <p><strong>Fuente de datos:</strong> Strapi collection-type "contact-message"</p>
+                <p><strong>API Endpoint:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">http://localhost:1337/api/contact-messages</code></p>
+                <p><strong>Campos utilizados:</strong> newsletter_email, newsletter_whatsapp, name, email, phone</p>
+                <p><strong>Límite de consulta:</strong> 1000 registros por request</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/campaign-manager.js"></script>
+    <script>
+        // Configuración del sistema
+        const campaignConfig = {
+            strapiUrl: 'http://localhost:1337',
+            emailjsConfig: {
+                publicKey: 'fjE9Qo5zVa2mfHE4m',
+                serviceId: 'service_dk8fe1s',
+                templateId: 'template_8xeecee'
+            },
+            callmebotConfig: {
+                // Configuración para futuras campañas de WhatsApp
+                apiKey1: '4639929',
+                apiKey2: '1855584'
+            }
+        };
+
+        // Inicializar el gestor de campañas
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Inicializando Gestor de Campañas Ashlar House...');
+            
+            try {
+                // Crear instancias
+                const campaignManager = new CampaignManager(campaignConfig);
+                const campaignUI = new CampaignUI('campaign-container', campaignManager);
+                
+                // Inicializar UI
+                await campaignUI.init();
+                
+                console.log('✅ Gestor de Campañas inicializado correctamente');
+                
+                // Test de conectividad con Strapi
+                const stats = await campaignManager.getSubscriberStats();
+                if (stats) {
+                    console.log('📊 Estadísticas cargadas:', stats);
+                } else {
+                    console.warn('⚠️ No se pudieron cargar las estadísticas. Verifica que Strapi esté corriendo.');
+                }
+                
+            } catch (error) {
+                console.error('❌ Error inicializando gestor de campañas:', error);
+                document.getElementById('campaign-container').innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+                        <div class="text-red-600 text-4xl mb-4">⚠️</div>
+                        <h3 class="text-xl font-semibold text-red-800 mb-2">Error de Conexión</h3>
+                        <p class="text-red-600 mb-4">No se pudo conectar con el backend de Strapi.</p>
+                        <p class="text-sm text-red-500">
+                            Asegúrate de que Strapi esté corriendo en http://localhost:1337
+                        </p>
+                        <button onclick="location.reload()" 
+                                class="mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                            🔄 Reintentar
+                        </button>
+                    </div>
+                `;
+            }
+        });
+
+        // Función auxiliar para modo oscuro
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+
+        // Restaurar modo oscuro
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
+</html>

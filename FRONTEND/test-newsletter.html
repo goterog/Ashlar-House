@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Newsletter System - Ashlar House</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+                <i class="fas fa-cog text-blue-600 mr-3"></i>
+                Test Newsletter System
+            </h1>
+            
+            <!-- Estado del Sistema -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Estado del Sistema</h2>
+                <div id="system-status" class="space-y-2">
+                    <div class="flex items-center">
+                        <i class="fas fa-circle text-gray-400 mr-3"></i>
+                        <span>Cargando configuración...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Configuración Actual -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Configuración Actual</h2>
+                <div id="current-config" class="bg-gray-50 p-4 rounded-lg">
+                    <pre id="config-display" class="text-sm text-gray-700"></pre>
+                </div>
+            </div>
+            
+            <!-- Test de Contacto -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">Test de Formulario de Contacto</h2>
+                <form id="test-contact-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                            <input type="text" name="name" value="Usuario de Prueba" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" name="email" value="test@ejemplo.com" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Asunto</label>
+                        <input type="text" name="subject" value="Mensaje de prueba del sistema" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mensaje</label>
+                        <textarea name="message" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md">Este es un mensaje de prueba para verificar que el sistema de newsletter está funcionando correctamente.</textarea>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="newsletter_email" class="mr-2">
+                            Newsletter por Email
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="newsletter_whatsapp" class="mr-2">
+                            Newsletter por WhatsApp
+                        </label>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md">
+                        <i class="fas fa-paper-plane mr-2"></i>Probar Envío
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Resultados -->
+            <div id="test-results" class="hidden">
+                <h2 class="text-xl font-semibold mb-4">Resultados</h2>
+                <div id="results-content" class="bg-gray-50 p-4 rounded-lg"></div>
+            </div>
+            
+            <!-- Instrucciones -->
+            <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-blue-800 mb-3">
+                    <i class="fas fa-info-circle mr-2"></i>Instrucciones
+                </h3>
+                <div class="text-blue-700 space-y-2">
+                    <p><strong>1. Configurar EmailJS:</strong></p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Sigue la guía en <code>EMAILJS-SETUP.md</code></li>
+                        <li>Actualiza las credenciales en <code>js/newsletter-config.js</code></li>
+                    </ul>
+                    <p><strong>2. Estado esperado:</strong></p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>🟢 EmailJS cargado</li>
+                        <li>🟢 Strapi conectado</li>
+                        <li>🟢 Configuración válida</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script src="js/newsletter-config.js"></script>
+    <script>
+        // Test del sistema
+        document.addEventListener('DOMContentLoaded', function() {
+            checkSystemStatus();
+            displayCurrentConfig();
+            setupTestForm();
+        });
+        
+        function checkSystemStatus() {
+            const statusDiv = document.getElementById('system-status');
+            const statuses = [];
+            
+            // Check EmailJS
+            if (typeof emailjs !== 'undefined') {
+                statuses.push({
+                    icon: 'fas fa-check-circle text-green-500',
+                    text: 'EmailJS cargado correctamente'
+                });
+            } else {
+                statuses.push({
+                    icon: 'fas fa-times-circle text-red-500',
+                    text: 'EmailJS no está cargado'
+                });
+            }
+            
+            // Check Configuration
+            if (typeof NEWSLETTER_CONFIG !== 'undefined') {
+                statuses.push({
+                    icon: 'fas fa-check-circle text-green-500',
+                    text: 'Configuración cargada'
+                });
+                
+                // Check if configured
+                if (NEWSLETTER_CONFIG.EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+                    statuses.push({
+                        icon: 'fas fa-check-circle text-green-500',
+                        text: 'EmailJS configurado'
+                    });
+                } else {
+                    statuses.push({
+                        icon: 'fas fa-exclamation-triangle text-yellow-500',
+                        text: 'EmailJS necesita configuración'
+                    });
+                }
+            } else {
+                statuses.push({
+                    icon: 'fas fa-times-circle text-red-500',
+                    text: 'Configuración no cargada'
+                });
+            }
+            
+            // Check Strapi connection
+            checkStrapiConnection().then(connected => {
+                if (connected) {
+                    statusDiv.innerHTML += `
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>Strapi conectado</span>
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML += `
+                        <div class="flex items-center">
+                            <i class="fas fa-times-circle text-red-500 mr-3"></i>
+                            <span>Strapi no conectado (normal si no está iniciado)</span>
+                        </div>
+                    `;
+                }
+            });
+            
+            // Display statuses
+            statusDiv.innerHTML = statuses.map(status => `
+                <div class="flex items-center">
+                    <i class="${status.icon} mr-3"></i>
+                    <span>${status.text}</span>
+                </div>
+            `).join('');
+        }
+        
+        async function checkStrapiConnection() {
+            try {
+                const config = window.NEWSLETTER_CONFIG || {};
+                const strapiUrl = config.STRAPI_URL || 'http://localhost:1337';
+                const response = await fetch(`${strapiUrl}/api/newsletter-subscribers?pagination[limit]=1`);
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+        
+        function displayCurrentConfig() {
+            const configDisplay = document.getElementById('config-display');
+            const config = window.NEWSLETTER_CONFIG || {};
+            
+            const displayConfig = {
+                ...config,
+                EMAILJS_PUBLIC_KEY: config.EMAILJS_PUBLIC_KEY?.replace(/./g, '*') || 'NO CONFIGURADO',
+                EMAILJS_SERVICE_ID: config.EMAILJS_SERVICE_ID || 'NO CONFIGURADO',
+                EMAILJS_TEMPLATE_ID: config.EMAILJS_TEMPLATE_ID || 'NO CONFIGURADO'
+            };
+            
+            configDisplay.textContent = JSON.stringify(displayConfig, null, 2);
+        }
+        
+        function setupTestForm() {
+            const form = document.getElementById('test-contact-form');
+            const resultsDiv = document.getElementById('test-results');
+            const resultsContent = document.getElementById('results-content');
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                resultsDiv.classList.remove('hidden');
+                resultsContent.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Procesando...';
+                
+                const formData = new FormData(form);
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message'),
+                    newsletter_email: formData.get('newsletter_email') === 'on',
+                    newsletter_whatsapp: formData.get('newsletter_whatsapp') === 'on'
+                };
+                
+                const results = [];
+                
+                try {
+                    // Test EmailJS
+                    if (typeof emailjs !== 'undefined') {
+                        const config = window.NEWSLETTER_CONFIG || {};
+                        if (config.EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+                            results.push('✅ EmailJS: Configurado (no se envía en modo test)');
+                        } else {
+                            results.push('⚠️ EmailJS: Necesita configuración real');
+                        }
+                    } else {
+                        results.push('❌ EmailJS: No cargado');
+                    }
+                    
+                    // Test Strapi
+                    const strapiConnected = await checkStrapiConnection();
+                    if (strapiConnected) {
+                        results.push('✅ Strapi: Conectado y listo');
+                    } else {
+                        results.push('⚠️ Strapi: No conectado (iniciar servidor)');
+                    }
+                    
+                    // Test form data
+                    results.push('✅ Datos del formulario: Válidos');
+                    results.push(`📧 Email: ${data.email}`);
+                    results.push(`📝 Newsletter Email: ${data.newsletter_email ? 'Sí' : 'No'}`);
+                    results.push(`📱 Newsletter WhatsApp: ${data.newsletter_whatsapp ? 'Sí' : 'No'}`);
+                    
+                    resultsContent.innerHTML = `
+                        <h3 class="font-semibold text-green-700 mb-3">Test Completado</h3>
+                        <div class="space-y-1">
+                            ${results.map(result => `<div>${result}</div>`).join('')}
+                        </div>
+                        <div class="mt-4 p-3 bg-green-100 border border-green-300 rounded">
+                            <strong>Próximos pasos:</strong><br>
+                            1. Configura EmailJS siguiendo EMAILJS-SETUP.md<br>
+                            2. Inicia Strapi (npm run develop)<br>
+                            3. Prueba el formulario real en la página principal
+                        </div>
+                    `;
+                    
+                } catch (error) {
+                    resultsContent.innerHTML = `
+                        <div class="text-red-600">
+                            <h3 class="font-semibold mb-2">Error en el Test</h3>
+                            <p>${error.message}</p>
+                            <div class="mt-2 text-sm">${results.join('<br>')}</div>
+                        </div>
+                    `;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

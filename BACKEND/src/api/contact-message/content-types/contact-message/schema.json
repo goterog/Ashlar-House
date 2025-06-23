@@ -1,0 +1,79 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_messages",
+  "info": {
+    "singularName": "contact-message",
+    "pluralName": "contact-messages",
+    "displayName": "Contact Message",
+    "description": "Mensajes de contacto y consultas de usuarios"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string",
+      "required": false
+    },
+    "subject": {
+      "type": "enumeration",
+      "enum": [
+        "informacion_general",
+        "disponibilidad_fechas",
+        "precios_tarifas",
+        "servicios_amenidades",
+        "reserva_directa",
+        "cancelacion_modificacion",
+        "otro"
+      ],
+      "required": true
+    },
+    "message": {
+      "type": "text",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "nuevo",
+        "en_proceso",
+        "respondido",
+        "cerrado"
+      ],
+      "default": "nuevo"
+    },
+    "response": {
+      "type": "text",
+      "required": false
+    },
+    "responded_at": {
+      "type": "datetime",
+      "required": false
+    },
+    "responded_by": {
+      "type": "string",
+      "required": false
+    },
+    "source": {
+      "type": "string",
+      "default": "landing_page"
+    },
+    "newsletter_email": {
+      "type": "boolean",
+      "default": false
+    },
+    "newsletter_whatsapp": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
