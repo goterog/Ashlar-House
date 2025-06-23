@@ -14,9 +14,10 @@ services:
     runtime: node
     env: node
     repo: https://github.com/goterog/ashlar-house.git
-    branch: main  # Solo deploys desde main branch    autoDeploy: true  # Deploy automático cuando haces push a main
-    region: ohio
-    buildCommand: npm ci && npm run build
+    branch: main  # Solo deploys desde main branch
+    autoDeploy: true  # Deploy automático cuando haces push a main
+    region: ohio    
+    buildCommand: npm run build
     startCommand: npm run start
     plan: starter
     healthCheckPath: /_health
