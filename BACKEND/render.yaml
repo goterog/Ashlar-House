@@ -16,9 +16,8 @@ services:
     repo: https://github.com/goterog/ashlar-house.git
     branch: main  # Solo deploys desde main branch
     autoDeploy: true  # Deploy automático cuando haces push a main
-    region: ohio
-    buildCommand: cd BACKEND && npm ci && npm run build
-    startCommand: cd BACKEND && npm run start
+    region: ohio    buildCommand: npm ci && npm run build
+    startCommand: npm run start
     plan: starter
     healthCheckPath: /_health
     envVars:
@@ -50,10 +49,10 @@ services:
       - key: TRANSFER_TOKEN_SALT
         generateValue: true
       - key: JWT_SECRET
+        generateValue: true      - key: ENCRYPTION_KEY
         generateValue: true
-      - key: ENCRYPTION_KEY
-        generateValue: true
-        # WhatsApp Notifications (CallMeBot API)
+      
+      # WhatsApp Notifications (CallMeBot API)
       - key: CALLMEBOT_API_KEY_1
         value: "4639929"    # Para +5218119936655
       - key: CALLMEBOT_API_KEY_2
@@ -84,7 +83,7 @@ services:
     autoDeploy: true  # Deploy automático del frontend
     region: ohio
     buildCommand: echo "No build needed for static HTML"
-    staticPublishPath: ./FRONTEND
+    staticPublishPath: ../FRONTEND
     routes:
       - type: rewrite
         source: /*
