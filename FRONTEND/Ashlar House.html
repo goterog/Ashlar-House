@@ -728,22 +728,20 @@
     <!-- WhatsApp Lists Manager para administradores (actualizado para contact-message) -->
     <script src="js/whatsapp-lists-manager.js"></script>
     
-    <script>        // EmailJS Configuration - Sistema Híbrido
-        // Backend guarda datos, Frontend envía confirmaciones
+    <script>        // EmailJS Configuration - Sistema Híbrido Consolidado
+        // Backend guarda datos, Frontend envía UNA confirmación consolidada
         const EMAILJS_CONFIG = {
             PUBLIC_KEY: 'fjE9Qo5zVa2mfHE4m',
             SERVICE_ID: 'service_dk8fe1s',
-            CONTACT_TEMPLATE_ID: 'template_8xeecee',  // Template que funciona en las pruebas
-            NEWSLETTER_TEMPLATE_ID: 'template_8xeecee' // Mismo template para ambos
+            CONTACT_TEMPLATE_ID: 'template_8xeecee'  // Un solo template para todo
         };
         
         // Initialize EmailJS
         emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-        
-        // Function to send contact confirmation email
-        async function sendContactConfirmationEmail(contactData) {
+          // Function to send consolidated email (contact + newsletter if applicable)
+        async function sendConsolidatedEmail(contactData, subscriptionInfo = '') {
             try {
-                console.log('📧 Enviando email de confirmación de contacto...');
+                console.log('📧 Enviando email consolidado de contacto...');
                 
                 // Mapear el subject a texto legible
                 const subjectMap = {
@@ -757,13 +755,17 @@
                 };
                 
                 const readableSubject = subjectMap[contactData.subject] || contactData.subject;
-                  const templateParams = {
+                
+                // Consolidar mensaje de contacto con información de suscripción
+                const consolidatedMessage = contactData.message + subscriptionInfo;
+                
+                const templateParams = {
                     to_email: contactData.email,
                     to_name: contactData.name,
-                    from_name: contactData.name,        // Mapeo para {{from_name}}
-                    from_email: contactData.email,      // Mapeo para {{from_email}}
+                    from_name: contactData.name,
+                    from_email: contactData.email,
                     subject: readableSubject,
-                    message: contactData.message,
+                    message: consolidatedMessage,
                     phone: contactData.phone || 'No proporcionado',
                     date: new Date().toLocaleDateString('es-MX', {
                         day: '2-digit',
@@ -782,51 +784,13 @@
                     templateParams
                 );
                 
-                console.log('✅ Email de contacto enviado exitosamente:', response.text);
+                console.log('✅ Email consolidado enviado exitosamente:', response.text);
                 return true;
             } catch (error) {
-                console.error('❌ Error enviando email de contacto:', error);
+                console.error('❌ Error enviando email consolidado:', error);
                 return false;
             }
-        }
-        
-        // Function to send newsletter confirmation email
-        async function sendNewsletterConfirmationEmail(subscriberData) {
-            try {
-                console.log('📧 Enviando email de confirmación de newsletter...');
-                
-                // Determinar el tipo de suscripción
-                const subscriptionTypes = [];
-                if (subscriberData.newsletter_email) subscriptionTypes.push('Email');
-                if (subscriberData.newsletter_whatsapp) subscriptionTypes.push('WhatsApp');
-                  const templateParams = {
-                    to_email: subscriberData.email,
-                    to_name: subscriberData.name || subscriberData.email.split('@')[0],
-                    from_name: subscriberData.name || subscriberData.email.split('@')[0],  // Mapeo para {{from_name}}
-                    from_email: subscriberData.email,                                      // Mapeo para {{from_email}}
-                    subscription_types: subscriptionTypes.join(' y '),
-                    source: 'Formulario de contacto',
-                    date: new Date().toLocaleDateString('es-MX', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                    })
-                };
-                
-                const response = await emailjs.send(
-                    EMAILJS_CONFIG.SERVICE_ID,
-                    EMAILJS_CONFIG.NEWSLETTER_TEMPLATE_ID,
-                    templateParams
-                );
-                
-                console.log('✅ Email de newsletter enviado exitosamente:', response.text);
-                return true;
-            } catch (error) {
-                console.error('❌ Error enviando email de newsletter:', error);
-                return false;
-            }
-        }
-    </script>
+        }    </script>
     
     <script>
         // Theme toggle
@@ -1063,25 +1027,30 @@
                 }
                 
                 console.log('✅ Datos guardados en backend exitosamente');
+                  // PASO 2: Send confirmation email via EmailJS (Frontend)
+                console.log('📧 Enviando confirmación por email...');
                 
-                // PASO 2: Send confirmation emails via EmailJS (Frontend)
-                console.log('📧 Enviando confirmaciones por email...');
+                // Determinar si hay suscripción al newsletter
+                const hasNewsletterSubscription = data.newsletter_email || data.newsletter_whatsapp;
                 
-                // Send contact confirmation email
-                const contactEmailSent = await sendContactConfirmationEmail(data);
-                
-                // Send newsletter confirmation if subscribed
-                let newsletterEmailSent = true;
-                if (data.newsletter_email || data.newsletter_whatsapp) {
-                    newsletterEmailSent = await sendNewsletterConfirmationEmail(data);
+                // Preparar información de suscripción si aplica
+                let subscriptionInfo = '';
+                if (hasNewsletterSubscription) {
+                    const subscriptionTypes = [];
+                    if (data.newsletter_email) subscriptionTypes.push('Email');
+                    if (data.newsletter_whatsapp) subscriptionTypes.push('WhatsApp');
+                    subscriptionInfo = `\n\n📬 SUSCRIPCIÓN AL NEWSLETTER:\nTipo(s): ${subscriptionTypes.join(' y ')}\nFuente: Formulario de contacto`;
                 }
+                
+                // Send single consolidated email with contact and newsletter info
+                const emailSent = await sendConsolidatedEmail(data, subscriptionInfo);
                 
                 // Show success message regardless of email status
                 // Backend save is the critical part
-                if (contactEmailSent && newsletterEmailSent) {
+                if (emailSent) {
                     console.log('✅ SISTEMA HÍBRIDO: Todo completado exitosamente');
                 } else {
-                    console.log('⚠️ SISTEMA HÍBRIDO: Datos guardados, algunos emails fallaron');
+                    console.log('⚠️ SISTEMA HÍBRIDO: Datos guardados, email de confirmación falló');
                 }
                 
                 contactSuccess.classList.remove('hidden');
