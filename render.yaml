@@ -15,13 +15,11 @@ services:
     env: node
     repo: https://github.com/goterog/ashlar-house.git
     branch: main  # Solo deploys desde main branch
-    autoDeploy: true  # Deploy automático cuando haces push a main
-    region: ohio
-    rootDir: BACKEND  # Directorio raíz es BACKEND
-    buildCommand: npm ci && npm run build
-    startCommand: npm run start
-    plan: starter
-    healthCheckPath: /_health    envVars:
+    autoDeploy: true  # Deploy automático cuando haces push a main    region: ohio
+    buildCommand: cd BACKEND && npm ci && npm run build
+    startCommand: cd BACKEND && npm run startplan: starter
+    healthCheckPath: /_health
+    envVars:
       # Strapi Core Configuration
       - key: NODE_ENV
         value: production
@@ -59,15 +57,15 @@ services:
         value: "4639929"    # Para +5218119936655
       - key: CALLMEBOT_API_KEY_2
         value: "1855584"    # Para +5218111755533
-      
-      # EmailJS Configuration (Newsletter System)
+        # EmailJS Configuration (Newsletter System)
       - key: EMAILJS_PUBLIC_KEY
         value: "fjE9Qo5zVa2mfHE4m"
       - key: EMAILJS_SERVICE_ID
         value: "service_dk8fe1s"
       - key: EMAILJS_TEMPLATE_ID
         value: "template_8xeecee"
-        # Admin Configuration
+      
+      # Admin Configuration
       - key: ADMIN_EMAIL
         value: "admin@ashlarhouse.com"
       
