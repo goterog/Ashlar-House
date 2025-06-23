@@ -6,7 +6,8 @@
     <title>Ashlar House - Reserva en el corazón de Ciénega de González</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <!-- FullCalendar CSS y JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    
+    <!-- FullCalendar CSS y JS -->
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />
     <!-- EmailJS para envío de confirmaciones -->
@@ -112,6 +113,99 @@
 
         html {
             scroll-padding-top: var(--header-height);
+        }        
+        /* Mejoras para scroll en móvil y desktop */
+        html {
+            scroll-padding-top: var(--header-height);
+        }
+        /* Configuración base para todas las secciones */
+        section {
+            scroll-margin-top: var(--header-height);
+        }
+        /* Ajustes específicos para móvil */
+        @media (max-width: 768px) {
+            html {
+                scroll-padding-top: calc(var(--header-height) + 2rem);
+            }
+            /* Ajustes granulares por sección en móvil */
+            #inicio {
+                scroll-margin-top: 0;
+            }
+            
+            #cabana {
+                scroll-margin-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            #disponibilidad {
+                scroll-margin-top: calc(var(--header-height) + 3rem);
+            }
+            
+            #ubicacion {
+                scroll-margin-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            #experiencias {
+                scroll-margin-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            #testimonios {
+                scroll-margin-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            #contacto {
+                scroll-margin-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            /* Ajuste para el header en móvil */
+            header {
+                --header-height: 4.5rem;
+            }
+        }
+
+        /* Ajustes específicos para desktop */
+        @media (min-width: 769px) {
+            #inicio {
+                scroll-margin-top: 0;
+            }
+            
+            #cabana {
+                scroll-margin-top: calc(var(--header-height) + 1.25rem);
+            }
+            
+            #disponibilidad {
+                scroll-margin-top: calc(var(--header-height) + 0.625rem);
+            }
+            
+            #ubicacion {
+                scroll-margin-top: calc(var(--header-height) + 0.9375rem);
+            }
+            
+            #experiencias {
+                scroll-margin-top: calc(var(--header-height) + 1.5625rem);
+            }
+            
+            #testimonios {
+                scroll-margin-top: calc(var(--header-height) + 1.25rem);
+            }
+            
+            #contacto {
+                scroll-margin-top: calc(var(--header-height) + 1.875rem);
+            }
+        }
+
+        /* Para dispositivos muy pequeños */
+        @media (max-width: 480px) {
+            html {
+                scroll-padding-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            section {
+                scroll-margin-top: calc(var(--header-height) + 2.5rem);
+            }
+            
+            #inicio {
+                scroll-margin-top: 0;
+            }
         }
 
     </style>
@@ -462,7 +556,6 @@
             </div>
         </div>
     </section>
-
     <!-- Testimonios -->
     <section id="testimonios" class="py-16 bg-gray-50 dark:bg-gray-800">
         <div class="container mx-auto px-4">
@@ -525,11 +618,13 @@
                 </div>
             </div>
         </div>
-    </section>    <!-- Formulario de Contacto -->
+    </section>    
+    
+    <!-- Formulario de Contacto -->
     <section id="contacto" class="py-16 bg-white dark:bg-gray-900">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-white">Contacto & Suscripción</h2>
-            
+
             <div class="max-w-2xl mx-auto bg-gray-50 dark:bg-gray-800 p-8 rounded-xl shadow-md">
                 <div class="mb-6 text-center">
                     <p class="text-gray-600 dark:text-gray-300">Déjanos tus comentarios, dudas u opiniones. También puedes suscribirte para recibir ofertas exclusivas.</p>
@@ -662,7 +757,10 @@
                 <p>&copy; 2025 Ashlar House. Todos los derechos reservados.</p>
             </div>
         </div>
-    </footer>      <!-- Scripts -->
+    </footer>      
+    
+    <!-- Scripts -->
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>    
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <!-- Campaign Manager - Sistema unificado usando contact-message -->
@@ -801,43 +899,98 @@
                     mobileMenu.classList.add('hidden');
                 }
             });
-        }
+        }        // CONFIGURACIÓN AVANZADA DE SCROLL POR SECCIÓN
+        // Ajustes granulares para cada sección en móvil y desktop
+        const SCROLL_OFFSETS = {
+            mobile: {
+                '#inicio': 0,                    // Sin offset para la sección hero
+                '#cabana': - 400,                   // Espacio adicional sobre el header
+                '#disponibilidad': - 450,           // Más espacio para el calendario
+                '#ubicacion': - 420,                // Espacio estándar
+                '#experiencias': - 350,             // Espacio estándar
+                '#testimonios': 40,              // Si tienes esta sección
+                '#contacto': - 450,                 // Espacio estándar
+                'default': 30                    // Valor por defecto para secciones no especificadas
+            },
+            desktop: {
+                '#inicio': 0,                    // Sin offset para la sección hero
+                '#cabana': - 50,                   // Ajuste fino para desktop
+                '#disponibilidad': - 150,           // Menos espacio en desktop
+                '#ubicacion': - 145,                // Ajuste específico
+                '#experiencias': - 50,             // Puede necesitar más espacio
+                '#testimonios': 20,              // Si tienes esta sección
+                '#contacto': - 145,                 // Más espacio para el formulario
+                'default': 0                    // Valor por defecto para desktop
+            }
+        };
 
-        // Scrolling suave mejorado para enlaces de navegación
+        // Scrolling suave mejorado con configuración granular
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-        const targetId = this.getAttribute('href');
-        
-        // Si no es un ancla interna o es un endpoint, no hacer nada
-        if (!targetId || targetId === '#' || targetId.startsWith('http')) {
-            return; 
-        }
-        
-        e.preventDefault();
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            const headerHeight = document.querySelector('header').offsetHeight;
-            const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
-            let offset = headerHeight - 70; // Valor base para el offset
-            
-            // Ajuste adicional para secciones específicas
-            if (targetId === '#disponibilidad' || targetId === '#ubicacion') {
-                offset += - 70;
-            }
-            
-            window.scrollTo({
-                top: targetPosition - offset,
-                behavior: 'smooth'
-            });
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                
+                // Si no es un ancla interna o es un endpoint, no hacer nada
+                if (!targetId || targetId === '#' || targetId.startsWith('http')) {
+                    return; 
+                }
+                
+                e.preventDefault();
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                    
+                    // Detectar si estamos en vista móvil
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    // Seleccionar la configuración apropiada
+                    const offsetConfig = isMobile ? SCROLL_OFFSETS.mobile : SCROLL_OFFSETS.desktop;
+                    
+                    // Obtener el offset específico para esta sección
+                    let additionalOffset = offsetConfig[targetId] !== undefined 
+                        ? offsetConfig[targetId] 
+                        : offsetConfig.default;
+                    
+                    // Calcular el offset final
+                    let finalOffset;
+                    if (targetId === '#inicio') {
+                        finalOffset = 0; // Hero section siempre sin offset
+                    } else {
+                        finalOffset = headerHeight + additionalOffset;
+                    }
+                    
+                    console.log(`📍 Navegando a ${targetId}:`, {
+                        device: isMobile ? 'móvil' : 'desktop',
+                        headerHeight,
+                        additionalOffset,
+                        finalOffset,
+                        targetPosition
+                    });
+                    
+                    // Función para realizar el scroll
+                    const performScroll = () => {
+                        window.scrollTo({
+                            top: Math.max(0, targetPosition - finalOffset),
+                            behavior: 'smooth'
+                        });
+                    };
 
-            // Cerrar el menú móvil si está abierto
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-            }
-        }
-        });
+                    // Cerrar el menú móvil si está abierto
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        
+                        // Delay para permitir que el menú se cierre antes del scroll
+                        setTimeout(() => {
+                            requestAnimationFrame(performScroll);
+                        }, 100);
+                    } else {
+                        // Scroll inmediato si no hay menú móvil abierto
+                        requestAnimationFrame(performScroll);
+                    }
+                }
+            });
         });
 
         // Carousel functionality
