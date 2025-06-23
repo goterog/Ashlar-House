@@ -1,5 +1,5 @@
 # render.yaml - Configuración para despliegue en Render.com
-# Actualizado: 13 de Junio, 2025 - Ashlar House Tourism Management System
+# Actualizado: 23 de Junio, 2025 - Ashlar House Tourism Management System
 
 databases:
   - name: ashlar-house-db
@@ -19,9 +19,9 @@ services:
     region: ohio
     rootDir: BACKEND  # Directorio raíz es BACKEND
     buildCommand: npm ci && npm run build
-    startCommand: npm run start    plan: starter
-    healthCheckPath: /_health
-    envVars:
+    startCommand: npm run start
+    plan: starter
+    healthCheckPath: /_health    envVars:
       # Strapi Core Configuration
       - key: NODE_ENV
         value: production
@@ -30,29 +30,13 @@ services:
       - key: PORT
         value: 10000
       
-      # Database Configuration (PostgreSQL)
+      # Database Configuration (PostgreSQL) - Usando DATABASE_URL
       - key: DATABASE_CLIENT
         value: postgres
-      - key: DATABASE_HOST
+      - key: DATABASE_URL
         fromDatabase:
           name: ashlar-house-db
-          property: host
-      - key: DATABASE_PORT
-        fromDatabase:
-          name: ashlar-house-db
-          property: port
-      - key: DATABASE_NAME
-        fromDatabase:
-          name: ashlar-house-db
-          property: database
-      - key: DATABASE_USERNAME
-        fromDatabase:
-          name: ashlar-house-db
-          property: user
-      - key: DATABASE_PASSWORD
-        fromDatabase:
-          name: ashlar-house-db
-          property: password
+          property: connectionString
       - key: DATABASE_SSL
         value: true
       
@@ -83,11 +67,11 @@ services:
         value: "service_dk8fe1s"
       - key: EMAILJS_TEMPLATE_ID
         value: "template_8xeecee"
-      
-      # Admin Configuration
+        # Admin Configuration
       - key: ADMIN_EMAIL
         value: "admin@ashlarhouse.com"
-        # CORS Configuration for Frontend
+      
+      # CORS Configuration for Frontend
       - key: FRONTEND_URL
         value: "https://ashlar-house-frontend.onrender.com"
 
