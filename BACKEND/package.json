@@ -23,7 +23,7 @@
     "import:airbnb": "node scripts/import-airbnb-calendar.js",
     "test:airbnb-sync": "node scripts/test-airbnb-sync.js",
     "test:manual-sync": "node scripts/manual-sync-test.js"
-  },  
+  },
   "dependencies": {
     "@strapi/plugin-cloud": "5.13.0",
     "@strapi/plugin-documentation": "^5.13.0",
@@ -32,12 +32,14 @@
     "@types/node-cron": "^3.0.11",
     "axios": "^1.9.0",
     "better-sqlite3": "11.3.0",
+    "dotenv": "^16.5.0",
     "fs-extra": "^10.0.0",
     "ics": "^3.8.1",
     "mime-types": "^2.1.27",
     "node-cron": "^4.1.0",
     "node-fetch": "^3.3.2",
     "node-ical": "^0.20.1",
+    "pg": "^8.16.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
