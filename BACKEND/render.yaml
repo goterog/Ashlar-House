@@ -19,7 +19,7 @@ services:
     region: ohio    
     buildCommand: npm run build
     startCommand: npm run start
-    plan: starter
+    plan: free
     healthCheckPath: /_health
     envVars:
       # Strapi Core Configuration
