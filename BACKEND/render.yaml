@@ -14,9 +14,9 @@ services:
     runtime: node
     env: node
     repo: https://github.com/goterog/ashlar-house.git
-    branch: main  # Solo deploys desde main branch
-    autoDeploy: true  # Deploy automático cuando haces push a main
-    region: ohio    buildCommand: npm ci && npm run build
+    branch: main  # Solo deploys desde main branch    autoDeploy: true  # Deploy automático cuando haces push a main
+    region: ohio
+    buildCommand: npm ci && npm run build
     startCommand: npm run start
     plan: starter
     healthCheckPath: /_health
@@ -49,7 +49,8 @@ services:
       - key: TRANSFER_TOKEN_SALT
         generateValue: true
       - key: JWT_SECRET
-        generateValue: true      - key: ENCRYPTION_KEY
+        generateValue: true      
+      - key: ENCRYPTION_KEY
         generateValue: true
       
       # WhatsApp Notifications (CallMeBot API)
