@@ -1,7 +1,8 @@
 {
   "name": "cabana-hanuman",
   "version": "0.1.0",
-  "private": true,  "description": "A Strapi application",
+  "private": true,  
+  "description": "A Strapi application",
   "scripts": {
     "build": "strapi build",
     "build:dev": "NODE_ENV=development strapi build",

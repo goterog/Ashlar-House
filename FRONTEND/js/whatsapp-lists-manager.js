@@ -18,7 +18,9 @@
 
 const WHATSAPP_CONFIG = {
     // URL del backend Strapi
-    STRAPI_URL: 'http://localhost:1337',
+    STRAPI_URL: window.location.hostname === 'localhost' 
+        ? 'http://localhost:1337'
+        : 'https://ashlar-house-production.up.railway.app',
     
     // Configuración para exportación
     EXPORT_FORMATS: ['csv', 'json', 'txt'],

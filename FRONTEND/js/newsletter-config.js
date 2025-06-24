@@ -6,10 +6,10 @@
 // por seguridad. Solo configuraciones públicas aquí.
 
 const NEWSLETTER_CONFIG = {
-    // Configuración de Strapi (será automáticamente configurado para producción)
+    // Configuración de Strapi (será automáticamente configurado para producción)    
     STRAPI_URL: window.location.hostname === 'localhost' 
         ? 'http://localhost:1337' 
-        : 'https://casa-hanuman-backend.onrender.com',
+        : 'https://ashlar-house-production.up.railway.app',
     
     // EmailJS se maneja desde el backend - NO incluir credenciales aquí
     

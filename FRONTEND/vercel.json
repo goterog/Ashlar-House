@@ -1,0 +1,16 @@
+{
+  "buildCommand": "echo 'No build required for static HTML'",
+  "outputDirectory": ".",
+  "framework": null,
+  "installCommand": "echo 'No dependencies to install'",
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/Ashlar%20House.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
+}

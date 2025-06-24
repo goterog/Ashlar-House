@@ -1,0 +1,10 @@
+{
+  "name": "ashlar-house-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ashlar House Tourism Landing Page",
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site deployed'"
+  }
+}

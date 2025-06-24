@@ -1,9 +1,9 @@
 // Configuración de la API para el frontend
 const API_CONFIG = {
-  // URL base del backend Strapi
-  BASE_URL: 'http://localhost:1337',
-  // URL base para producción (descomenta cuando despliegues)
-  // BASE_URL: 'https://ashlar-house-backend.onrender.com',
+  // URL base del backend Strapi - Detecta automáticamente el entorno
+  BASE_URL: window.location.hostname === 'localhost' 
+    ? 'http://localhost:1337'
+    : 'https://ashlar-house-production.up.railway.app',
   
   // Endpoints principales
   ENDPOINTS: {
