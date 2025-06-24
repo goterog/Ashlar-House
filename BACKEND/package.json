@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",  "scripts": {
-    "build": "NODE_ENV=production npx strapi build --no-optimization",
+    "build": "DEBUG=strapi:* NODE_ENV=production npx strapi build --no-database",
     "build:dev": "NODE_OPTIONS='--max-old-space-size=460' npx strapi build",
     "build:prod": "NODE_ENV=production npx strapi build --no-optimization",
     "console": "npx strapi console", 
@@ -51,7 +51,8 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
-  },  "engines": {
+  },
+  "engines": {
     "node": ">=18.0.0 <=22.x.x",
     "npm": ">=6.0.0"
   },
