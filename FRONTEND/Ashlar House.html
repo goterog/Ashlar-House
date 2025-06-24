@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    
     <!-- FullCalendar CSS y JS -->
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core/main.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid/main.min.css" rel="stylesheet" />    <!-- Configuración Global -->
+    <script src="js/global-config.js"></script>
     <!-- EmailJS para envío de confirmaciones -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
@@ -1014,7 +1015,7 @@
                 console.log('🔄 SISTEMA HÍBRIDO: Guardando datos en backend...');
                 
                 // PASO 1: Send to backend (Strapi)
-                const response = await fetch('http://localhost:1337/api/contact-messages', {
+                const response = await fetch(window.ASHLAR_CONFIG.getApiUrl('/api/contact-messages'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1085,7 +1086,7 @@
 // --- HERO VIDEO FROM STRAPI ---
 (async function loadHeroVideo() {
     try {
-        const res = await fetch('http://localhost:1337/api/heros?populate[0]=video');
+        const res = await fetch(window.ASHLAR_CONFIG.getApiUrl('/api/heros?populate[0]=video'));
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
@@ -1118,7 +1119,7 @@
 
             // Crea un nuevo source
             const source = document.createElement('source');
-            source.src = videoUrl.startsWith('http') ? videoUrl : 'http://localhost:1337' + videoUrl;
+            source.src = videoUrl.startsWith('http') ? videoUrl : window.ASHLAR_CONFIG.API_URL + videoUrl;
             source.type = 'video/mp4';
             heroVideo.appendChild(source);
             heroVideo.load();
@@ -1127,11 +1128,14 @@
         // Si falla, se mantiene el video de ejemplo
         console.warn('No se pudo cargar el video desde Strapi', e);
     }
-})();
-
-        // --- CAROUSEL IMAGES FROM STRAPI ---
+})();        // --- CONFIGURACIÓN GLOBAL DINÁMICA ---
+        const API_CONFIG = {
+            BASE_URL: window.location.hostname === 'localhost' 
+                ? 'http://localhost:1337'
+                : 'https://ashlar-house-production.up.railway.app'
+        };        // --- CAROUSEL IMAGES FROM STRAPI ---
         (async function() {
-            const API_URL = 'http://localhost:1337';
+            const API_URL = window.ASHLAR_CONFIG.API_URL;
             try {
                 const res = await fetch(API_URL + '/api/carousels?populate=*');
                 const data = await res.json();
@@ -1229,7 +1233,7 @@
 
             // Obtiene ubicaciones desde Strapi
             try {
-                const res = await fetch('http://localhost:1337/api/map-locations');
+                const res = await fetch(window.ASHLAR_CONFIG.getApiUrl('/api/map-locations'));
                 const data = await res.json();
                 if (data && data.data && Array.isArray(data.data)) {
                     data.data.forEach(loc => {
@@ -1346,7 +1350,7 @@
                     eventTextColor: '#ffffff',events: async function(fetchInfo, successCallback, failureCallback) {
                         try {
                             console.log('Fetching bookings...');
-                            const res = await fetch('http://localhost:1337/api/bookings');
+                            const res = await fetch(window.ASHLAR_CONFIG.getApiUrl('/api/bookings'));
                             const data = await res.json();
                             console.log('API Response:', data);
                             
@@ -1576,7 +1580,7 @@
 
                         try {
                             // Send booking to Strapi
-                            const response = await fetch('http://localhost:1337/api/bookings', {
+                            const response = await fetch(window.ASHLAR_CONFIG.getApiUrl('/api/bookings'), {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',

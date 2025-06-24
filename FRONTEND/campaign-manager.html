@@ -85,7 +85,9 @@
     <script>
         // Configuración del sistema
         const campaignConfig = {
-            strapiUrl: 'http://localhost:1337',
+            strapiUrl: window.location.hostname === 'localhost' 
+                ? 'http://localhost:1337'
+                : 'https://ashlar-house-production.up.railway.app',
             emailjsConfig: {
                 publicKey: 'fjE9Qo5zVa2mfHE4m',
                 serviceId: 'service_dk8fe1s',

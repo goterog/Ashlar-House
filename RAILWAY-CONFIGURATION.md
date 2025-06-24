@@ -10,7 +10,13 @@
 
 **⚠️ IMPORTANTE**: Después de conectar PostgreSQL, debes configurar manualmente:
 ```bash
+# RECOMENDADO: Endpoint privado (sin costos egress)
 DATABASE_URL=${{Postgres.DATABASE_URL}}
+
+# ALTERNATIVA: Endpoint público (con costos egress)
+DATABASE_URL=${{Postgres.DATABASE_PUBLIC_URL}}
+
+# ❌ NO USAR: RAILWAY_PRIVATE_DOMAIN (solo hostname, causa "ENOTFOUND base")
 ```
 
 ### 2. Variables que DEBES configurar manualmente en Railway:
@@ -40,7 +46,7 @@ PORT=3000
 
 #### Variables Opcionales:
 ```bash
-FRONTEND_URL="https://tu-frontend.com"
+FRONTEND_URL="https://ashlar-house.vercel.app"
 WEBHOOKS_POPULATE_RELATIONS=false
 ```
 
@@ -103,15 +109,23 @@ node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
   3. La variable se auto-genera como `${{Postgres.DATABASE_URL}}`
   4. Redeploy automáticamente
 
+### Error: "getaddrinfo ENOTFOUND base"
+- **Causa**: DATABASE_URL con formato incorrecto, probablemente usando RAILWAY_PRIVATE_DOMAIN
+- **Solución**: 
+  1. Cambiar a `DATABASE_URL=${{Postgres.DATABASE_URL}}`
+  2. Verificar el nombre exacto del servicio PostgreSQL
+  3. Usar el formato: `${{[NOMBRE-SERVICIO].DATABASE_URL}}`
+
 ### Error: "Invalid APP_KEYS"
 - **Causa**: APP_KEYS no configuradas o formato incorrecto
 - **Solución**: Configura como string separado por comas: "key1,key2,key3,key4"
 
 ## URLs del Proyecto:
 
-- **Backend**: https://tu-servicio-backend.railway.app
-- **Admin Panel**: https://tu-servicio-backend.railway.app/admin
-- **API**: https://tu-servicio-backend.railway.app/api
+- **Frontend**: https://ashlar-house.vercel.app/
+- **Backend**: https://ashlar-house-production.up.railway.app
+- **Admin Panel**: https://ashlar-house-production.up.railway.app/admin
+- **API**: https://ashlar-house-production.up.railway.app/api
 
 ## Próximos Pasos:
 
