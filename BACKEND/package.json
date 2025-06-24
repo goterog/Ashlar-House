@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "description": "A Strapi application",  "scripts": {
-    "build": "NODE_OPTIONS='--max-old-space-size=460' npx strapi build",
+    "build": "npm run compile && NODE_OPTIONS='--max-old-space-size=460' npx strapi build",
+    "compile": "npx tsc --noEmit",
     "build:prod": "NODE_ENV=production npx strapi build --no-optimization",
     "console": "npx strapi console", 
     "deploy": "npx strapi deploy",
@@ -50,8 +51,8 @@
     "@types/react-dom": "^18",
     "typescript": "^5"
   },  "engines": {
-    "node": "18.x",
-    "npm": ">=8.0.0"
+    "node": ">=20.0.0 <=22.x.x",
+    "npm": ">=9.0.0"
   },
   "strapi": {
     "uuid": "1138b267-3f7c-4d16-a010-c2962f0fec31",
