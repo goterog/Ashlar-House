@@ -17,6 +17,17 @@ export default ({ env }) => {
   // Producción: PostgreSQL (Railway)
   const databaseUrl = env('DATABASE_URL');
   
+  // Debug: Mostrar información de la base de datos
+  console.log('=== DATABASE CONFIG DEBUG ===');
+  console.log('NODE_ENV:', env('NODE_ENV'));
+  console.log('DATABASE_URL exists:', !!databaseUrl);
+  console.log('DATABASE_URL length:', databaseUrl ? databaseUrl.length : 0);
+  if (databaseUrl) {
+    console.log('DATABASE_URL prefix:', databaseUrl.substring(0, 20) + '...');
+  }
+  console.log('All env vars with DATABASE:', Object.keys(process.env).filter(key => key.includes('DATABASE')));
+  console.log('============================');
+  
   // Durante el build, DATABASE_URL puede no estar disponible
   // En Railway, se configurará en runtime
   if (!databaseUrl) {

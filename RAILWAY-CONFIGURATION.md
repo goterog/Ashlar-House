@@ -8,6 +8,11 @@
 - `RAILWAY_ENVIRONMENT_ID` - ID del ambiente
 - `DATABASE_URL` - URL de PostgreSQL (auto-generada) **CRÍTICA: Debe estar disponible durante build**
 
+**⚠️ IMPORTANTE**: Después de conectar PostgreSQL, debes configurar manualmente:
+```bash
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+```
+
 ### 2. Variables que DEBES configurar manualmente en Railway:
 
 #### Variables de Seguridad (OBLIGATORIAS):
@@ -41,12 +46,23 @@ WEBHOOKS_POPULATE_RELATIONS=false
 
 ## Pasos para Configurar en Railway:
 
+### PASO 1: Conectar PostgreSQL
 1. Ve a tu proyecto en Railway
-2. Selecciona el servicio del backend
-3. Ve a "Variables" tab
-4. Agrega cada variable manualmente:
+2. Clic en "Add Service" → "Database" → "PostgreSQL"
+3. Espera a que se cree la base de datos
+
+### PASO 2: Configurar DATABASE_URL
+1. Ve al servicio de tu backend (no la base de datos)
+2. Selecciona "Variables" tab
+3. **CRÍTICO**: Agrega manualmente:
+   - Nombre: `DATABASE_URL`
+   - Valor: `${{Postgres.DATABASE_URL}}`
+
+### PASO 3: Configurar Variables de Seguridad
+4. Agrega cada variable de seguridad:
    - Nombre: `APP_KEYS`
    - Valor: `key1,key2,key3,key4` (genera keys aleatorias)
+   - Repite para todas las variables listadas arriba
 
 ## Generación de Keys Seguras:
 
