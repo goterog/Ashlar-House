@@ -1,8 +1,8 @@
 {
   "name": "cabana-hanuman",
   "version": "0.1.0",
-  "private": true,
-  "description": "A Strapi application",  "scripts": {
+  "private": true,  "description": "A Strapi application",
+  "scripts": {
     "build": "strapi build",
     "build:dev": "NODE_ENV=development strapi build",
     "build:prod": "NODE_ENV=production strapi build",
@@ -25,7 +25,8 @@
     "import:airbnb": "node scripts/import-airbnb-calendar.js",
     "test:airbnb-sync": "node scripts/test-airbnb-sync.js",
     "test:manual-sync": "node scripts/manual-sync-test.js"
-  },  "dependencies": {
+  },  
+  "dependencies": {
     "@strapi/plugin-cloud": "5.13.0",
     "@strapi/plugin-documentation": "^5.13.0",
     "@strapi/plugin-users-permissions": "5.13.0",

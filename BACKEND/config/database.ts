@@ -15,16 +15,31 @@ export default ({ env }) => {
   }
 
   // Producción: PostgreSQL (Railway)
+  const databaseUrl = env('DATABASE_URL');
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL is required in production');
+  }
+
   return {
     connection: {
       client: 'postgres',
       connection: {
-        connectionString: env('DATABASE_URL'),
+        connectionString: databaseUrl,
         ssl: env.bool('DATABASE_SSL', false) && {
           rejectUnauthorized: env.bool('DATABASE_SSL_REJECT_UNAUTHORIZED', false),
         },
       },
       debug: false,
+      pool: {
+        min: 0,
+        max: 10,
+        acquireTimeoutMillis: 30000,
+        createTimeoutMillis: 30000,
+        destroyTimeoutMillis: 5000,
+        idleTimeoutMillis: 30000,
+        reapIntervalMillis: 1000,
+        createRetryIntervalMillis: 100,
+      },
     },
   };
 };
