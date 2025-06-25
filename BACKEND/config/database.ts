@@ -1,24 +1,34 @@
 import path from 'path';
 
 export default ({ env }) => {
-  // Desarrollo: SQLite
-  if (env('NODE_ENV') === 'development') {
+  // Determinar el cliente de base de datos
+  const client = env('DATABASE_CLIENT', env('NODE_ENV') === 'development' ? 'sqlite' : 'postgres');
+  
+  console.log(`🗄️  Database: Using ${client} (NODE_ENV: ${env('NODE_ENV')})`);
+  
+  // Configuración SQLite para desarrollo
+  if (client === 'sqlite' || env('NODE_ENV') === 'development') {
+    // Usar ruta absoluta desde el directorio raíz del proyecto
+    const dbPath = path.resolve(process.cwd(), env('DATABASE_FILENAME', '.tmp/data.db'));
+    console.log(`📁 SQLite DB path: ${dbPath}`);
+    
     return {
       connection: {
         client: 'sqlite',
         connection: {
-          filename: path.join(__dirname, '..', env('DATABASE_FILENAME', '.tmp/data.db')),
+          filename: dbPath,
         },
         useNullAsDefault: true,
       },
     };
   }
 
-  // Producción: PostgreSQL (Railway)
+  // Configuración PostgreSQL para producción
   const databaseUrl = env('DATABASE_URL');
   
-  // Durante el build, DATABASE_URL puede no estar disponible
+  // Fallback para build sin DATABASE_URL
   if (!databaseUrl) {
+    console.warn('⚠️  DATABASE_URL not found, using fallback config for build...');
     return {
       connection: {
         client: 'postgres',

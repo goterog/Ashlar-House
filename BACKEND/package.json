@@ -1,20 +1,20 @@
 {
   "name": "cabana-hanuman",
   "version": "0.1.0",
-  "private": true,  
-  "description": "A Strapi application",
+  "private": true,
+  "description": "A Strapi application",  
   "scripts": {
     "build": "strapi build",
-    "build:dev": "NODE_ENV=development strapi build",
-    "build:prod": "NODE_ENV=production strapi build",
-    "console": "strapi console", 
+    "build:dev": "cross-env NODE_ENV=development strapi build",
+    "build:prod": "cross-env NODE_ENV=production strapi build",
+    "console": "strapi console",
     "deploy": "strapi deploy",
-    "dev": "NODE_ENV=development strapi develop",
-    "develop": "NODE_ENV=development strapi develop",
+    "dev": "cross-env NODE_ENV=development strapi develop",
+    "develop": "cross-env NODE_ENV=development strapi develop",
     "seed:example": "node ./scripts/seed.js",
-    "start": "NODE_ENV=production strapi start",
-    "start:dev": "NODE_ENV=development strapi start",
-    "strapi": "strapi",
+    "start": "cross-env NODE_ENV=production strapi start",
+    "start:dev": "cross-env NODE_ENV=development strapi start",
+    "strapi": "strapi",    
     "upgrade": "npx @strapi/upgrade latest",
     "upgrade:dry": "npx @strapi/upgrade latest --dry",
     "health-check": "node scripts/health-check.js",
@@ -25,8 +25,12 @@
     "setup:env": "node scripts/env-setup.js",
     "import:airbnb": "node scripts/import-airbnb-calendar.js",
     "test:airbnb-sync": "node scripts/test-airbnb-sync.js",
-    "test:manual-sync": "node scripts/manual-sync-test.js"
-  },  
+    "test:manual-sync": "node scripts/manual-sync-test.js",
+    "env:dev": "cross-env NODE_ENV=development",
+    "env:prod": "cross-env NODE_ENV=production",
+    "dev:windows": "cross-env NODE_ENV=development strapi develop",
+    "dev:fresh": "cross-env NODE_ENV=development rm -rf .tmp && strapi develop"
+  },
   "dependencies": {
     "@strapi/plugin-cloud": "5.13.0",
     "@strapi/plugin-documentation": "^5.13.0",
@@ -53,6 +57,7 @@
     "@types/node-fetch": "^2.6.12",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "cross-env": "^7.0.3",
     "typescript": "^5"
   },
   "engines": {
