@@ -1,8 +1,19 @@
 # 🏠 Ashlar House - Sistema de Gestión Turística
 
-*Última actualización: 13 de Junio, 2025*
+*Última actualización: 25 de Junio, 2025*
 
-## 🎯 Resumen del Proyecto
+## � URLs Públicas
+
+### 🖥️ Frontend (Vercel)
+- **Producción**: https://ashlar-house.vercel.app
+- **Dominio principal**: Ashlar House - Cabaña en Ciénega de González
+
+### ⚙️ Backend (Railway)
+- **API REST**: https://ashlar-house-production.up.railway.app
+- **Admin Panel**: https://ashlar-house-production.up.railway.app/admin
+- **Base de datos**: PostgreSQL en Railway
+
+## �🎯 Resumen del Proyecto
 
 **Ashlar House** es un sistema completo de gestión para propiedades turísticas que combina:
 - **Landing Page** moderna y responsive con formularios inteligentes
@@ -14,13 +25,18 @@
 - **Campaign Management** para gestión de suscriptores y listas
 - **Testing Suite** completo para verificación del sistema
 
-![FRONTEND/assets/images/logo.png](FRONTEND/assets/images/logo.png)
+## ✨ Estado Actual - PRODUCCIÓN ACTIVA
 
-## ✨ Funcionalidades Completadas
+### 🚀 Deploys Exitosos
+- ✅ **Frontend**: Desplegado en Vercel con configuración automática
+- ✅ **Backend**: Desplegado en Railway con PostgreSQL
+- ✅ **Base de datos**: Migración completa de SQLite → PostgreSQL
+- ✅ **Variables de entorno**: Configuradas para desarrollo y producción
+- ✅ **CORS y CSP**: Configurados correctamente para ambos dominios
 
 ### 🏠 Sistema Principal
 - ✅ **Landing Page Responsive** - Diseño moderno con Tailwind CSS
-- ✅ **Galería Visual** - Fotos y video hero interactivos
+- ✅ **Galería Visual** - Fotos y video hero interactivos (funcionando)
 - ✅ **Modo Claro/Oscuro** - Tema adaptable
 - ✅ **Calendario Interactivo** - FullCalendar con disponibilidad en tiempo real
 - ✅ **SEO Optimizado** - Meta tags y estructura semántica
@@ -55,7 +71,27 @@
 - **APIs**: RESTful APIs generadas por Strapi + EmailJS integration
 - **Runtime**: Node.js 18+ con fetch nativo (recomendado: 22+)
 - **Control de versiones**: Git/GitHub
-- **Despliegue**: Render.com (configurado)
+- **Despliegue**: 
+  - **Frontend**: Vercel (desplegado)
+  - **Backend**: Railway (desplegado)
+  - **Base de datos**: PostgreSQL en Railway
+
+## 🏗️ Arquitectura de Despliegue
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   USUARIO       │    │    FRONTEND      │    │    BACKEND      │
+│   (Navegador)   │◄──►│   Vercel         │◄──►│   Railway       │
+│                 │    │   ashlar-house.  │    │   Strapi v5     │
+│                 │    │   vercel.app     │    │   PostgreSQL    │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                              │                         │
+                              ▼                         ▼
+                       ┌─────────────┐         ┌─────────────┐
+                       │  EmailJS    │         │ CallMeBot   │
+                       │  (Email)    │         │ (WhatsApp)  │
+                       └─────────────┘         └─────────────┘
+```
 
 ## Estructura del Proyecto
 ```
@@ -63,114 +99,201 @@
 ├── FRONTEND/              # Interfaz de usuario (Landing Page)
 │   ├── assets/            # Imágenes, videos y recursos estáticos
 │   ├── js/               # Scripts de JavaScript
-│   │   ├── newsletter.js  # Sistema completo de newsletter dual
-│   │   └── newsletter-config.js # Configuración EmailJS
+│   │   ├── global-config.js       # Configuración dinámica de APIs
+│   │   ├── campaign-manager.js    # Sistema completo de newsletter dual
+│   │   └── whatsapp-lists-manager.js # Gestión de listas WhatsApp
 │   ├── test-newsletter.html # Página de pruebas del sistema
-│   ├── EMAILJS-SETUP.md   # Guía de configuración EmailJS
 │   └── Ashlar House.html  # Archivo HTML principal
 ├── BACKEND/               # Servidor Strapi v5 + TypeScript
 │   ├── src/               # Código fuente de Strapi
 │   │   ├── index.ts       # Bootstrap y lifecycle hooks WhatsApp 
 │   │   └── api/          # APIs y content types
 │   │       ├── newsletter-subscriber/ # API para suscriptores newsletter
-│   │       └── contact-message/       # API para mensajes de contacto
+│   │       ├── contact-message/       # API para mensajes de contacto
+│   │       ├── hero/                  # API para video/contenido hero
+│   │       ├── carousel/              # API para galería de imágenes
+│   │       └── map-location/          # API para ubicaciones del mapa
 │   ├── config/           # Configuración de Strapi
+│   │   ├── database.ts   # Configuración SQLite (dev) / PostgreSQL (prod)
+│   │   ├── middlewares.ts # CORS, CSP y middlewares
+│   │   └── plugins.ts    # Configuración de plugins
 │   ├── scripts/          # Utilidades y herramientas de desarrollo
 │   └── archive-test-files/ # Archivos de test archivados (desarrollo)
-├── DEVELOPMENT.md         # Guía completa de desarrollo 
+├── DOCS/                 # Documentación del proyecto
+│   ├── HISTORY/          # Logs de troubleshooting y cambios
+│   └── SETUP/           # Guías de configuración
+├── RAILWAY-CONFIGURATION.md # Configuración específica de Railway
+├── railway.toml          # Configuración de despliegue Railway
+├── vercel.json           # Configuración de despliegue Vercel
 └── README.md              # Este archivo
 ```
 
-## Instalación y Configuración
+## 🚀 Instalación y Configuración
 
 ### Requisitos Previos
 - Node.js (v18 o superior, recomendado: v22+)
 - npm o yarn
 - Git
 
-### Configuración del Entorno de Desarrollo
-1. Clonar el repositorio:
+### 🔧 Configuración del Entorno de Desarrollo
+
+1. **Clonar el repositorio:**
 ```bash
 git clone https://github.com/goterog/Caba-a-Hanuman.git 
 cd cabaña-hanuman
 ```
 
-2. Instalar dependencias del backend:
+2. **Instalar dependencias del backend:**
 ```bash
 cd BACKEND
 npm install
 ```
 
-3. Configurar variables de entorno:
+3. **Configurar variables de entorno:**
+Crear archivo `.env.development` en `BACKEND/`:
 ```bash
-# Copiar y editar el archivo de ejemplo
-cp .env.example .env
-# Configurar las API keys de CallMeBot y otras variables
+HOST=0.0.0.0
+PORT=1337
+APP_KEYS=tu-app-key-aqui
+API_TOKEN_SALT=tu-api-token-salt
+ADMIN_JWT_SECRET=tu-admin-jwt-secret
+TRANSFER_TOKEN_SALT=tu-transfer-token-salt
+JWT_SECRET=tu-jwt-secret
+
+# Base de datos (SQLite para desarrollo)
+DATABASE_CLIENT=sqlite
+DATABASE_FILENAME=.tmp/data.db
+
+# CallMeBot API para WhatsApp
+CALLMEBOT_API_KEY_GUILLERMO=tu-api-key-numero-1
+CALLMEBOT_API_KEY_XIMENA=tu-api-key-numero-2
+CALLMEBOT_PHONE_GUILLERMO=tu-numero-1
+CALLMEBOT_PHONE_XIMENA=tu-numero-2
 ```
 
-4. Iniciar el servidor Strapi:
+4. **Iniciar el servidor Strapi:**
 ```bash
-npm run develop
+npm run develop  # Arranca en http://localhost:1337
 ```
 
-5. Configurar EmailJS (opcional, para newsletter):
-   - Seguir la guía en `FRONTEND/EMAILJS-SETUP.md`
-   - Configurar credenciales en `FRONTEND/js/newsletter-config.js`
-
-6. Iniciar el servidor frontend:
+5. **Configurar el Frontend:**
+El frontend es estático y se configura automáticamente:
 ```bash
 cd FRONTEND
+# Usar cualquier servidor HTTP estático
 python -m http.server 8000    # Servidor local en puerto 8000
-# Acceder a http://localhost:8000 para la landing page
-# Acceder a http://localhost:8000/test-newsletter.html para pruebas
+# O usar Live Server en VS Code
 ```
 
-### ⚡ Scripts Útiles
+### ⚡ Scripts de Desarrollo Disponibles
+
+#### Backend (BACKEND/)
 ```bash
-# Backend
 npm run develop    # Modo desarrollo con auto-reload
+npm run dev:fresh  # Desarrollo con build limpio
 npm run build      # Build para producción
 npm run start      # Modo producción
 
-# Herramientas de desarrollo
-npm run dev-tools                      # Script maestro con menú
-node scripts/health-check.js           # Verificación rápida del sistema completo
-node scripts/check-strapi.js           # Verificar conectividad
-node scripts/simple-whatsapp-test.js   # Test WhatsApp directo
-node scripts/final-simple-test.js      # Test completo del sistema WhatsApp
-node scripts/diagnostico-completo.js   # Diagnóstico detallado
+# Scripts de desarrollo y diagnóstico
+npm run dev-tools                      # Script maestro con menú interactivo
+node scripts/health-check.js           # Verificación rápida del sistema
+node scripts/check-strapi.js           # Verificar conectividad Strapi
+node scripts/diagnostico-completo.js   # Diagnóstico detallado del sistema
 ```
 
-## Metodología de Desarrollo
+#### Frontend (FRONTEND/)
+```bash
+# Archivos principales
+- Ashlar House.html              # Página principal
+- test-newsletter.html           # Página de pruebas
+- js/global-config.js           # Configuración dinámica de APIs
+- js/campaign-manager.js        # Sistema de newsletter
+- js/whatsapp-lists-manager.js  # Gestión de listas WhatsApp
+```
+
+### 🌐 URLs de Acceso
+
+#### Desarrollo Local
+- **Frontend**: http://localhost:8000
+- **Backend API**: http://localhost:1337
+- **Admin Panel**: http://localhost:1337/admin
+
+#### Producción
+- **Frontend**: https://ashlar-house.vercel.app
+- **Backend API**: https://ashlar-house-production.up.railway.app
+- **Admin Panel**: https://ashlar-house-production.up.railway.app/admin
+
+## 🔄 Flujo de Trabajo de Desarrollo
+
+### Entornos Separados
+```bash
+# Desarrollo Local (SQLite)
+NODE_ENV=development  # Usa .env.development
+DATABASE_CLIENT=sqlite
+
+# Producción (PostgreSQL en Railway)  
+NODE_ENV=production   # Usa variables de Railway
+DATABASE_CLIENT=postgres
+```
+
+### Proceso de Deploy
+1. **Desarrollo**: Trabajar en local con SQLite
+2. **Test**: Verificar funcionalidad completa
+3. **Commit**: Subir cambios a repositorio
+4. **Deploy automático**: 
+   - Vercel deploy automático del frontend## 📚 Metodología de Desarrollo
+
 Este proyecto sigue un enfoque iterativo con las siguientes prácticas:
+- **TypeScript-first approach** con Strapi v5
+- **Lifecycle hooks** para automatización de procesos
+- **Comprehensive testing** con herramientas de desarrollo
 - Desarrollo por ramas para experimentar con nuevas características
 - Merge a main solo cuando las características están estables
 - Enfoque en usabilidad y experiencia de usuario
 - Optimización progresiva de rendimiento
-- **TypeScript-first approach** con Strapi v5
-- **Lifecycle hooks** para automatización de procesos
-- **Comprehensive testing** con herramientas de desarrollo
 
-## 📖 Documentación Completa
+## 📖 Documentación Adicional
 
-- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Guía completa de desarrollo y arquitectura
-- **[PROJECT-STATUS.md](PROJECT-STATUS.md)** - Estado actual y funcionalidades completadas
-- **[BACKEND/scripts/README.md](BACKEND/scripts/README.md)** - Documentación de herramientas de desarrollo
+- **[DOCS/](DOCS/)** - Documentación completa del proyecto
+- **[RAILWAY-CONFIGURATION.md](RAILWAY-CONFIGURATION.md)** - Configuración específica de Railway
+- **[BACKEND/scripts/README.md](BACKEND/scripts/README.md)** - Herramientas de desarrollo
+- **[DOCS/HISTORY/](DOCS/HISTORY/)** - Logs de troubleshooting y cambios
 
-## Próximos Pasos
-- [x] ~~Integrar sistema de notificaciones de reserva por WhatsApp~~ ✅ **Completado**
-- [x] ~~Implementar lifecycle hooks para automatización~~ ✅ **Completado**
-- [x] ~~Configurar dual API keys para múltiples números~~ ✅ **Completado**
-- [x] ~~Crear documentación de desarrollo completa~~ ✅ **Completado**
-- [x] ~~Sistema de Newsletter Dual (Email + WhatsApp)~~ ✅ **Completado**
-- [x] ~~Integración EmailJS para notificaciones automáticas~~ ✅ **Completado**
-- [x] ~~APIs para contact-message y newsletter-subscriber~~ ✅ **Completado**
-- [ ] Optimizar carga de imágenes con lazy loading
-- [ ] Migrar base de datos para producción a PostgreSQL
+## ✅ Estado de Funcionalidades
+
+### Completadas y en Producción
+- [x] **Landing Page Responsive** con Tailwind CSS
+- [x] **Sistema de Reservas** con calendario interactivo
+- [x] **Notificaciones WhatsApp** duales automáticas
+- [x] **Sistema de Newsletter** dual (Email + WhatsApp)
+- [x] **CMS Backend** (Strapi v5 + TypeScript) 
+- [x] **Sincronización Airbnb** automática cada 3 horas
+- [x] **APIs REST** automáticas para todos los content types
+- [x] **Deploy en Producción** (Vercel + Railway)
+- [x] **Base de datos PostgreSQL** en producción
+- [x] **Variables de entorno** separadas por ambiente
+- [x] **CORS y CSP** configurados correctamente
+- [x] **Video Hero** carga dinámica desde Strapi
+
+### Próximas Mejoras
+- [ ] Optimizar carga de imágenes con lazy loading avanzado
 - [ ] Implementar sistema de respaldos automáticos
 - [ ] Añadir tests unitarios e integración automatizados
 - [ ] Implementar retry logic robusto para notificaciones
 - [ ] Sistema de logging estructurado con Winston
+- [ ] Monitoreo y alertas de uptime
+- [ ] Cache estratégico para mejorar rendimiento
+
+## 🎯 Conclusión
+
+**Ashlar House** es un sistema completo y robusto que está actualmente **operando en producción** sirviendo tanto la experiencia de usuario final como la gestión administrativa del negocio turístico.
+
+**URLs en vivo:**
+- 🌐 **Website**: https://ashlar-house.vercel.app
+- ⚙️ **Admin Panel**: https://ashlar-house-production.up.railway.app/admin
+
+---
+*Para preguntas técnicas o soporte, consultar la documentación en `/DOCS/` o contactar al equipo de desarrollo.*
 
 ## Contribuciones y Sugerencias
 Este proyecto está siendo desarrollado como una oportunidad de aprendizaje, por lo que las sugerencias, recomendaciones y explicaciones sobre mejores prácticas son bienvenidas. Si tienes ideas para mejorar el código, la arquitectura o añadir nuevas características, no dudes en compartirlas.

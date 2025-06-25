@@ -247,10 +247,8 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="relative h-screen flex items-center justify-center overflow-hidden">
-        <video id="hero-video" autoplay muted loop class="hero-video">
-            <source src="https://example.com/forest-video.webp" type="video/webp">
+    <!-- Hero Section -->    <section id="inicio" class="relative h-screen flex items-center justify-center overflow-hidden">        <video id="hero-video" autoplay muted loop class="hero-video" crossorigin="anonymous" preload="metadata">
+            <source src="https://example.com/forest-video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="absolute inset-0 bg-black/30"></div>
@@ -1105,9 +1103,7 @@
         }
 
         const videoUrl = hero.video.url;
-        console.log('Video URL:', videoUrl);
-
-        if (videoUrl) {
+        console.log('Video URL:', videoUrl);        if (videoUrl) {
             const heroVideo = document.getElementById('hero-video');
             if (!heroVideo) {
                 console.error('Hero video element not found');
@@ -1117,11 +1113,50 @@
             // Elimina los sources existentes
             while (heroVideo.firstChild) heroVideo.removeChild(heroVideo.firstChild);
 
+            // Configura el video para cross-origin
+            heroVideo.crossOrigin = 'anonymous';
+            heroVideo.preload = 'metadata';
+
             // Crea un nuevo source
             const source = document.createElement('source');
-            source.src = videoUrl.startsWith('http') ? videoUrl : window.ASHLAR_CONFIG.API_URL + videoUrl;
+            const fullVideoUrl = videoUrl.startsWith('http') ? videoUrl : window.ASHLAR_CONFIG.API_URL + videoUrl;
+            source.src = fullVideoUrl;
             source.type = 'video/mp4';
             heroVideo.appendChild(source);
+            
+            console.log('Loading video from:', fullVideoUrl);
+              // Maneja eventos de carga y error
+            heroVideo.addEventListener('loadstart', () => console.log('Video loading started'));
+            heroVideo.addEventListener('canplay', () => console.log('Video can start playing'));
+            heroVideo.addEventListener('error', (e) => {
+                console.error('Video loading error:', e);
+                console.error('Video error details:', heroVideo.error);
+                
+                // Fallback: intentar sin crossorigin si falla
+                if (heroVideo.crossOrigin) {
+                    console.log('Retrying without crossOrigin attribute...');
+                    heroVideo.removeAttribute('crossorigin');
+                    heroVideo.load();
+                }
+            });
+            
+            // Pre-verificar que el video sea accesible
+            try {
+                const videoCheckResponse = await fetch(fullVideoUrl, { 
+                    method: 'HEAD',
+                    mode: 'cors',
+                    credentials: 'omit'
+                });
+                
+                if (videoCheckResponse.ok) {
+                    console.log('Video accessibility confirmed');
+                } else {
+                    console.warn('Video may not be accessible:', videoCheckResponse.status);
+                }
+            } catch (fetchError) {
+                console.warn('Could not verify video accessibility:', fetchError);
+            }
+            
             heroVideo.load();
         }
     } catch (e) {

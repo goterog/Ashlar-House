@@ -1,33 +1,31 @@
-# Railway Configuration Guide
+# 🚂 Railway Configuration Guide
 
-## Variables de Entorno Críticas
+**Fecha de última actualización**: 25 de Junio, 2025  
+**Estado**: ✅ Configurado y desplegado exitosamente
 
-### 1. Variables que Railway configura automáticamente:
-- `RAILWAY_PROJECT_ID` - ID del proyecto
-- `RAILWAY_SERVICE_ID` - ID del servicio
-- `RAILWAY_ENVIRONMENT_ID` - ID del ambiente
-- `DATABASE_URL` - URL de PostgreSQL (auto-generada) **CRÍTICA: Debe estar disponible durante build**
+## 🌐 Información del Deploy Activo
 
-**⚠️ IMPORTANTE**: Después de conectar PostgreSQL, debes configurar manualmente:
+- **URL Pública**: https://ashlar-house-production.up.railway.app
+- **Admin Panel**: https://ashlar-house-production.up.railway.app/admin
+- **Base de datos**: PostgreSQL en Railway
+- **Estado**: ✅ Operativo
+
+## ⚙️ Variables de Entorno Configuradas
+
+### 1. Variables Automáticas de Railway ✅
+- `RAILWAY_PROJECT_ID` - ID del proyecto (auto)
+- `RAILWAY_SERVICE_ID` - ID del servicio (auto)
+- `RAILWAY_ENVIRONMENT_ID` - ID del ambiente (auto)
+- `DATABASE_URL` - URL de PostgreSQL (auto-generada) 
+
+### 2. Variables de Seguridad Configuradas ✅
 ```bash
-# RECOMENDADO: Endpoint privado (sin costos egress)
-DATABASE_URL=${{Postgres.DATABASE_URL}}
-
-# ALTERNATIVA: Endpoint público (con costos egress)
-DATABASE_URL=${{Postgres.DATABASE_PUBLIC_URL}}
-
-# ❌ NO USAR: RAILWAY_PRIVATE_DOMAIN (solo hostname, causa "ENOTFOUND base")
-```
-
-### 2. Variables que DEBES configurar manualmente en Railway:
-
-#### Variables de Seguridad (OBLIGATORIAS):
-```bash
-APP_KEYS="key1,key2,key3,key4"
-API_TOKEN_SALT="random-string-32-chars"
-ADMIN_JWT_SECRET="random-string-32-chars"
-TRANSFER_TOKEN_SALT="random-string-32-chars"
-JWT_SECRET="random-string-32-chars"
+APP_KEYS="key1,key2,key3,key4"                    # ✅ Configurado
+API_TOKEN_SALT="random-string-32-chars"           # ✅ Configurado
+ADMIN_JWT_SECRET="random-string-32-chars"         # ✅ Configurado
+TRANSFER_TOKEN_SALT="random-string-32-chars"      # ✅ Configurado
+JWT_SECRET="random-string-32-chars"               # ✅ Configurado
+NODE_ENV="production"                             # ✅ Configurado
 ENCRYPTION_KEY="random-string-32-chars"
 ```
 
