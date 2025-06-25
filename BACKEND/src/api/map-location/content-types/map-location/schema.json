@@ -26,10 +26,10 @@
       ]
     },
     "latitud": {
-      "type": "decimal"
+      "type": "float"
     },
     "longitud": {
-      "type": "decimal"
+      "type": "float"
     },
     "icono": {
       "type": "string"
