@@ -54,7 +54,12 @@ Lo bloqueante:
 6. **Checks de pre-deploy con falso negativo** por parseo de `tsconfig.json` (JSONC vs JSON).
 
 ## P2 — Calidad/mantenibilidad
-7. **Inconsistencias de naming en frontend/docs** (`newsletter_whatsapp` vs `whatsapp_subscription` / `email_subscription`) que pueden romper reportes/listados; detectado en `FRONTEND/js/whatsapp-lists-manager.js`, `FRONTEND/js/newsletter.js`, `BACKEND/test-secure-email-system.js` y documentación en `DOCS/TESTING/secure-email-testing.md`.
+7. **Inconsistencias de naming en frontend/docs** (`newsletter_whatsapp` vs `whatsapp_subscription` / `email_subscription`) que pueden romper reportes/listados.  
+   Detectado en:
+   - `FRONTEND/js/whatsapp-lists-manager.js`
+   - `FRONTEND/js/newsletter.js`
+   - `BACKEND/test-secure-email-system.js`
+   - `DOCS/TESTING/secure-email-testing.md`
 8. **No existe suite automatizada formal (unit/integration/e2e) para backend/frontend**; predominan scripts manuales de diagnóstico.
 9. **Configuraciones permisivas** (CORS/CSP y defaults de claves) requieren endurecimiento para producción.
 

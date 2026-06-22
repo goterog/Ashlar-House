@@ -139,7 +139,7 @@ function checkTypeScriptConfig() {
     try {
         const tsconfigPath = path.join(process.cwd(), 'tsconfig.json');
         const tsconfigText = fs.readFileSync(tsconfigPath, 'utf8');
-        const parsed = ts.parseConfigFileTextToJson(tsconfigPath, tsconfigText);
+        const parsed = ts.parseConfigFileTextToJson('tsconfig.json', tsconfigText);
         
         if (parsed.error) {
             const message = ts.flattenDiagnosticMessageText(parsed.error.messageText, '\n');
