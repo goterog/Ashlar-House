@@ -165,8 +165,8 @@ DATABASE_CLIENT=sqlite
 DATABASE_FILENAME=.tmp/data.db
 
 # CallMeBot API para WhatsApp
-CALLMEBOT_API_KEY_GUILLERMO=tu-api-key-numero-1
-CALLMEBOT_API_KEY_XIMENA=tu-api-key-numero-2
+CALLMEBOT_API_KEY_1=tu-api-key-numero-1
+CALLMEBOT_API_KEY_2=tu-api-key-numero-2
 CALLMEBOT_PHONE_GUILLERMO=tu-numero-1
 CALLMEBOT_PHONE_XIMENA=tu-numero-2
 ```

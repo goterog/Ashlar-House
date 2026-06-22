@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const ts = require('typescript');
 
 // Configuración de verificaciones
 const REQUIRED_ENV_VARS = [
@@ -137,7 +138,16 @@ function checkTypeScriptConfig() {
     
     try {
         const tsconfigPath = path.join(process.cwd(), 'tsconfig.json');
-        const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, 'utf8'));
+        const tsconfigText = fs.readFileSync(tsconfigPath, 'utf8');
+        const parsed = ts.parseConfigFileTextToJson(tsconfigPath, tsconfigText);
+        
+        if (parsed.error) {
+            const message = ts.flattenDiagnosticMessageText(parsed.error.messageText, '\n');
+            console.log(`  ❌ Error parseando tsconfig.json: ${message}`);
+            return false;
+        }
+        
+        const tsconfig = parsed.config;
         
         if (tsconfig.compilerOptions) {
             console.log('  ✅ tsconfig.json válido');
