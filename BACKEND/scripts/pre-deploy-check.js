@@ -8,6 +8,25 @@
 const fs = require('fs');
 const path = require('path');
 const ts = require('typescript');
+const dotenv = require('dotenv');
+
+function loadEnvironmentFile() {
+    const root = process.cwd();
+    const envPath = path.join(root, '.env');
+    const envDevPath = path.join(root, '.env.development');
+
+    if (fs.existsSync(envPath)) {
+        dotenv.config({ path: envPath });
+        return '.env';
+    }
+
+    if (fs.existsSync(envDevPath)) {
+        dotenv.config({ path: envDevPath });
+        return '.env.development';
+    }
+
+    return null;
+}
 
 // Configuración de verificaciones
 const REQUIRED_ENV_VARS = [
@@ -28,6 +47,10 @@ const CRITICAL_FILES = [
 ];
 
 console.log('🚀 Pre-Deploy Check - Ashlar House\n');
+const loadedEnvFile = loadEnvironmentFile();
+if (loadedEnvFile) {
+    console.log(`🧩 Variables cargadas desde ${loadedEnvFile}\n`);
+}
 
 function checkEnvironmentVariables() {
     console.log('📋 Verificando variables de entorno...');

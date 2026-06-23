@@ -9,8 +9,9 @@
     "build:prod": "cross-env NODE_ENV=production strapi build",
     "console": "strapi console",
     "deploy": "strapi deploy",
-    "dev": "cross-env NODE_ENV=development strapi develop",
-    "develop": "cross-env NODE_ENV=development strapi develop",
+    "ensure:env": "node -e \"const fs=require('fs');if(!fs.existsSync('.env')&&fs.existsSync('.env.development')){fs.copyFileSync('.env.development','.env');console.log('📄 .env creado desde .env.development');}else if(!fs.existsSync('.env')){console.error('❌ No existe .env ni .env.development');process.exit(1);}\"",
+    "dev": "npm run ensure:env && cross-env NODE_ENV=development strapi develop",
+    "develop": "npm run ensure:env && cross-env NODE_ENV=development strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "cross-env NODE_ENV=production strapi start",
     "start:dev": "cross-env NODE_ENV=development strapi start",
@@ -28,7 +29,7 @@
     "test:manual-sync": "node \"scripts/Airbnb sync/manual-sync-test.js\"",
     "env:dev": "cross-env NODE_ENV=development",
     "env:prod": "cross-env NODE_ENV=production",
-    "dev:windows": "cross-env NODE_ENV=development strapi develop",
+    "dev:windows": "npm run ensure:env && cross-env NODE_ENV=development strapi develop",
     "dev:fresh": "cross-env NODE_ENV=development rm -rf .tmp && strapi develop"
   },
   "dependencies": {
