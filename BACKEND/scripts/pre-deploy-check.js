@@ -8,6 +8,12 @@
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
+let ts = null;
+try {
+    ts = require('typescript');
+} catch (error) {
+    ts = null;
+}
 
 function loadEnvironmentFile() {
     const root = process.cwd();
@@ -159,27 +165,22 @@ function checkTypeScriptConfig() {
     console.log('\n📘 Verificando configuración TypeScript...');
     
     try {
+        if (!ts) {
+            console.log('  ❌ "typescript" no está disponible para validar tsconfig.json');
+            return false;
+        }
+
         const tsconfigPath = path.join(process.cwd(), 'tsconfig.json');
         const tsconfigText = fs.readFileSync(tsconfigPath, 'utf8');
-        let tsconfig = null;
+        const parsed = ts.parseConfigFileTextToJson('tsconfig.json', tsconfigText);
 
-        try {
-            const ts = require('typescript');
-            const parsed = ts.parseConfigFileTextToJson('tsconfig.json', tsconfigText);
-
-            if (parsed.error) {
-                const message = ts.flattenDiagnosticMessageText(parsed.error.messageText, '\n');
-                console.log(`  ❌ Error parseando tsconfig.json: ${message}`);
-                return false;
-            }
-
-            tsconfig = parsed.config;
-        } catch (error) {
-            const jsonWithoutComments = tsconfigText
-                .replace(/\/\*[\s\S]*?\*\//g, '')
-                .replace(/^\s*\/\/.*$/gm, '');
-            tsconfig = JSON.parse(jsonWithoutComments);
+        if (parsed.error) {
+            const message = ts.flattenDiagnosticMessageText(parsed.error.messageText, '\n');
+            console.log(`  ❌ Error parseando tsconfig.json: ${message}`);
+            return false;
         }
+        
+        const tsconfig = parsed.config;
         
         if (tsconfig.compilerOptions) {
             console.log('  ✅ tsconfig.json válido');
