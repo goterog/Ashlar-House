@@ -9,7 +9,7 @@
     "build:prod": "cross-env NODE_ENV=production strapi build",
     "console": "strapi console",
     "deploy": "strapi deploy",
-    "ensure:env": "node -e \"const fs=require('fs');if(!fs.existsSync('.env')&&fs.existsSync('.env.development')){fs.copyFileSync('.env.development','.env');console.log('📄 .env creado desde .env.development');}else if(!fs.existsSync('.env')){console.error('❌ No existe .env ni .env.development');process.exit(1);}\"",
+    "ensure:env": "node scripts/ensure-env.js",
     "dev": "npm run ensure:env && cross-env NODE_ENV=development strapi develop",
     "develop": "npm run ensure:env && cross-env NODE_ENV=development strapi develop",
     "seed:example": "node ./scripts/seed.js",
