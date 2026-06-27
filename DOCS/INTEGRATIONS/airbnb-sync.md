@@ -165,7 +165,7 @@ Fecha: 2025-06-13 10:10:00
 
 ### Test Manual
 ```javascript
-// BACKEND/scripts/test-airbnb-sync.js
+// BACKEND/scripts/Airbnb sync/test-airbnb-sync.js
 const testAirbnbSync = async () => {
   console.log('🧪 Testing Airbnb synchronization...');
   

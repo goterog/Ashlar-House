@@ -150,7 +150,17 @@ npm install
 ```
 
 3. **Configurar variables de entorno:**
-Crear archivo `.env.development` en `BACKEND/`:
+En `BACKEND/`, crear `.env` a partir del template:
+```bash
+cp .env.example .env
+```
+
+Opcionalmente, puedes iniciar desde el preset de desarrollo:
+```bash
+cp .env.development .env
+```
+
+Variables mínimas requeridas:
 ```bash
 HOST=0.0.0.0
 PORT=1337
@@ -165,15 +175,15 @@ DATABASE_CLIENT=sqlite
 DATABASE_FILENAME=.tmp/data.db
 
 # CallMeBot API para WhatsApp
-CALLMEBOT_API_KEY_GUILLERMO=tu-api-key-numero-1
-CALLMEBOT_API_KEY_XIMENA=tu-api-key-numero-2
+CALLMEBOT_API_KEY_1=tu-api-key-numero-1
+CALLMEBOT_API_KEY_2=tu-api-key-numero-2
 CALLMEBOT_PHONE_GUILLERMO=tu-numero-1
 CALLMEBOT_PHONE_XIMENA=tu-numero-2
 ```
 
 4. **Iniciar el servidor Strapi:**
 ```bash
-npm run develop  # Arranca en http://localhost:1337
+npm run develop  # Si falta .env y existe .env.development, se crea automáticamente
 ```
 
 5. **Configurar el Frontend:**
