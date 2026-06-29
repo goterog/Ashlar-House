@@ -33,10 +33,10 @@
     "dev:fresh": "cross-env NODE_ENV=development rm -rf .tmp && strapi develop"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.13.0",
-    "@strapi/plugin-documentation": "^5.13.0",
-    "@strapi/plugin-users-permissions": "5.13.0",
-    "@strapi/strapi": "5.13.0",
+    "@strapi/plugin-cloud": "5.49.0",
+    "@strapi/plugin-documentation": "^5.49.0",
+    "@strapi/plugin-users-permissions": "5.49.0",
+    "@strapi/strapi": "5.49.0",
     "@types/node-cron": "^3.0.11",
     "axios": "^1.9.0",
     "better-sqlite3": "11.3.0",
