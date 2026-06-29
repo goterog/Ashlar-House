@@ -114,7 +114,7 @@ function exportForWhatsAppBusiness(subscribers) {
     
     // Extraer solo los emails (WhatsApp Business puede usar emails como identificadores)
     const emailList = subscribers
-        .filter(sub => sub.attributes.whatsapp_subscription)
+        .filter(sub => sub.attributes.newsletter_whatsapp)
         .map(sub => sub.attributes.email)
         .join('\\n');
     
@@ -156,9 +156,9 @@ function generateStats(subscribers) {
         stats.byMonth[month] = (stats.byMonth[month] || 0) + 1;
         
         // Tipos de suscripción
-        if (attr.email_subscription && attr.whatsapp_subscription) {
+        if (attr.newsletter_email && attr.newsletter_whatsapp) {
             stats.emailAndWhatsApp++;
-        } else if (attr.whatsapp_subscription && !attr.email_subscription) {
+        } else if (attr.newsletter_whatsapp && !attr.newsletter_email) {
             stats.whatsAppOnly++;
         }
     });
