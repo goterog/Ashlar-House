@@ -35,16 +35,24 @@ export default [
         'Accept-Ranges'
       ],
       origin: function(ctx) {
-        // En desarrollo
-        if (process.env.NODE_ENV === 'development') {
-          return ['http://localhost:*', 'http://127.0.0.1:*', 'https://*.vercel.app'];
-        }
-        // En producción
-        return [
+        const requestOrigin = ctx.request.header.origin;
+
+        // Orígenes fijos permitidos
+        const allowed = [
+          'http://localhost:3000',
+          'http://127.0.0.1:3000',
           'https://ashlar-house.vercel.app',
-          'https://*.vercel.app',
-          'https://ashlar-house-production.up.railway.app'
+          'https://ashlar-house-production.up.railway.app',
         ];
+
+        // Previews de Vercel (ej. ashlar-house-git-branch.vercel.app)
+        const vercelPreview = /^https:\/\/[a-z0-9-]+\.vercel\.app$/;
+
+        if (requestOrigin && (allowed.includes(requestOrigin) || vercelPreview.test(requestOrigin))) {
+          return requestOrigin;
+        }
+
+        return false;
       },
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
       credentials: false,
