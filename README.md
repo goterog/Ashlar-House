@@ -63,7 +63,7 @@
 - ✅ **Health Checks** - Monitoreo automático del sistema
 
 ## Stack Tecnológico
-- **Frontend**: HTML, CSS (Tailwind CSS), JavaScript vanilla
+- **Frontend**: HTML + JavaScript con Vite (build y dev server), Tailwind CSS
 - **Backend**: Strapi v5 + TypeScript como CMS headless
 - **Base de datos**: SQLite (desarrollo) / PostgreSQL (producción)
 - **Notificaciones**: CallMeBot WhatsApp API con lifecycle hooks
@@ -96,14 +96,15 @@
 ## Estructura del Proyecto
 ```
 /
-├── FRONTEND/              # Interfaz de usuario (Landing Page)
-│   ├── assets/            # Imágenes, videos y recursos estáticos
-│   ├── js/               # Scripts de JavaScript
-│   │   ├── global-config.js       # Configuración dinámica de APIs
-│   │   ├── campaign-manager.js    # Sistema completo de newsletter dual
-│   │   └── whatsapp-lists-manager.js # Gestión de listas WhatsApp
-│   ├── test-newsletter.html # Página de pruebas del sistema
-│   └── Ashlar House.html  # Archivo HTML principal
+├── FRONTEND/              # Landing Page (Vite)
+│   ├── src/               # Entradas multipágina
+│   │   ├── index.html     # Página principal
+│   │   └── campaign-manager.html # Panel de campañas
+│   ├── public/            # Estáticos servidos tal cual
+│   │   ├── assets/        # Imágenes y recursos
+│   │   └── js/            # JS: global-config, campaign-manager, whatsapp-lists-manager
+│   ├── vite.config.js     # Config de build (multipágina, dist/)
+│   └── package.json       # Scripts dev/build/preview
 ├── BACKEND/               # Servidor Strapi v5 + TypeScript
 │   ├── src/               # Código fuente de Strapi
 │   │   ├── index.ts       # Bootstrap y lifecycle hooks WhatsApp 
@@ -139,8 +140,8 @@
 
 1. **Clonar el repositorio:**
 ```bash
-git clone https://github.com/goterog/Caba-a-Hanuman.git 
-cd cabaña-hanuman
+git clone https://github.com/goterog/Ashlar-House.git
+cd Ashlar-House
 ```
 
 2. **Instalar dependencias del backend:**
@@ -177,8 +178,11 @@ DATABASE_FILENAME=.tmp/data.db
 # CallMeBot API para WhatsApp
 CALLMEBOT_API_KEY_1=tu-api-key-numero-1
 CALLMEBOT_API_KEY_2=tu-api-key-numero-2
-CALLMEBOT_PHONE_GUILLERMO=tu-numero-1
-CALLMEBOT_PHONE_XIMENA=tu-numero-2
+CALLMEBOT_PHONE_1=+5215500000001
+CALLMEBOT_PHONE_2=+5215500000002
+
+# Airbnb sync (URL iCal del listado)
+AIRBNB_ICS_URL=https://www.airbnb.mx/calendar/ical/tu-listado.ics?s=tu-token
 ```
 
 4. **Iniciar el servidor Strapi:**
@@ -186,13 +190,11 @@ CALLMEBOT_PHONE_XIMENA=tu-numero-2
 npm run develop  # Si falta .env y existe .env.development, se crea automáticamente
 ```
 
-5. **Configurar el Frontend:**
-El frontend es estático y se configura automáticamente:
+5. **Configurar el Frontend (Vite):**
 ```bash
 cd FRONTEND
-# Usar cualquier servidor HTTP estático
-python -m http.server 8000    # Servidor local en puerto 8000
-# O usar Live Server en VS Code
+npm install
+npm run dev        # Servidor local en http://localhost:3000
 ```
 
 ### ⚡ Scripts de Desarrollo Disponibles
@@ -208,23 +210,19 @@ npm run start      # Modo producción
 npm run dev-tools                      # Script maestro con menú interactivo
 node scripts/health-check.js           # Verificación rápida del sistema
 node scripts/check-strapi.js           # Verificar conectividad Strapi
-node scripts/diagnostico-completo.js   # Diagnóstico detallado del sistema
 ```
 
 #### Frontend (FRONTEND/)
 ```bash
-# Archivos principales
-- Ashlar House.html              # Página principal
-- test-newsletter.html           # Página de pruebas
-- js/global-config.js           # Configuración dinámica de APIs
-- js/campaign-manager.js        # Sistema de newsletter
-- js/whatsapp-lists-manager.js  # Gestión de listas WhatsApp
+npm run dev        # Dev server (Vite) en http://localhost:3000
+npm run build      # Build de producción a dist/
+npm run preview    # Previsualizar el build
 ```
 
 ### 🌐 URLs de Acceso
 
 #### Desarrollo Local
-- **Frontend**: http://localhost:8000
+- **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:1337
 - **Admin Panel**: http://localhost:1337/admin
 

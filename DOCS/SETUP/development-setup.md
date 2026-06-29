@@ -115,26 +115,19 @@ cd ../FRONTEND
 # Verificar estructura
 ls -la
 # Debería mostrar:
-# - Ashlar House.html
-# - campaign-manager.html
-# - js/
-# - assets/
-# - test-*.html
+# - src/index.html
+# - src/campaign-manager.html
+# - public/js/
+# - public/assets/
+# - vite.config.js
 ```
 
 #### Configurar Servidor de Desarrollo
 ```bash
-# Opción 1: Live Server (VS Code)
-# Instalar extensión Live Server
-# Click derecho en Ashlar House.html → "Open with Live Server"
-
-# Opción 2: Python HTTP Server
-python -m http.server 8000
-# Abrir http://localhost:8000
-
-# Opción 3: Node.js HTTP Server
-npx http-server -p 8000
-# Abrir http://localhost:8000
+npm install
+npm run dev        # http://localhost:3000 (Vite)
+npm run build      # build de producción a dist/
+npm run preview    # previsualizar build
 ```
 
 ## 🔧 Comandos de Desarrollo
