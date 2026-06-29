@@ -578,14 +578,14 @@ export interface ApiMapLocationMapLocation extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     descripcion: Schema.Attribute.RichText;
     icono: Schema.Attribute.String;
-    latitud: Schema.Attribute.Decimal;
+    latitud: Schema.Attribute.Float;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::map-location.map-location'
     > &
       Schema.Attribute.Private;
-    longitud: Schema.Attribute.Decimal;
+    longitud: Schema.Attribute.Float;
     nombre: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     tipo: Schema.Attribute.Enumeration<

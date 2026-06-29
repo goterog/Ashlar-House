@@ -130,8 +130,11 @@ async function sendWhatsAppNotification(booking: any, strapi: any): Promise<void
     if (booking.estado === 'Bloqueado' || booking.estado === 'Reservado') {
       console.log(`📱 Enviando notificaciones WhatsApp para booking ID: ${booking.id}`);
       
-      // Lista de números a notificar
-      const phoneNumbers = ['+5218119936655', '+5218111755533'];
+      // Lista de números a notificar (configurables vía env)
+      const phoneNumbers = [
+        process.env.CALLMEBOT_PHONE_1,
+        process.env.CALLMEBOT_PHONE_2,
+      ].filter(Boolean);
       
       // Enviar a ambos números
       const promises = phoneNumbers.map(phoneNumber => 
@@ -168,9 +171,9 @@ async function sendWhatsAppMessage(phoneNumber: string, message: string, strapi:
     
     // Seleccionar la API key correcta según el número
     let apiKey;
-    if (cleanPhoneNumber === '+5218119936655') {
+    if (cleanPhoneNumber === process.env.CALLMEBOT_PHONE_1) {
       apiKey = process.env.CALLMEBOT_API_KEY_1;
-    } else if (cleanPhoneNumber === '+5218111755533') {
+    } else if (cleanPhoneNumber === process.env.CALLMEBOT_PHONE_2) {
       apiKey = process.env.CALLMEBOT_API_KEY_2;
     } else {
       throw new Error(`Número de teléfono no configurado: ${phoneNumber}`);
@@ -206,7 +209,7 @@ async function sendWhatsAppMessage(phoneNumber: string, message: string, strapi:
 
 // ==================== FUNCIONES DE IMPORTACIÓN AIRBNB ====================
 
-const AIRBNB_ICS_URL = 'https://www.airbnb.mx/calendar/ical/807381707673543946.ics?s=9789cc909449839e93a1202f822e9c8d';
+const AIRBNB_ICS_URL = process.env.AIRBNB_ICS_URL || '';
 
 // Convierte YYYYMMDD a YYYY-MM-DD (ISO)
 function formatDateISO(yyyymmdd: string): string {
@@ -280,10 +283,14 @@ async function bookingExists(uid: string, strapi: any): Promise<boolean> {
 
 async function importAirbnbCalendar(strapi: any): Promise<void> {
   try {
+    if (!AIRBNB_ICS_URL) {
+      console.warn('⚠️ AIRBNB_ICS_URL no configurada; se omite la sincronización con Airbnb');
+      return;
+    }
     console.log('📥 Descargando calendario de Airbnb...');
     
     // Descarga el .ics directamente de Airbnb
-    const response = await axios.get(AIRBNB_ICS_URL);
+    const response = await axios.get(AIRBNB_ICS_URL, { timeout: 15000 });
     const ics = response.data;
     const events = ics.split('BEGIN:VEVENT').slice(1);
 
