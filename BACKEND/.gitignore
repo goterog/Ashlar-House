@@ -131,6 +131,9 @@ build
 .strapi-updater.json
 .strapi-cloud.json
 
+# Documentación autogenerada por el plugin de Strapi
+src/extensions/documentation/documentation/
+
 ############################
 # Mi contribución
 ############################
