@@ -19,7 +19,7 @@
 ```bash
 # Scripts de prueba disponibles
 BACKEND/
-├── test-secure-email-system.js     # ✅ Suite completa de pruebas
+├── scripts/health-check.js          # ✅ Suite completa de pruebas
 ├── scripts/
 │   ├── health-check.js             # ✅ Verificación de salud
 │   ├── check-strapi.js             # ✅ Test de Strapi
@@ -29,12 +29,8 @@ BACKEND/
 #### Frontend Testing
 ```bash
 FRONTEND/
-├── test-newsletter.html            # ✅ Página de pruebas
-├── test-emailjs-direct.html        # ✅ Test directo EmailJS
-├── test-hybrid-system.html         # ✅ Test sistema híbrido
-└── js/
-    ├── test-system.js              # ✅ Suite de pruebas JS
-    └── test-newsletter-complete.js # ✅ Test completo newsletter
+├── src/index.html               # Landing principal (dev: npm run dev)
+└── src/campaign-manager.html    # Gestión de campañas
 ```
 
 ## 🚀 Ejecución de Pruebas
@@ -43,7 +39,7 @@ FRONTEND/
 
 ```bash
 cd BACKEND
-node test-secure-email-system.js
+npm run health-check
 ```
 
 #### Salida Esperada:
@@ -197,7 +193,7 @@ curl -X POST http://localhost:1337/api/contact-messages \
 
 ### Página de Pruebas Interactiva
 
-Abrir en navegador: `http://localhost:8000/test-newsletter.html`
+Abrir en navegador: `http://localhost:3000/`
 
 #### Funcionalidades a Probar:
 
@@ -224,7 +220,7 @@ Abrir en navegador: `http://localhost:8000/test-newsletter.html`
 ### JavaScript Testing
 
 ```javascript
-// FRONTEND/js/test-system.js
+// FRONTEND/public/js/newsletter.js
 const runFrontendTests = async () => {
   console.log('🧪 Iniciando pruebas frontend...');
   
@@ -504,7 +500,7 @@ Total Coverage: 100% ✅
 0 9 * * * cd /path/to/project/BACKEND && node scripts/health-check.js
 
 # Weekly full system test
-0 10 * * 1 cd /path/to/project/BACKEND && node test-secure-email-system.js
+0 10 * * 1 cd /path/to/project/BACKEND && npm run health-check
 
 # Monthly integration test
 0 11 1 * * cd /path/to/project/BACKEND && node scripts/full-integration-test.js
@@ -549,5 +545,5 @@ jobs:
         EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
         
     - name: Run full system test
-      run: cd BACKEND && node test-secure-email-system.js
+      run: cd BACKEND && npm run health-check
 ```

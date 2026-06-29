@@ -84,12 +84,12 @@ services:
     branch: main  # Deploy desde main
     autoDeploy: true  # Deploy automático del frontend
     region: ohio
-    buildCommand: echo "No build needed for static HTML"
-    staticPublishPath: ../FRONTEND
+    buildCommand: cd ../FRONTEND && npm install && npm run build
+    staticPublishPath: ../FRONTEND/dist
     routes:
       - type: rewrite
         source: /*
-        destination: /Ashlar%20House.html
+        destination: /index.html
     headers:
       - path: /*
         name: Cache-Control

@@ -3,7 +3,7 @@
 ## 📍 Cómo ajustar el scroll por sección
 
 ### Ubicación del código
-El código de configuración de scroll está en `Ashlar House.html` en la sección de JavaScript, busca la variable `SCROLL_OFFSETS`.
+El código de configuración de scroll está en `src/index.html` en la sección de JavaScript, busca la variable `SCROLL_OFFSETS`.
 
 ### Configuración actual
 

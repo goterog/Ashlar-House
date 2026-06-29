@@ -126,12 +126,12 @@ ASHLAR-HOUSE/ (Production Ready)
 │   │   ├── health-check.js     # Verificación de salud del sistema
 │   │   ├── check-strapi.js     # Test de conectividad Strapi
 │   │   └── simple-whatsapp-test.js  # Test específico WhatsApp
-│   ├── test-secure-email-system.js  # Suite principal de testing
+│   ├── scripts/health-check.js  # Suite principal de testing
 │   └── archive-test-files/     # Scripts de desarrollo archivados
 └── FRONTEND/                   # ✅ Frontend optimizado y funcional
-    ├── Ashlar House.html       # Landing page principal
+    ├── src/index.html          # Landing page principal
     ├── campaign-manager.html   # Gestión de campañas newsletter
-    ├── test-newsletter.html    # Página de testing del sistema
+    ├── src/campaign-manager.html  # Gestión de campañas
     ├── js/
     │   ├── newsletter.js       # Sistema completo newsletter dual
     │   ├── newsletter-config.js # Configuración centralizada

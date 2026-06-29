@@ -73,14 +73,14 @@ npm run develop
 
 # Frontend (Terminal 2) 
 cd FRONTEND  
-# Abrir Ashlar House.html en navegador
+# Abrir frontend con Vite (npm run dev) en navegador
 ```
 
 ### Verificación del Sistema
 ```bash
 # Ejecutar suite de pruebas
 cd BACKEND
-node test-secure-email-system.js
+npm run health-check
 ```
 
 ---

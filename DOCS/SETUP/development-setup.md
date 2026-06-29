@@ -158,7 +158,7 @@ node scripts/health-check.js
 node scripts/simple-whatsapp-test.js
 
 # Test completo del sistema
-node test-secure-email-system.js
+npm run health-check
 
 # Verificar APIs
 node scripts/check-strapi.js
@@ -169,9 +169,8 @@ node scripts/check-strapi.js
 cd FRONTEND
 
 # Verificar todas las páginas
-# - Ashlar House.html (landing principal)
-# - campaign-manager.html (gestión campañas)
-# - test-newsletter.html (testing sistema)
+# - src/index.html (landing principal)
+# - src/campaign-manager.html (gestión campañas)
 ```
 
 ## 🏗️ Estructura del Proyecto
@@ -206,10 +205,10 @@ ASHLAR-HOUSE/
 │   │   └── simple-whatsapp-test.js
 │   └── .tmp/                  # Base de datos SQLite (desarrollo)
 │       └── data.db
-├── FRONTEND/                   # Frontend estático
-│   ├── Ashlar House.html      # 🎯 Landing page principal
-│   ├── campaign-manager.html  # Gestión de campañas
-│   ├── js/
+├── FRONTEND/                   # Frontend (Vite)
+│   ├── src/index.html         # 🎯 Landing page principal
+│   ├── src/campaign-manager.html  # Gestión de campañas
+│   ├── public/js/
 │   │   ├── newsletter.js      # Sistema newsletter completo
 │   │   ├── newsletter-config.js # Configuración EmailJS
 │   │   ├── campaign-manager.js # Gestión de suscriptores
@@ -247,25 +246,24 @@ curl -X GET http://localhost:1337/api/bookings
 node scripts/simple-whatsapp-test.js
 
 # Test completo del sistema
-node test-secure-email-system.js
+npm run health-check
 ```
 
 ### 2. Verificar Frontend
 ```bash
 # Abrir en navegador
-http://localhost:8000/Ashlar%20House.html
+http://localhost:3000/
 
 # Probar funcionalidades:
 # ✅ Formulario de contacto
 # ✅ Newsletter footer
 # ✅ Campaign manager
-# ✅ Página de testing
 ```
 
 ### 3. Test End-to-End
 ```bash
 # 1. Backend funcionando en localhost:1337
-# 2. Frontend funcionando en localhost:8000
+# 2. Frontend funcionando en localhost:3000
 # 3. Llenar formulario de contacto
 # 4. Verificar en Strapi admin:
 #    - Nuevo contact-message creado
@@ -393,7 +391,7 @@ node scripts/simple-whatsapp-test.js
 ### Error: EmailJS no funciona
 ```bash
 # Test directo de EmailJS
-node test-secure-email-system.js
+npm run health-check
 
 # Verificar credenciales en .env
 # Verificar template ID en EmailJS dashboard
@@ -429,7 +427,7 @@ node scripts/health-check.js
 ```bash
 # Iniciar sesión de desarrollo
 cd BACKEND && npm run develop &
-cd FRONTEND && python -m http.server 8000 &
+cd FRONTEND && npm run dev &
 
 # Trabajar en archivos
 # Strapi auto-reloadea en cambios
@@ -439,7 +437,7 @@ cd FRONTEND && python -m http.server 8000 &
 ### 2. Testing de Cambios
 ```bash
 # Después de cada cambio importante
-node test-secure-email-system.js
+npm run health-check
 
 # Verificar funcionalidades en navegador
 # Probar formularios y integraciones

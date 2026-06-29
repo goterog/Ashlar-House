@@ -132,7 +132,7 @@ npm run develop
 cd FRONTEND
 python -m http.server 8000
 
-# 4. Probar en: http://localhost:8000/test-newsletter.html
+# 4. Probar en: http://localhost:3000/
 ```
 
 ### Verificación en Producción

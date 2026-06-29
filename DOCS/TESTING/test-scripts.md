@@ -9,7 +9,7 @@
 #### 1. Script Principal de Testing
 ```bash
 cd BACKEND
-node test-secure-email-system.js
+npm run health-check
 ```
 
 **Funcionalidad:**
@@ -50,7 +50,7 @@ node scripts/simple-whatsapp-test.js
 #### 1. Página de Testing Interactiva
 ```bash
 # Abrir en navegador
-http://localhost:8000/test-newsletter.html
+http://localhost:3000/
 ```
 
 **Funcionalidades:**
@@ -62,8 +62,8 @@ http://localhost:8000/test-newsletter.html
 
 #### 2. Script de Testing JavaScript
 ```bash
-# Incluido en test-newsletter.html
-FRONTEND/js/test-system.js
+# Servir frontend con Vite
+cd FRONTEND && npm run dev
 ```
 
 **Funcionalidad:**
@@ -179,10 +179,10 @@ cd BACKEND && node scripts/health-check.js
 ### 2. Testing Antes de Commit
 ```bash
 # Full system test
-cd BACKEND && node test-secure-email-system.js
+cd BACKEND && npm run health-check
 
 # Frontend manual test
-# Abrir test-newsletter.html y probar formularios
+# Abrir http://localhost:3000/ y probar formularios
 
 # Solo hacer commit si todo pasa
 ```
@@ -190,7 +190,7 @@ cd BACKEND && node test-secure-email-system.js
 ### 3. Testing Pre-Deployment
 ```bash
 # 1. Full system test en development
-cd BACKEND && node test-secure-email-system.js
+cd BACKEND && npm run health-check
 
 # 2. Build test
 npm run build
@@ -199,7 +199,7 @@ npm run build
 npm run start
 
 # 4. Test APIs en modo producción
-node test-secure-email-system.js
+npm run health-check
 
 # 5. Si todo OK, hacer deployment
 ```
@@ -216,19 +216,15 @@ node test-secure-email-system.js
 
 ```
 BACKEND/
-├── test-secure-email-system.js    # 🎯 Suite principal de testing
 ├── scripts/
 │   ├── health-check.js             # 🏥 Health check del sistema
 │   ├── check-strapi.js             # 🔍 Verificación Strapi
-│   └── simple-whatsapp-test.js     # 📱 Test específico WhatsApp
-└── archive-test-files/             # 📁 Scripts de desarrollo archivados
+│   ├── Airbnb sync/                # 📅 Tests de sincronización Airbnb
+│   └── Whatsapp vía callmebot/     # 📱 Tests de WhatsApp
 
 FRONTEND/
-├── test-newsletter.html            # 🌐 Página de testing interactiva
-├── js/
-│   ├── test-system.js              # 🧪 Suite de testing JavaScript
-│   └── test-newsletter-complete.js # 📧 Test completo newsletter
-└── test-emailjs-direct.html        # 📧 Test directo EmailJS (legacy)
+├── src/index.html               # 🌐 Landing principal
+└── src/campaign-manager.html    # 📧 Gestión de campañas
 ```
 
 ## 🎯 Métricas de Testing
@@ -251,7 +247,7 @@ FRONTEND/
 
 ### Añadir Nuevos Tests
 ```javascript
-// BACKEND/test-secure-email-system.js
+// BACKEND/scripts/health-check.js
 const runCustomTest = async () => {
   console.log('🧪 Testing custom functionality...');
   

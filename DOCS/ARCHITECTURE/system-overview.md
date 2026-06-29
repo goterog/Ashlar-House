@@ -34,7 +34,7 @@
 ### 1. Frontend (Estático)
 ```
 FRONTEND/
-├── Ashlar House.html        # Landing page principal
+├── src/index.html            # Landing page principal
 ├── campaign-manager.html    # Gestión de campañas
 ├── js/
 │   ├── newsletter.js        # Sistema newsletter completo
