@@ -134,3 +134,7 @@ build
 ############################
 
 data/uploads/*
+
+# Frontend Vite
+FRONTEND/dist
+FRONTEND/node_modules

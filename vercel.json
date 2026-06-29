@@ -1,19 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "FRONTEND/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/FRONTEND/Ashlar%20House.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/FRONTEND/$1"
-    }
+  "buildCommand": "cd FRONTEND && npm install && npm run build",
+  "outputDirectory": "FRONTEND/dist",
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" }
   ]
 }
